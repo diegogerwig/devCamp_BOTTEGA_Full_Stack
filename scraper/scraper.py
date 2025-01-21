@@ -10,12 +10,44 @@ import re
 
 class CourseVideoScraper:
     def __init__(self):
+        # Configure logging first
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format='%(asctime)s - %(levelname)s - %(message)s'
+        )
+        self.logger = logging.getLogger(__name__)
+        
+        # Initialize other attributes
         self.base_url = "https://devcamp.com"
         self.basque_url = "https://basque.devcamp.com"
         self.login_url = f"{self.base_url}/users/sign_in"
         self.course_url = f"{self.basque_url}/pt-full-stack-development-javascript-python-react"
         self.session = requests.Session()
         self.videos_data = []
+        
+        # Configure session headers
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5'
+        })
+        
+    def format_duration(self, duration):
+        """Format duration to MM:SS format"""
+        try:
+            # If duration is in seconds (string or float)
+            duration = float(duration)
+            minutes = int(duration // 60)
+            seconds = int(duration % 60)
+            return f"{minutes:02d}:{seconds:02d}"
+        except (ValueError, TypeError):
+            # If duration is already in MM:SS format
+            if isinstance(duration, str):
+                # Try to extract minutes and seconds from string
+                match = re.search(r'(\d+):(\d+)', duration)
+                if match:
+                    return f"{int(match.group(1)):02d}:{int(match.group(2)):02d}"
+            return "N/A"
         
         # Configure logging
         logging.basicConfig(
@@ -57,19 +89,32 @@ class CourseVideoScraper:
                 'commit': 'Log in'
             }
 
+            # Set up headers
+            headers = {
+                'X-CSRF-Token': csrf_token,
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+            }
+
             # Perform login
             self.logger.info("Attempting login...")
             response = self.session.post(
                 self.login_url,
                 data=login_data,
-                headers={'X-CSRF-Token': csrf_token},
+                headers=headers,
                 allow_redirects=True
             )
 
-            # Verify login
+            # Verify login by checking a protected page
             verify_response = self.session.get(self.course_url)
             if 'sign_in' in verify_response.url.lower():
-                self.logger.error("Login failed")
+                self.logger.error("Login failed - redirected to sign in")
+                return False
+
+            # Double check by looking for authenticated content
+            verify_soup = BeautifulSoup(verify_response.text, 'html.parser')
+            if not verify_soup.find('a', {'rel': 'nofollow', 'data-method': 'DELETE', 'href': '/users/sign_out'}):
+                self.logger.error("Login failed - no logout button found")
                 return False
 
             self.logger.info("Login successful!")
@@ -89,9 +134,9 @@ class CourseVideoScraper:
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                 'Accept-Language': 'en-US,en;q=0.5',
                 'Connection': 'keep-alive',
-                'Upgrade-Insecure-Requests': '1',
+                'Referer': self.course_url,
                 'Cache-Control': 'no-cache',
-                'Referer': self.course_url
+                'X-Requested-With': 'XMLHttpRequest'
             }
             
             response = self.session.get(chapter_url, headers=headers)
@@ -101,38 +146,51 @@ class CourseVideoScraper:
                 
             soup = BeautifulSoup(response.text, 'html.parser')
             
-            # Try multiple approaches to find duration
+            # Debug HTML structure
+            self.logger.debug("Looking for video duration elements...")
             
-            # Method 1: Direct span with vjs-duration-display class
-            duration_elem = soup.select_one('span.vjs-duration-display[aria-live="off"]')
-            if duration_elem:
-                duration_text = duration_elem.text.strip()
+            # Method 1: Try to get duration from the duration display
+            duration_display = soup.find('span', class_='vjs-duration-display')
+            if duration_display:
+                duration_text = duration_display.text.strip()
                 if duration_text and duration_text != "":
-                    self.logger.debug(f"Found duration from span: {duration_text}")
-                    return duration_text
+                    self.logger.debug(f"Found duration in display: {duration_text}")
+                    return self.format_duration(duration_text)
+            
+            # Method 2: Look for duration in video-js data
+            video_container = soup.find('div', class_='video-js')
+            if video_container:
+                self.logger.debug("Found video-js container")
+                # Check for data attributes
+                for attr in video_container.attrs:
+                    if 'duration' in attr.lower():
+                        self.logger.debug(f"Found duration in attribute: {attr}")
+                        return self.format_duration(video_container[attr])
 
-            # Method 2: Video element duration
-            video_elem = soup.find('video', {'id': 'video_html5_api'})
-            if video_elem:
-                # Try getting from aria-valuetext
-                progress_holder = soup.find('div', {'class': 'vjs-progress-holder'})
-                if progress_holder and 'aria-valuetext' in progress_holder.attrs:
-                    value_text = progress_holder['aria-valuetext']
-                    match = re.search(r'of\s+(\d+:\d+)', value_text)
-                    if match:
-                        duration = match.group(1)
-                        self.logger.debug(f"Found duration from aria-valuetext: {duration}")
-                        return duration
+            # Method 2: Look for duration in metadata
+            meta_duration = soup.find('meta', {'property': 'video:duration'}) or \
+                          soup.find('meta', {'name': 'duration'})
+            if meta_duration:
+                self.logger.debug(f"Found duration in metadata: {meta_duration['content']}")
+                return self.format_duration(meta_duration['content'])
 
-            # Method 3: Look for duration in any text that matches MM:SS format
-            duration_pattern = re.compile(r'\b\d{1,2}:\d{2}\b')
-            duration_matches = soup.find_all(string=duration_pattern)
-            if duration_matches:
-                for match in duration_matches:
-                    found_duration = duration_pattern.search(match).group()
-                    if found_duration != "0:00":  # Skip initial time
-                        self.logger.debug(f"Found duration from text: {found_duration}")
-                        return found_duration
+            # Method 3: Check for duration in video element
+            video_elem = soup.find('video')
+            if video_elem and video_elem.get('duration'):
+                self.logger.debug(f"Found duration in video element: {video_elem['duration']}")
+                return self.format_duration(video_elem['duration'])
+
+            # Method 4: Look for time element or span
+            time_elem = soup.find('time') or \
+                       soup.find('span', class_=lambda x: x and 'duration' in x.lower())
+            if time_elem:
+                duration_text = time_elem.get_text().strip()
+                if duration_text:
+                    self.logger.debug(f"Found duration in time element: {duration_text}")
+                    # Extract numbers from the text
+                    numbers = re.findall(r'\d+', duration_text)
+                    if len(numbers) >= 2:
+                        return f"{numbers[0].zfill(2)}:{numbers[1].zfill(2)}"
 
             # Save HTML for debugging
             debug_filename = f'debug_chapter_{hash(chapter_url)}.html'
@@ -149,66 +207,68 @@ class CourseVideoScraper:
     def extract_course_content(self):
         """Extract course structure and video durations"""
         try:
-            self.logger.info("Accessing course page...")
+            # Get initial page
             response = self.session.get(self.course_url)
-            self.logger.debug(f"Course page status: {response.status_code}")
-            
             soup = BeautifulSoup(response.text, 'html.parser')
-            
-            # Find the content container
-            content = soup.find('div', class_='syllabus-content')
-            if not content:
-                self.logger.error("Could not find syllabus content")
-                with open('error_page.html', 'w', encoding='utf-8') as f:
-                    f.write(response.text)
+
+            # Find syllabus content
+            syllabus_content = soup.find('div', class_='syllabus-content')
+            if not syllabus_content:
                 return False
 
-            # Find all modules
-            modules = content.find_all('div', class_='syllabus-section-header')
-            self.logger.info(f"Found {len(modules)} modules")
-            
+            # Get all modules
+            modules = syllabus_content.find_all('div', class_='syllabus-section-header')
             for module in modules:
-                module_title = module.find('div', class_='title')
-                if not module_title:
+                # Get module title
+                title_elem = module.find('div', class_='title')
+                module_title = title_elem.text.strip() if title_elem else "Unknown Module"
+                
+                # Get chapters container
+                chapters = module.find_next_sibling('div', class_='syllabus-section-content')
+                if not chapters:
                     continue
+
+                # Get chapter items
+                items = chapters.find_all('div', {'class': ['item-row', 'item-row-locked']})
+                for item in items:
+                    # Get chapter info
+                    title_div = item.find('div', class_='title')
+                    if not title_div:
+                        continue
                     
-                module_title = module_title.text.strip()
-                self.logger.info(f"\nProcessing Module: {module_title}")
-                
-                module_id = module.get('href', '').replace('#', '')
-                
-                # Find chapters
-                if module_id:
-                    chapter_container = soup.find('div', id=module_id)
-                    if chapter_container:
-                        chapter_items = chapter_container.find_all(['div', 'a'], class_=['item-row', 'item-row-locked'])
+                    title = title_div.text.strip()
+                    completed = 'icon-done-container' in str(item)
+                    duration = 'N/A'
+
+                    # Try to get video link
+                    video_link = item.find('a')
+                    if video_link and video_link.get('href'):
+                        page_url = video_link['href']
+                        if not page_url.startswith('http'):
+                            page_url = self.basque_url + page_url
                         
-                        for idx, item in enumerate(chapter_items, 1):
-                            title_elem = item.find('div', class_='title')
-                            if not title_elem:
-                                continue
-                                
-                            title = title_elem.text.strip()
-                            is_locked = 'item-row-locked' in item.get('class', [])
-                            duration = 'N/A'
-                            
-                            if not is_locked and item.name == 'a':
-                                chapter_url = self.basque_url + item.get('href', '')
-                                self.logger.info(f"[{idx}/{len(chapter_items)}] Getting duration for: {title}")
-                                duration = self.get_chapter_duration(chapter_url)
-                                time.sleep(2)  # Polite delay between requests
-                            
-                            self.videos_data.append({
-                                'module': module_title,
-                                'chapter': title,
-                                'duration': duration,
-                                'locked': is_locked
-                            })
-            
+                        try:
+                            page = self.session.get(page_url)
+                            if page.status_code == 200:
+                                page_soup = BeautifulSoup(page.text, 'html.parser')
+                                duration_span = page_soup.find('span', class_='vjs-duration-display')
+                                if duration_span:
+                                    duration = duration_span.text.strip()
+                            time.sleep(1)
+                        except:
+                            pass
+
+                    # Save data
+                    self.videos_data.append({
+                        'module': module_title,
+                        'chapter': title,
+                        'duration': duration,
+                        'completed': completed
+                    })
+
             return True
-            
         except Exception as e:
-            self.logger.error(f"Error extracting course content: {str(e)}")
+            self.logger.error(f"Error: {str(e)}")
             return False
 
     def save_to_json(self):
@@ -240,7 +300,7 @@ class CourseVideoScraper:
                 print(f"\n{current_module}")
                 print("=" * len(current_module))
             
-            status = "🔒" if video['locked'] else "✓"
+            status = "✓" if video['completed'] else " "
             print(f"{status} {video['chapter']} - Duration: {video['duration']}")
 
 def main():
