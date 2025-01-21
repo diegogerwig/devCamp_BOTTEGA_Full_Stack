@@ -2,59 +2,28 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
-from datetime import datetime
+import re
 from dotenv import load_dotenv
 import logging
 import time
-import re
+import xlsxwriter
 
 class CourseVideoScraper:
     def __init__(self):
-        # Configure logging first
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format='%(asctime)s - %(levelname)s - %(message)s'
-        )
-        self.logger = logging.getLogger(__name__)
-        
-        # Initialize other attributes
-        self.base_url = "https://devcamp.com"
-        self.basque_url = "https://basque.devcamp.com"
-        self.login_url = f"{self.base_url}/users/sign_in"
-        self.course_url = f"{self.basque_url}/pt-full-stack-development-javascript-python-react"
-        self.session = requests.Session()
-        self.videos_data = []
-        
-        # Configure session headers
-        self.session.headers.update({
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5'
-        })
-        
-    def format_duration(self, duration):
-        """Format duration to MM:SS format"""
-        try:
-            # If duration is in seconds (string or float)
-            duration = float(duration)
-            minutes = int(duration // 60)
-            seconds = int(duration % 60)
-            return f"{minutes:02d}:{seconds:02d}"
-        except (ValueError, TypeError):
-            # If duration is already in MM:SS format
-            if isinstance(duration, str):
-                # Try to extract minutes and seconds from string
-                match = re.search(r'(\d+):(\d+)', duration)
-                if match:
-                    return f"{int(match.group(1)):02d}:{int(match.group(2)):02d}"
-            return "N/A"
-        
         # Configure logging
         logging.basicConfig(
             level=logging.DEBUG,
             format='%(asctime)s - %(levelname)s - %(message)s'
         )
         self.logger = logging.getLogger(__name__)
+        
+        # Initialize attributes
+        self.base_url = "https://devcamp.com"
+        self.basque_url = "https://basque.devcamp.com"
+        self.login_url = f"{self.base_url}/users/sign_in"
+        self.course_url = f"{self.basque_url}/pt-full-stack-development-javascript-python-react"
+        self.session = requests.Session()
+        self.videos_data = []
         
         # Configure session headers
         self.session.headers.update({
@@ -124,96 +93,54 @@ class CourseVideoScraper:
             self.logger.error(f"Login error: {str(e)}")
             return False
 
-    def get_chapter_duration(self, chapter_url):
-        """Extract video duration from the page"""
+    def extract_duration(self, page_text):
+        """Extract video duration from page text"""
+        duration_patterns = [
+            r'duration["\']?\s*[:=]\s*["\']?(\d+:\d+|\d+\.\d+)["\']?',
+            r'(\d+:\d+)',
+            r'duration\s*[:=]\s*(\d+)',
+            r'length\s*[:=]\s*(\d+:\d+)',
+            r'\b(\d+:\d+)\s*(?:total|video|length)\b'
+        ]
+        
         try:
-            self.logger.info(f"Getting duration from: {chapter_url}")
+            # Convert to lowercase for case-insensitive matching
+            lower_text = page_text.lower()
             
-            # Add video-specific headers
-            headers = {
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5',
-                'Connection': 'keep-alive',
-                'Referer': self.course_url,
-                'Cache-Control': 'no-cache',
-                'X-Requested-With': 'XMLHttpRequest'
-            }
+            for pattern in duration_patterns:
+                match = re.search(pattern, lower_text, re.IGNORECASE)
+                if match:
+                    duration = match.group(1)
+                    
+                    # Handle MM:SS or seconds
+                    if ':' in duration:
+                        minutes, seconds = map(int, duration.split(':'))
+                        return f"{minutes:02d}:{seconds:02d}"
+                    else:
+                        total_seconds = int(float(duration))
+                        minutes = total_seconds // 60
+                        seconds = total_seconds % 60
+                        return f"{minutes:02d}:{seconds:02d}"
             
-            response = self.session.get(chapter_url, headers=headers)
-            if response.status_code != 200:
-                self.logger.error(f"Failed to get page: {response.status_code}")
-                return "N/A"
-                
-            soup = BeautifulSoup(response.text, 'html.parser')
-            
-            # Debug HTML structure
-            self.logger.debug("Looking for video duration elements...")
-            
-            # Method 1: Try to get duration from the duration display
-            duration_display = soup.find('span', class_='vjs-duration-display')
-            if duration_display:
-                duration_text = duration_display.text.strip()
-                if duration_text and duration_text != "":
-                    self.logger.debug(f"Found duration in display: {duration_text}")
-                    return self.format_duration(duration_text)
-            
-            # Method 2: Look for duration in video-js data
-            video_container = soup.find('div', class_='video-js')
-            if video_container:
-                self.logger.debug("Found video-js container")
-                # Check for data attributes
-                for attr in video_container.attrs:
-                    if 'duration' in attr.lower():
-                        self.logger.debug(f"Found duration in attribute: {attr}")
-                        return self.format_duration(video_container[attr])
-
-            # Method 2: Look for duration in metadata
-            meta_duration = soup.find('meta', {'property': 'video:duration'}) or \
-                          soup.find('meta', {'name': 'duration'})
-            if meta_duration:
-                self.logger.debug(f"Found duration in metadata: {meta_duration['content']}")
-                return self.format_duration(meta_duration['content'])
-
-            # Method 3: Check for duration in video element
-            video_elem = soup.find('video')
-            if video_elem and video_elem.get('duration'):
-                self.logger.debug(f"Found duration in video element: {video_elem['duration']}")
-                return self.format_duration(video_elem['duration'])
-
-            # Method 4: Look for time element or span
-            time_elem = soup.find('time') or \
-                       soup.find('span', class_=lambda x: x and 'duration' in x.lower())
-            if time_elem:
-                duration_text = time_elem.get_text().strip()
-                if duration_text:
-                    self.logger.debug(f"Found duration in time element: {duration_text}")
-                    # Extract numbers from the text
-                    numbers = re.findall(r'\d+', duration_text)
-                    if len(numbers) >= 2:
-                        return f"{numbers[0].zfill(2)}:{numbers[1].zfill(2)}"
-
-            # Save HTML for debugging
-            debug_filename = f'debug_chapter_{hash(chapter_url)}.html'
-            with open(debug_filename, 'w', encoding='utf-8') as f:
-                f.write(response.text)
-            self.logger.warning(f"No duration found. Saved debug HTML to: {debug_filename}")
-            
+            # Log failure to find duration
+            self.logger.warning("No duration pattern matched")
             return "N/A"
-
+        
         except Exception as e:
-            self.logger.error(f"Error getting chapter duration: {str(e)}")
+            self.logger.error(f"Duration extraction error: {e}")
             return "N/A"
 
     def extract_course_content(self):
         """Extract course structure and video durations"""
         try:
-            # Get initial page
+            # Get initial course page
             response = self.session.get(self.course_url)
             soup = BeautifulSoup(response.text, 'html.parser')
 
             # Find syllabus content
             syllabus_content = soup.find('div', class_='syllabus-content')
             if not syllabus_content:
+                self.logger.error("Could not find syllabus content")
                 return False
 
             # Get all modules
@@ -247,16 +174,21 @@ class CourseVideoScraper:
                         if not page_url.startswith('http'):
                             page_url = self.basque_url + page_url
                         
+                        self.logger.info(f"Processing: {title}")
+                        
                         try:
-                            page = self.session.get(page_url)
-                            if page.status_code == 200:
-                                page_soup = BeautifulSoup(page.text, 'html.parser')
-                                duration_span = page_soup.find('span', class_='vjs-duration-display')
-                                if duration_span:
-                                    duration = duration_span.text.strip()
-                            time.sleep(1)
-                        except:
-                            pass
+                            # Attempt to get video page
+                            page_response = self.session.get(page_url)
+                            
+                            if page_response.status_code == 200:
+                                # Extract duration from page text
+                                duration = self.extract_duration(page_response.text)
+                                
+                                self.logger.info(f"Extracted duration for {title}: {duration}")
+                            
+                            time.sleep(1)  # Respect site request policy
+                        except Exception as e:
+                            self.logger.error(f"Error processing {title}: {str(e)}")
 
                     # Save data
                     self.videos_data.append({
@@ -268,23 +200,57 @@ class CourseVideoScraper:
 
             return True
         except Exception as e:
-            self.logger.error(f"Error: {str(e)}")
+            self.logger.error(f"General error: {str(e)}")
             return False
 
-    def save_to_json(self):
+    def save_to_json(self, filename='course_videos.json'):
         """Save video data to JSON file"""
         if not self.videos_data:
             self.logger.error("No data to save")
             return False
 
-        output_file = 'course_videos.json'
         try:
-            with open(output_file, 'w', encoding='utf-8') as file:
+            with open(filename, 'w', encoding='utf-8') as file:
                 json.dump(self.videos_data, file, indent=2, ensure_ascii=False)
-            self.logger.info(f"Data saved to {output_file}")
+            self.logger.info(f"Data saved to {filename}")
             return True
         except Exception as e:
             self.logger.error(f"Error saving JSON file: {str(e)}")
+            return False
+
+    def save_to_excel(self, filename='course_videos.xlsx'):
+        """Save video data to Excel file"""
+        if not self.videos_data:
+            self.logger.error("No data to save")
+            return False
+
+        try:
+            # Create Excel workbook
+            workbook = xlsxwriter.Workbook(filename)
+            worksheet = workbook.add_worksheet('Course Videos')
+
+            # Add bold format for headers
+            bold = workbook.add_format({'bold': True})
+
+            # Write headers
+            headers = ['Module', 'Chapter', 'Duration', 'Completed']
+            for col, header in enumerate(headers):
+                worksheet.write(0, col, header, bold)
+
+            # Write data rows
+            for row, video in enumerate(self.videos_data, start=1):
+                worksheet.write(row, 0, video['module'])
+                worksheet.write(row, 1, video['chapter'])
+                worksheet.write(row, 2, video['duration'])
+                worksheet.write(row, 3, '✓' if video['completed'] else '')
+
+            # Close the workbook
+            workbook.close()
+
+            self.logger.info(f"Data saved to {filename}")
+            return True
+        except Exception as e:
+            self.logger.error(f"Error saving Excel file: {str(e)}")
             return False
 
     def print_summary(self):
@@ -332,6 +298,9 @@ def main():
         
         # Save to JSON
         scraper.save_to_json()
+        
+        # Save to Excel
+        scraper.save_to_excel()
     else:
         print("Failed to extract course content")
 
