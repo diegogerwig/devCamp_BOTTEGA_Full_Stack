@@ -6,6 +6,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import logging
 import time
+import re
 
 class CourseVideoScraper:
     def __init__(self):
@@ -79,78 +80,71 @@ class CourseVideoScraper:
             return False
 
     def get_chapter_duration(self, chapter_url):
-        """Extract video duration from chapter page"""
+        """Extract video duration from the page"""
         try:
             self.logger.info(f"Getting duration from: {chapter_url}")
             
+            # Add video-specific headers
             headers = {
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                 'Accept-Language': 'en-US,en;q=0.5',
                 'Connection': 'keep-alive',
                 'Upgrade-Insecure-Requests': '1',
-                'Cache-Control': 'max-age=0'
+                'Cache-Control': 'no-cache',
+                'Referer': self.course_url
             }
             
-            # First request to get the page
             response = self.session.get(chapter_url, headers=headers)
+            if response.status_code != 200:
+                self.logger.error(f"Failed to get page: {response.status_code}")
+                return "N/A"
+                
             soup = BeautifulSoup(response.text, 'html.parser')
             
-            # Look for video source
-            video_elem = soup.find('video')
-            if video_elem and video_elem.get('src'):
-                # Get video metadata
-                video_url = video_elem['src']
-                if not video_url.startswith('http'):
-                    video_url = self.basque_url + video_url
-                
-                # Make HEAD request to get video duration
-                video_response = self.session.head(video_url, headers=headers)
-                content_length = video_response.headers.get('Content-Length')
-                if content_length:
-                    # Estimate duration based on file size (rough estimation)
-                    size_mb = int(content_length) / (1024 * 1024)
-                    estimated_duration = int(size_mb * 0.5)  # Rough estimate: 2MB per minute
-                    minutes = estimated_duration // 60
-                    seconds = estimated_duration % 60
-                    self.logger.debug(f"Estimated duration from file size: {minutes}:{seconds:02d}")
-                    return f"{minutes}:{seconds:02d}"
+            # Try multiple approaches to find duration
             
-            # Look for duration in the page
-            duration_display = soup.find('span', class_='vjs-duration-display')
-            if duration_display:
-                duration = duration_display.text.strip()
-                if duration != "0:00":
-                    self.logger.debug(f"Found duration in player: {duration}")
-                    return duration
-            
-            # Try to find any element with time format
-            time_pattern = r'\b(\d{1,2}):(\d{2})\b'
-            for element in soup.find_all(text=True):
-                match = re.search(time_pattern, element)
-                if match:
-                    duration = match.group()
-                    # Validate duration format
-                    try:
-                        minutes, seconds = map(int, duration.split(':'))
-                        if 0 <= minutes < 180 and 0 <= seconds < 60:  # Reasonable duration limits
-                            self.logger.debug(f"Found duration in text: {duration}")
-                            return duration
-                    except ValueError:
-                        continue
-            
-            self.logger.warning(f"No valid duration found for chapter: {chapter_url}")
-            
-            # Save failed chapter HTML for debugging
-            with open(f'failed_chapter_{hash(chapter_url)}.html', 'w', encoding='utf-8') as f:
+            # Method 1: Direct span with vjs-duration-display class
+            duration_elem = soup.select_one('span.vjs-duration-display[aria-live="off"]')
+            if duration_elem:
+                duration_text = duration_elem.text.strip()
+                if duration_text and duration_text != "":
+                    self.logger.debug(f"Found duration from span: {duration_text}")
+                    return duration_text
+
+            # Method 2: Video element duration
+            video_elem = soup.find('video', {'id': 'video_html5_api'})
+            if video_elem:
+                # Try getting from aria-valuetext
+                progress_holder = soup.find('div', {'class': 'vjs-progress-holder'})
+                if progress_holder and 'aria-valuetext' in progress_holder.attrs:
+                    value_text = progress_holder['aria-valuetext']
+                    match = re.search(r'of\s+(\d+:\d+)', value_text)
+                    if match:
+                        duration = match.group(1)
+                        self.logger.debug(f"Found duration from aria-valuetext: {duration}")
+                        return duration
+
+            # Method 3: Look for duration in any text that matches MM:SS format
+            duration_pattern = re.compile(r'\b\d{1,2}:\d{2}\b')
+            duration_matches = soup.find_all(string=duration_pattern)
+            if duration_matches:
+                for match in duration_matches:
+                    found_duration = duration_pattern.search(match).group()
+                    if found_duration != "0:00":  # Skip initial time
+                        self.logger.debug(f"Found duration from text: {found_duration}")
+                        return found_duration
+
+            # Save HTML for debugging
+            debug_filename = f'debug_chapter_{hash(chapter_url)}.html'
+            with open(debug_filename, 'w', encoding='utf-8') as f:
                 f.write(response.text)
+            self.logger.warning(f"No duration found. Saved debug HTML to: {debug_filename}")
             
-            return 'N/A'
-            
+            return "N/A"
+
         except Exception as e:
             self.logger.error(f"Error getting chapter duration: {str(e)}")
-            import traceback
-            self.logger.error(traceback.format_exc())
-            return 'N/A'
+            return "N/A"
 
     def extract_course_content(self):
         """Extract course structure and video durations"""
@@ -167,9 +161,8 @@ class CourseVideoScraper:
                 self.logger.error("Could not find syllabus content")
                 with open('error_page.html', 'w', encoding='utf-8') as f:
                     f.write(response.text)
-                self.logger.debug("Saved error page to error_page.html")
                 return False
-                
+
             # Find all modules
             modules = content.find_all('div', class_='syllabus-section-header')
             self.logger.info(f"Found {len(modules)} modules")
@@ -203,8 +196,7 @@ class CourseVideoScraper:
                                 chapter_url = self.basque_url + item.get('href', '')
                                 self.logger.info(f"[{idx}/{len(chapter_items)}] Getting duration for: {title}")
                                 duration = self.get_chapter_duration(chapter_url)
-                                # Add small delay to avoid overwhelming the server
-                                time.sleep(1)
+                                time.sleep(2)  # Polite delay between requests
                             
                             self.videos_data.append({
                                 'module': module_title,
@@ -219,16 +211,13 @@ class CourseVideoScraper:
             self.logger.error(f"Error extracting course content: {str(e)}")
             return False
 
-    def save_to_json(self, output_file=None):
+    def save_to_json(self):
         """Save video data to JSON file"""
         if not self.videos_data:
             self.logger.error("No data to save")
             return False
 
-        if output_file is None:
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            output_file = f'course_videos_{timestamp}.json'
-
+        output_file = 'course_videos.json'
         try:
             with open(output_file, 'w', encoding='utf-8') as file:
                 json.dump(self.videos_data, file, indent=2, ensure_ascii=False)
