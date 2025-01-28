@@ -1,0 +1,138 @@
+// Variables
+$grid-gap: 20px;
+$grid-width: 500px;
+$padding-standard: 20px;
+
+// Colors
+$color-red: red;
+$color-blue: blue;
+$color-yellow: yellow;
+$color-green: green;
+$color-lightgray: lightgray;
+$color-background: #f0f0f0;
+
+// General Styles
+body {
+	margin: $grid-gap;
+	font-family: Arial, sans-serif;
+}
+
+// Grid 1
+.gridOne {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: $grid-gap;
+	margin-bottom: $grid-gap;
+}
+
+// Grid 2
+.gridTwo {
+	display: grid;
+	grid-template-columns: 1fr 1fr 2fr;
+	gap: $grid-gap;
+	margin-bottom: $grid-gap;
+
+	&-one {
+		background-color: $color-red;
+		padding: $padding-standard;
+	}
+
+	&-two {
+		background-color: $color-blue;
+		padding: $padding-standard;
+	}
+
+	&-three {
+		background-color: $color-yellow;
+		padding: $padding-standard;
+	}
+}
+
+// Grid 3
+.gridThree {
+	display: grid;
+	grid-template-rows: 1fr 3fr;
+	width: $grid-width;
+	height: 300px;
+	margin-bottom: $grid-gap;
+	background-color: $color-background;
+
+	&-one {
+		padding: $padding-standard;
+	}
+
+	&-two {
+		width: 100%;
+		height: 100%;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+}
+
+// Grid 4
+.gridFour {
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	width: $grid-width;
+	background-color: $color-green;
+	margin-bottom: $grid-gap;
+
+	&-one {
+		padding: $padding-standard;
+	}
+}
+
+#gridFour-two {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	padding: $padding-standard;
+}
+
+// Grid 5
+.gridFive {
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	width: $grid-width;
+	margin-bottom: $grid-gap;
+
+	&-one {
+		padding: $padding-standard;
+	}
+
+	&-two {
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		gap: $grid-gap;
+		padding: $padding-standard;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+}
+
+// Grid 6
+.gridSix {
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+	width: $grid-width;
+	background-color: $color-lightgray;
+	padding: $padding-standard;
+	align-items: center;
+
+	.fas {
+		font-size: 24px;
+		text-align: center;
+	}
+
+	.google-font {
+		font-family: 'Roboto', sans-serif;
+		margin: 0;
+	}
+}

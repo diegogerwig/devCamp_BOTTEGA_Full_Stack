@@ -1,0 +1,108 @@
+body {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.gridOne {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.gridTwo {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.gridTwo-one {
+  background-color: red;
+  padding: 20px;
+}
+.gridTwo-two {
+  background-color: blue;
+  padding: 20px;
+}
+.gridTwo-three {
+  background-color: yellow;
+  padding: 20px;
+}
+
+.gridThree {
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  width: 500px;
+  height: 300px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+.gridThree-one {
+  padding: 20px;
+}
+.gridThree-two {
+  width: 100%;
+  height: 100%;
+}
+.gridThree-two img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gridFour {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 500px;
+  background-color: green;
+  margin-bottom: 20px;
+}
+.gridFour-one {
+  padding: 20px;
+}
+
+#gridFour-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 20px;
+}
+
+.gridFive {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 500px;
+  margin-bottom: 20px;
+}
+.gridFive-one {
+  padding: 20px;
+}
+.gridFive-two {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+.gridFive-two img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gridSix {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  width: 500px;
+  background-color: lightgray;
+  padding: 20px;
+  align-items: center;
+}
+.gridSix .fas {
+  font-size: 24px;
+  text-align: center;
+}
+.gridSix .google-font {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+}
+
+/*# sourceMappingURL=styles.css.map */
