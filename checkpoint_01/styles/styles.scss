@@ -1,7 +1,9 @@
 // Variables
-$grid-gap: 20px;
+$grid-gap: 10px;
+$grid-gap-h: 0px;
+$grid-gap-v: 10px;
 $grid-width: 500px;
-$padding-standard: 20px;
+$padding-standard: 0px;
 
 // Colors
 $color-red: red;
@@ -21,7 +23,7 @@ body {
 .gridOne {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: $grid-gap;
+	gap: $grid-gap-h;
 	margin-bottom: $grid-gap;
 }
 
@@ -29,7 +31,7 @@ body {
 .gridTwo {
 	display: grid;
 	grid-template-columns: 1fr 1fr 2fr;
-	gap: $grid-gap;
+	gap: $grid-gap-h;
 	margin-bottom: $grid-gap;
 
 	&-one {
@@ -64,10 +66,9 @@ body {
 	&-two {
 		width: 100%;
 		height: 100%;
-
 		img {
-			width: 100%;
-			height: 100%;
+			width: 500px;
+			height: 225px;
 			object-fit: cover;
 		}
 	}
