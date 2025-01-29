@@ -22,7 +22,7 @@ $primary-color: #654321;
 }
 ```
 
-- Mixins: bloque de codigo reutilizables
+- Mixins: bloques de codigo reutilizables
 ```
 @mixin center-flex {
   display: flex;
