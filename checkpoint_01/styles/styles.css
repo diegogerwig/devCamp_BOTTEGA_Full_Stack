@@ -19,16 +19,16 @@ body {
   margin-bottom: 10px;
 }
 .gridTwo-one {
-  background-color: red;
   padding: 0;
+  background-color: red;
 }
 .gridTwo-two {
-  background-color: blue;
   padding: 0;
+  background-color: blue;
 }
 .gridTwo-three {
-  background-color: yellow;
   padding: 0;
+  background-color: yellow;
 }
 
 .gridThree {
@@ -83,6 +83,7 @@ body {
 }
 .gridFive-two img {
   height: 200px;
+  width: 200px;
   object-fit: cover;
 }
 
