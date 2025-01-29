@@ -1,9 +1,8 @@
 // Variables
 $grid-gap: 10px;
 $grid-gap-h: 0px;
-$grid-gap-v: 10px;
 $grid-width: 500px;
-$padding-standard: 0px;
+$padding-standard: 10px;
 
 // Colors
 $color-red: red;
@@ -11,7 +10,7 @@ $color-blue: blue;
 $color-yellow: yellow;
 $color-green: green;
 $color-lightgray: lightgray;
-$color-background: #f0f0f0;
+$color-background: #eeeeee;
 
 // General Styles
 body {
@@ -25,6 +24,8 @@ body {
 	grid-template-columns: 1fr 1fr;
 	gap: $grid-gap-h;
 	margin-bottom: $grid-gap;
+	padding: $padding-standard;
+	background-color: $color-background;
 }
 
 // Grid 2
@@ -36,17 +37,17 @@ body {
 
 	&-one {
 		background-color: $color-red;
-		padding: $padding-standard;
+		padding: 0;
 	}
 
 	&-two {
 		background-color: $color-blue;
-		padding: $padding-standard;
+		padding: 0;
 	}
 
 	&-three {
 		background-color: $color-yellow;
-		padding: $padding-standard;
+		padding: 0;
 	}
 }
 
@@ -64,8 +65,9 @@ body {
 	}
 
 	&-two {
-		width: 100%;
-		height: 100%;
+		// width: 100%;
+		// height: 100%;
+		// padding: $padding-standard;
 		img {
 			width: 500px;
 			height: 225px;
@@ -99,6 +101,7 @@ body {
 	grid-template-rows: 1fr 1fr;
 	width: $grid-width;
 	margin-bottom: $grid-gap;
+	background-color: $color-background;
 
 	&-one {
 		padding: $padding-standard;
@@ -109,10 +112,8 @@ body {
 		grid-template-columns: 2fr 1fr;
 		gap: $grid-gap;
 		padding: $padding-standard;
-
 		img {
-			width: 100%;
-			height: 100%;
+			height: 200px;
 			object-fit: cover;
 		}
 	}
@@ -124,10 +125,11 @@ body {
 	grid-template-columns: 1fr 3fr;
 	width: $grid-width;
 	background-color: $color-lightgray;
-	padding: $padding-standard;
+	 padding: $padding-standard 0 $padding-standard 0;
 	align-items: center;
+	margin-bottom: $grid-gap;
 
-	.fas {
+	.fas.fa-star{
 		font-size: 24px;
 		text-align: center;
 	}

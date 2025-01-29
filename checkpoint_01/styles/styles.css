@@ -8,6 +8,8 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 0px;
   margin-bottom: 10px;
+  padding: 10px;
+  background-color: #eeeeee;
 }
 
 .gridTwo {
@@ -18,15 +20,15 @@ body {
 }
 .gridTwo-one {
   background-color: red;
-  padding: 0px;
+  padding: 0;
 }
 .gridTwo-two {
   background-color: blue;
-  padding: 0px;
+  padding: 0;
 }
 .gridTwo-three {
   background-color: yellow;
-  padding: 0px;
+  padding: 0;
 }
 
 .gridThree {
@@ -35,14 +37,10 @@ body {
   width: 500px;
   height: 300px;
   margin-bottom: 10px;
-  background-color: #f0f0f0;
+  background-color: #eeeeee;
 }
 .gridThree-one {
-  padding: 0px;
-}
-.gridThree-two {
-  width: 100%;
-  height: 100%;
+  padding: 10px;
 }
 .gridThree-two img {
   width: 500px;
@@ -58,13 +56,13 @@ body {
   margin-bottom: 10px;
 }
 .gridFour-one {
-  padding: 0px;
+  padding: 10px;
 }
 
 #gridFour-two {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 0px;
+  padding: 10px;
 }
 
 .gridFive {
@@ -72,19 +70,19 @@ body {
   grid-template-rows: 1fr 1fr;
   width: 500px;
   margin-bottom: 10px;
+  background-color: #eeeeee;
 }
 .gridFive-one {
-  padding: 0px;
+  padding: 10px;
 }
 .gridFive-two {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 10px;
-  padding: 0px;
+  padding: 10px;
 }
 .gridFive-two img {
-  width: 100%;
-  height: 100%;
+  height: 200px;
   object-fit: cover;
 }
 
@@ -93,10 +91,11 @@ body {
   grid-template-columns: 1fr 3fr;
   width: 500px;
   background-color: lightgray;
-  padding: 0px;
+  padding: 10px 0 10px 0;
   align-items: center;
+  margin-bottom: 10px;
 }
-.gridSix .fas {
+.gridSix .fas.fa-star {
   font-size: 24px;
   text-align: center;
 }
