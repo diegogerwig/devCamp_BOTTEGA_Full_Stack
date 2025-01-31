@@ -2,6 +2,32 @@
 
 ## Nombra cuatro valores que se pueden usar con la propiedad justify-content.
 
+La propiedad justify-content se usa en Flexbox para alinear los elementos a lo largo del eje principal.
+
+- flex-start:
+```css
+display: flex;
+justify-content: flex-start;
+```
+
+- flex-end:
+```css
+display: flex;
+justify-content: flex-end;
+```
+
+- center:
+```css
+display: flex;
+justify-content: center;
+```
+
+- space-between:
+```css
+display: flex;
+justify-content: space-between;
+```
+
 ## ¿Qué es un objetivo primordial?
 
 ## ¿Qué son los wireframes de baja fidelidad?
