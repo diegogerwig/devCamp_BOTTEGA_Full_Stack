@@ -1,0 +1,183 @@
+/* Base styles provided */
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: #73dab2;
+}
+
+.flex {
+    margin: 10px;
+}
+
+/* Flexbox 1 */
+.flexOne {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexOne .square {
+    margin: 5px;
+}
+
+/* Flexbox 2 */
+.flexTwo {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexTwo .square {
+    margin: 2px;
+}
+
+/* Flexbox 3 */
+.flexThree {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.flexThree .square {
+    margin: 2px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+/* Flexbox 4 */
+.flexFour {
+    width: 350px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flexFour .square {
+    background-color: #3d8b6d;
+    margin: 5px;
+}
+
+/* Flexbox 5 */
+.flexFive {
+    width: 350px;
+    display: flex;
+}
+
+.flexFive .item {
+    width: 100px;
+    height: 100px;
+    background-color: #0b6643;
+    margin: 2px;
+}
+
+.flexFive #grow {
+    flex-grow: 2;
+}
+
+/* Flexbox 6 */
+.flexSix {
+    height: 400px;
+    width: 500px;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+}
+
+.flexSix .one,
+.flexSix .two,
+.flexSix .three {
+    display: flex;
+}
+
+.flexSix .one {
+    justify-content: space-around;
+}
+
+.flexSix .two {
+    justify-content: space-between;
+    margin: 50px 0;
+    background-color: #d6d6d6;
+}
+
+.flexSix .three {
+    justify-content: space-evenly;
+}
+
+/* Flexbox 7 */
+.flexSeven {
+    height: 400px;
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #f1f1f1;
+}
+
+.flexSeven .one,
+.flexSeven .two,
+.flexSeven .three,
+.flexSeven .four {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexSeven .two,
+.flexSeven .four {
+    background-color: #d6d6d6;
+}
+
+.flexSeven .one {
+    justify-content: center;
+}
+
+.flexSeven .two {
+    justify-content: flex-end;
+}
+
+.flexSeven .three {
+    justify-content: flex-start;
+}
+
+.flexSeven .four {
+    justify-content: space-between;
+}
+
+/* Flexbox 8 */
+.flexEight {
+    height: 400px;
+    width: 300px;
+    background-color: #eeeeee;
+    display: flex;
+}
+
+.flexEight .one {
+    display: flex;
+    align-items: center;
+}
+
+.flexEight .two {
+    display: flex;
+    align-items: flex-end;
+}
+
+.flexEight .three {
+    display: flex;
+    align-items: flex-start;
+}
+
+.flexEight .square {
+    background-color: #73dab2;
+}
+
+/* Flexbox 9 */
+.flexNine {
+    width: 450px;
+    height: 250px;
+    background-color: #eeeeee;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+}
+
+.flexNine .square {
+    background-color: #73dab2;
+}
+
+.flexNine #special {
+    align-self: flex-end;
+}
