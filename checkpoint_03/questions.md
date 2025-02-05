@@ -71,7 +71,7 @@ print(f"El {animal} tiene {patas} patas.")
 
 ## ¿Cuándo deberíamos usar comentarios en Python?
 
-Debemos usar comentarios para aclarar el código, explicar su propósito o detalles específicos que puedan no ser obvios para alguien que lea el código en el futuro. 
+Debemos usar comentarios para aclarar el código, explicar su propósito o detalles específicos que puedan no ser obvios para quien que lea el código en el futuro. 
 
 - Los comentarios se escriben usando el símbolo #:
 
@@ -115,4 +115,3 @@ Una aplicación monolítica puede ser útil para proyectos pequeños o medianos,
 - Despliegue: Despliegue independiente de cada microservicio.
 
 - Mantenimiento: Más fácil de mantener y actualizar ya que se pueden hacer cambios en un microservicio sin afectar a los demás.
-

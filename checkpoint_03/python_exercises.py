@@ -45,10 +45,13 @@ print(names_list)
 # Exercise 7: Get the first word from your string using indexes. Use the upper function to transform the letters into uppercase. Create a new string that takes the uppercase word and the rest of the original string.
 original_phrase = "hello world python"
 print(original_phrase)
+
 first_word = original_phrase.split()[0]
 print(first_word)
+
 uppercase_word = first_word.upper()
 print(uppercase_word)
+
 new_phrase = uppercase_word + original_phrase[len(first_word):]
 print(new_phrase)
 
