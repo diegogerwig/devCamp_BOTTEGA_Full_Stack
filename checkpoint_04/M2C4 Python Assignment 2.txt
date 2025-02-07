@@ -1,0 +1,31 @@
+﻿M2C4 Python Assignment
+
+
+During this section of Module 2, you have learned more about Python. Python is a powerful programming language that serves a lot of purposes. To practice what you have learned in this section, you will complete some Python exercises. You may use Visual Studio Code, Repl.it, or another text editor/environment of your choice. Please complete the following assignment and reach out on the Support App to have a mentor review your work. If you have any questions or need any help, please reach out so we can help you! This assignment must be completed to pass this section of the coursework. 
+
+
+Exercise 1: Create a list, tuple, float, integer, decimal, and dictionary.
+
+
+Exercise 2: Round your float up.
+
+
+Exercise 3: Get the square root of your float.
+
+
+Exercise 4: Select the first element from your dictionary.
+
+
+Exercise 5: Select the second element from your tuple.
+
+
+Exercise 6: Add an element to the end of your list.
+
+
+Exercise 7: Replace the first element in your list.
+
+
+Exercise 8: Sort your list alphabetically.
+
+
+Exercise 9: Use reassignment to add an element to your tuple.
