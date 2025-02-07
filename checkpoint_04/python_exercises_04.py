@@ -10,12 +10,17 @@ print(my_tuple)
 
 my_float = 7.25
 print(my_float)
+new_float = 0.1 + 0.2
+print(new_float)
 
 my_int = 42
 print(my_int)
 
-my_decimal = decimal.Decimal("3.14159")  # Decimal is more precise than float. It uses exact arithmetic.
+my_decimal = decimal.Decimal("7.25")  # Decimal is more precise than float. It uses exact arithmetic.
 print(my_decimal)
+num1 = decimal.Decimal("0.1")
+num2 = decimal.Decimal("0.2")
+print(num1 + num2)
 
 my_dict = {"name": "Laura", "age": 7, "city": "Bilbao"}
 print(my_dict)
@@ -69,5 +74,5 @@ print(my_list)
 
 # Exercise 9: Use reassignment to add an element to your tuple.
 
-my_tuple = my_tuple + (40,)
+my_tuple += (40,)
 print(my_tuple) 
