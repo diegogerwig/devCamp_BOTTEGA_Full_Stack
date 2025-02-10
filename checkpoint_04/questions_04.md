@@ -9,7 +9,7 @@ my_list = [1, 2, 3]
 my_list.append(4)  
 ```
 
-- Tupla (tuple): Es una estructura de datos inmutable, lo que significa que sus elementos no pueden cambiar después de la creación. Se define con paréntesis ().
+- Tupla (tuple): Es una estructura de datos inmutable, lo que significa que sus elementos no pueden cambiarse después de la creación. Se define con paréntesis ().
 
 ```python
 my_tuple = (1, 2, 3)
