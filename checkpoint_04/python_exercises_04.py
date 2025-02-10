@@ -1,6 +1,6 @@
 # Exercise 1: Create a list, tuple, float, integer, decimal, and dictionary.
 
-import decimal
+from decimal import Decimal
 
 my_list = ["apple", "banana", "cherry"]
 print(my_list)
@@ -16,10 +16,10 @@ print(new_float)
 my_int = 42
 print(my_int)
 
-my_decimal = decimal.Decimal("7.25")  # Decimal is more precise than float. It uses exact arithmetic.
+my_decimal = Decimal("7.25")  # Decimal is more precise than float. It uses exact arithmetic.
 print(my_decimal)
-num1 = decimal.Decimal("0.1")
-num2 = decimal.Decimal("0.2")
+num1 = Decimal("0.1")
+num2 = Decimal("0.2")
 print(num1 + num2)
 
 my_dict = {"name": "Laura", "age": 7, "city": "Bilbao"}
