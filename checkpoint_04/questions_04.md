@@ -24,10 +24,10 @@ El orden de las operaciones en Python sigue las reglas PEMDAS (Paréntesis, Expo
 3. MD → Multiplicación *, División /, División entera //, Módulo % (de izquierda a derecha)
 4. AS → Suma + y Resta - (de izquierda a derecha)
 
-Ejemplo por pasos:
-1. result = (3 + 2) * 2 ** 3 / 4 - 5  -> Resolvemos los parénteis: (3+2) = 5
-2. result = 5 * 2 ** 3 / 4 - 5  -> Resolvemos los exponentes: 2^3 = 8 
-3. result = 5 * 8 / 4 - 5  -> Resolvemos la multiplicación y/o la divisón (de izquierda a derecha): 5* 8 = 40    40 / 4 = 10
+Ejemplo:
+1. result = (3 + 2) * 2 ** 3 / 4 - 5  -> Resolvemos los parénteis: (3+2)=5
+2. result = 5 * 2 ** 3 / 4 - 5  -> Resolvemos los exponentes: 2^3=8 
+3. result = 5 * 8 / 4 - 5  -> Resolvemos la multiplicación y/o la divisón (de izquierda a derecha): 5*8=40    40/4=10
 4. result = 10 - 5  -> Resolvemos la suma y/o resta (de izquierda a derecha)
 5. result = 5
 
@@ -39,7 +39,7 @@ Un diccionario es una estructura de datos en Python que almacena pares clave-val
 my_dict = {
     "name": "Diego",
     "city": "Bilbao",
-	"age": 49
+    "age": 49
 }
 print(my_dict["name"])
 print(my_dict["city"])
