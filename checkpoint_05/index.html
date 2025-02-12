@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación en Python</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        header {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #444;
+            color: #ffffff;
+        }
+        .container {
+            padding: 20px;
+        }
+        h2 {
+            color: #4CAF50;
+        }
+        pre {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            color: #f92672;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Documentación en Python para Principiantes</h1>
+    </header>
+    <nav>
+        <a href="#condicional">Condicional</a>
+        <a href="#bucles">Bucles</a>
+        <a href="#comprension-listas">Comprensión de Listas</a>
+        <a href="#argumento">Argumento</a>
+        <a href="#lambda">Función Lambda</a>
+        <a href="#pip">Paquete pip</a>
+    </nav>
+    <div class="container">
+        <section id="condicional">
+            <h2>¿Qué es un condicional?</h2>
+            <p>Un condicional es una estructura de control que permite ejecutar bloques de código basados en condiciones. En Python, usamos <code>if</code>, <code>elif</code>, y <code>else</code> para crear condicionales. <a href="https://docs.python.org/es/3/tutorial/controlflow.html#if-statements" target="_blank">Más información en la documentación oficial de Python</a>.</p>
+            <h3>Sintaxis</h3>
+            <pre><code>if condition:
+    # código a ejecutar si la condición es verdadera
+elif another_condition:
+    # código a ejecutar si la otra condición es verdadera
+else:
+    # código a ejecutar si ninguna condición es verdadera</code></pre>
+            <h3>Ejemplo</h3>
+            <pre><code>age = 18
+if age >= 18:
+    print("You are an adult.")
+elif age >= 13:
+    print("You are a teenager.")
+else:
+    print("You are a child.")</code></pre>
+            <p>En este ejemplo, el programa imprime "You are an adult." porque <code>age</code> es 18.</p>
+        </section>
+        <section id="bucles">
+            <h2>¿Cuáles son los diferentes tipos de bucles en Python? ¿Por qué son útiles?</h2>
+            <p>Los bucles en Python permiten ejecutar un bloque de código repetidamente. Hay dos tipos principales de bucles: <code>for</code> y <code>while</code>. <a href="https://docs.python.org/es/3/tutorial/controlflow.html#for-statements" target="_blank">Más sobre bucles for</a> y <a href="https://docs.python.org/es/3/tutorial/controlflow.html#the-while-statement" target="_blank">más sobre bucles while</a> en la documentación oficial.</p>
+            <h3>Bucle for</h3>
+            <p>El bucle <code>for</code> se usa para iterar sobre una secuencia (lista, tupla, diccionario, conjunto o cadena).</p>
+            <h4>Sintaxis</h4>
+            <pre><code>for variable in sequence:
+    # código a ejecutar en cada iteración</code></pre>
+            <h4>Ejemplo</h4>
+            <pre><code>for i in range(5):
+    print(i)  # Imprime números del 0 al 4</code></pre>
+            <h3>Bucle while</h3>
+            <p>El bucle <code>while</code> repite un bloque de código mientras una condición sea verdadera.</p>
+            <h4>Sintaxis</h4>
+            <pre><code>while condition:
+    # código a ejecutar mientras la condición sea verdadera</code></pre>
+            <h4>Ejemplo</h4>
+            <pre><code>count = 0
+while count < 5:
+    print(count)
+    count += 1  # Incrementa count en 1 en cada iteración</code></pre>
+        </section>
+        <section id="comprension-listas">
+            <h2>¿Qué es una lista por comprensión en Python?</h2>
+            <p>Una lista por comprensión es una forma concisa de crear listas. Permite generar listas aplicando una expresión a cada elemento de una secuencia. <a href="https://docs.python.org/es/3/tutorial/datastructures.html#list-comprehensions" target="_blank">Más sobre comprensión de listas en la documentación oficial</a>.</p>
+            <h3>Sintaxis</h3>
+            <pre><code>[expression for item in sequence if condition]</code></pre>
+            <h3>Ejemplo</h3>
+            <pre><code>numbers = [x for x in range(10)]
+# Crea una lista de números del 0 al 9</code></pre>
+            <p>También se pueden aplicar condiciones:</p>
+            <pre><code>even_numbers = [x for x in range(10) if x % 2 == 0]
+# Crea una lista de números pares del 0 al 9</code></pre>
+        </section>
+        <section id="argumento">
+            <h2>¿Qué es un argumento en Python?</h2>
+            <p>Un argumento es un valor que se pasa a una función cuando se llama. Las funciones pueden aceptar uno o más argumentos para realizar operaciones. <a href="https://docs.python.org/es/3/tutorial/controlflow.html#defining-functions" target="_blank">Más sobre funciones y argumentos en la documentación oficial</a>.</p>
+            <h3>Sintaxis</h3>
+            <pre><code>def function_name(arg1, arg2, ...):
+    # código que usa los argumentos</code></pre>
+            <h3>Ejemplo</h3>
+            <pre><code>def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")  # Imprime "Hello, Alice!"</code></pre>
+        </section>
+        <section id="lambda">
+            <h2>¿Qué es una función Lambda en Python?</h2>
+            <p>Una función lambda es una pequeña función anónima definida con la palabra clave <code>lambda</code>. Puede tener cualquier número de argumentos pero solo una expresión. <a href="https://docs.python.org/es/3/tutorial/controlflow.html#lambda-expressions" target="_blank">Más sobre funciones lambda en la documentación oficial</a>.</p>
+            <h3>Sintaxis</h3>
+            <pre><code>lambda arguments: expression</code></pre>
+            <h3>Ejemplo</h3>
+            <pre><code>sum = lambda a, b: a + b
+print(sum(2, 3))  # Salida: 5</code></pre>
+        </section>
+        <section id="pip">
+            <h2>¿Qué es un paquete pip?</h2>
+            <p><code>pip</code> es el sistema de gestión de paquetes para Python. Se utiliza para instalar y gestionar bibliotecas y dependencias adicionales que no están incluidas en la biblioteca estándar de Python. <a href="https://pip.pypa.io/en/stable/" target="_blank">Documentación oficial de pip</a>.</p>
+            <h3>Instalación</h3>
+            <pre><code>pip install nombre_paquete</code></pre>
+            <h3>Ejemplo</h3>
+            <pre><code>pip install requests  # Instala la biblioteca requests</code></pre>
+        </section>
+    </div>
+</body>
+</html>
