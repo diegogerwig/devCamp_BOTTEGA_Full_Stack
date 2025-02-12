@@ -1,0 +1,12 @@
+¿Qué es un condicional?
+
+¿Cuáles son los diferentes tipos de bucles en Python? ¿Por qué son útiles?
+
+¿Qué es una lista por comprensión en Python?
+
+¿Qué es un argumento en Python?
+
+¿Qué es una función Lambda en Python?
+
+¿Qué es un paquete pip?
+
