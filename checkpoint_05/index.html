@@ -3,68 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐍</text></svg>" />
     <title>Documentación en Python</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #121212;
             color: #e0e0e0;
+            line-height: 1.6;
         }
         header {
             background-color: #1f1f1f;
             color: #ffffff;
-            padding: 20px;
+            padding: 2rem;
             text-align: center;
         }
         nav {
+            position: sticky;
+            top: 0;
             display: flex;
             justify-content: center;
             background-color: #333;
+            flex-wrap: wrap;
+            z-index: 1000;
         }
         nav a {
             color: white;
-            padding: 14px 20px;
+            padding: 1rem 1.5rem;
             text-decoration: none;
             text-align: center;
+            transition: background-color 0.3s;
         }
         nav a:hover {
             background-color: #444;
-            color: #ffffff;
+            color: #4CAF50;
         }
         .container {
-            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         h2 {
             color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            color: #81c784;
+            margin-top: 1.5rem;
         }
         pre {
             background-color: #1e1e1e;
-            padding: 10px;
+            padding: 1.5rem;
             border-radius: 5px;
             overflow-x: auto;
+            border-left: 4px solid #4CAF50;
         }
         code {
-            color: #f92672;
+            color: #b3e5b4;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        .example-output {
+            background-color: #2a2a2a;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            border-radius: 5px;
+            color: #a0a0a0;
         }
         a {
             color: #4CAF50;
             text-decoration: none;
+            transition: color 0.3s;
         }
         a:hover {
+            color: #81c784;
             text-decoration: underline;
+        }
+        .tip {
+            background-color: #2d2d2d;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #ffd700;
+            border-radius: 0 5px 5px 0;
+        }
+        .note {
+            font-style: italic;
+            color: #888;
+            margin: 1rem 0;
+        }
+        ul {
+            padding-left: 1.5rem;
+            color: #e0e0e0;
+        }
+        li {
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Documentación en Python para Principiantes</h1>
+        <p>Conceptos fundamentales explicados con ejemplos prácticos</p>
     </header>
     <nav>
         <a href="#condicional">Condicional</a>
         <a href="#bucles">Bucles</a>
-        <a href="#comprension-listas">Comprensión de Listas</a>
+        <a href="#comprension-listas">Lista por comprensión</a>
         <a href="#argumento">Argumento</a>
         <a href="#lambda">Función Lambda</a>
         <a href="#pip">Paquete pip</a>
@@ -72,86 +125,296 @@
     <div class="container">
         <section id="condicional">
             <h2>¿Qué es un condicional?</h2>
-            <p>Un condicional es una estructura de control que permite ejecutar bloques de código basados en condiciones. En Python, usamos <code>if</code>, <code>elif</code>, y <code>else</code> para crear condicionales. <a href="https://docs.python.org/es/3/tutorial/controlflow.html#if-statements" target="_blank">Más información en la documentación oficial de Python</a>.</p>
-            <h3>Sintaxis</h3>
-            <pre><code>if condition:
-    # código a ejecutar si la condición es verdadera
-elif another_condition:
-    # código a ejecutar si la otra condición es verdadera
+            <p>Un condicional es una estructura de control que permite a tu programa tomar decisiones y ejecutar diferentes bloques de código según se cumplan o no ciertas condiciones. Es como un "cruce de caminos" en tu código que determina qué ruta seguir.</p>
+            
+            <h3>Tipos de condicionales</h3>
+            <ul>
+                <li><code>if</code>: Ejecuta código cuando se cumple una condición</li>
+                <li><code>elif</code>: Permite comprobar múltiples condiciones</li>
+                <li><code>else</code>: Se ejecuta cuando ninguna condición anterior es verdadera</li>
+            </ul>
+
+            <h3>Ejemplos prácticos</h3>
+            <pre><code># Ejemplo 1: Verificación de edad
+edad = 18
+if edad >= 18:
+    print("Puedes votar")
 else:
-    # código a ejecutar si ninguna condición es verdadera</code></pre>
-            <h3>Ejemplo</h3>
-            <pre><code>age = 18
-if age >= 18:
-    print("You are an adult.")
-elif age >= 13:
-    print("You are a teenager.")
+    print("Aún no puedes votar")
+
+# Ejemplo 2: Calificaciones
+nota = 85
+if nota >= 90:
+    print("Sobresaliente")
+elif nota >= 80:
+    print("Notable")
+elif nota >= 70:
+    print("Bien")
 else:
-    print("You are a child.")</code></pre>
-            <p>En este ejemplo, el programa imprime "You are an adult." porque <code>age</code> es 18.</p>
+    print("Necesitas mejorar")</code></pre>
+            
+            <h3>Operadores lógicos: and, or y not</h3>
+            <p>Los operadores lógicos te permiten combinar múltiples condiciones:</p>
+            <pre><code># Ejemplo con AND: Ambas condiciones deben ser verdaderas
+edad = 25
+ingresos = 3000
+
+if edad >= 18 and ingresos > 2500:
+    print("Calificas para el préstamo")
+else:
+    print("No calificas para el préstamo")
+
+# Ejemplo con OR: Al menos una condición debe ser verdadera
+es_estudiante = True
+es_jubilado = False
+
+if es_estudiante or es_jubilado:
+    print("Tienes descuento en el transporte")
+else:
+    print("No aplicas para el descuento")
+
+# Ejemplo con NOT: Invierte el valor de la condición
+tiene_permiso = False
+
+if not tiene_permiso:
+    print("Acceso denegado")
+else:
+    print("Bienvenido")
+
+# Ejemplo combinando operadores
+edad = 20
+es_estudiante = True
+tiene_carnet = False
+
+if (edad >= 18 and es_estudiante) and not tiene_carnet:
+    print("Puedes solicitar tu carnet de estudiante")
+elif edad >= 18 and not es_estudiante:
+    print("Puedes solicitar un carnet regular")
+else:
+    print("No puedes solicitar carnet")</code></pre>
+
+            <div class="tip">
+                <strong>Tip:</strong> Usa paréntesis para hacer más claras las condiciones complejas y evitar errores de precedencia de operadores.
+            </div>
+            
+            <p>Para más información, consulta la <a href="https://docs.python.org/es/3/tutorial/controlflow.html#if-statements" target="_blank">documentación oficial sobre condicionales</a>.</p>
         </section>
+
         <section id="bucles">
             <h2>¿Cuáles son los diferentes tipos de bucles en Python? ¿Por qué son útiles?</h2>
-            <p>Los bucles en Python permiten ejecutar un bloque de código repetidamente. Hay dos tipos principales de bucles: <code>for</code> y <code>while</code>. <a href="https://docs.python.org/es/3/tutorial/controlflow.html#for-statements" target="_blank">Más sobre bucles for</a> y <a href="https://docs.python.org/es/3/tutorial/controlflow.html#the-while-statement" target="_blank">más sobre bucles while</a> en la documentación oficial.</p>
-            <h3>Bucle for</h3>
-            <p>El bucle <code>for</code> se usa para iterar sobre una secuencia (lista, tupla, diccionario, conjunto o cadena).</p>
-            <h4>Sintaxis</h4>
-            <pre><code>for variable in sequence:
-    # código a ejecutar en cada iteración</code></pre>
-            <h4>Ejemplo</h4>
-            <pre><code>for i in range(5):
-    print(i)  # Imprime números del 0 al 4</code></pre>
-            <h3>Bucle while</h3>
-            <p>El bucle <code>while</code> repite un bloque de código mientras una condición sea verdadera.</p>
-            <h4>Sintaxis</h4>
-            <pre><code>while condition:
-    # código a ejecutar mientras la condición sea verdadera</code></pre>
-            <h4>Ejemplo</h4>
-            <pre><code>count = 0
-while count < 5:
-    print(count)
-    count += 1  # Incrementa count en 1 en cada iteración</code></pre>
+            <p>Los bucles son estructuras que nos permiten repetir un bloque de código varias veces. Son fundamentales para automatizar tareas repetitivas y procesar colecciones de datos.</p>
+
+            <h3>1. Bucle for</h3>
+            <p>El bucle <code>for</code> se utiliza principalmente para iterar sobre una secuencia (lista, tupla, diccionario, conjunto o cadena).</p>
+            <pre><code># Ejemplo 1: Iterar sobre una lista
+frutas = ["manzana", "banana", "naranja"]
+for fruta in frutas:
+    print(f"Me gusta la {fruta}")
+
+# Ejemplo 2: Usando range()
+for numero in range(1, 5):
+    print(f"Contando: {numero}")
+
+# Ejemplo 3: Iterando sobre un diccionario
+precios = {"manzana": 0.5, "banana": 0.75, "naranja": 0.6}
+for fruta, precio in precios.items():
+    print(f"La {fruta} cuesta ${precio}")</code></pre>
+
+            <h3>2. Bucle while</h3>
+            <p>El bucle <code>while</code> ejecuta un bloque de código mientras una condición sea verdadera.</p>
+            <pre><code># Ejemplo 1: Contador simple
+contador = 0
+while contador < 5:
+    print(contador)
+    contador += 1
+
+# Ejemplo 2: Validación de entrada
+password = ""
+while password != "secreto":
+    password = input("Introduce la contraseña: ")</code></pre>
+
+            <div class="tip">
+                <strong>¿Por qué son útiles?</strong>
+                <ul>
+                    <li>Automatizan tareas repetitivas</li>
+                    <li>Procesan grandes cantidades de datos</li>
+                    <li>Implementan lógica de juegos y aplicaciones</li>
+                    <li>Realizan operaciones hasta que se cumpla una condición</li>
+                </ul>
+            </div>
+
+            <p>Para más información, consulta la documentación oficial sobre <a href="https://docs.python.org/es/3/tutorial/controlflow.html#for-statements" target="_blank">bucles for</a> y <a href="https://docs.python.org/es/3/tutorial/controlflow.html#the-while-statement" target="_blank">bucles while</a>.</p>
         </section>
+
         <section id="comprension-listas">
             <h2>¿Qué es una lista por comprensión en Python?</h2>
-            <p>Una lista por comprensión es una forma concisa de crear listas. Permite generar listas aplicando una expresión a cada elemento de una secuencia. <a href="https://docs.python.org/es/3/tutorial/datastructures.html#list-comprehensions" target="_blank">Más sobre comprensión de listas en la documentación oficial</a>.</p>
-            <h3>Sintaxis</h3>
-            <pre><code>[expression for item in sequence if condition]</code></pre>
-            <h3>Ejemplo</h3>
-            <pre><code>numbers = [x for x in range(10)]
-# Crea una lista de números del 0 al 9</code></pre>
-            <p>También se pueden aplicar condiciones:</p>
-            <pre><code>even_numbers = [x for x in range(10) if x % 2 == 0]
-# Crea una lista de números pares del 0 al 9</code></pre>
+            <p>Una lista por comprensión es una forma elegante y concisa de crear listas basadas en listas existentes u otros iterables. Es una característica poderosa que permite escribir código más limpio y legible.</p>
+
+            <h3>Sintaxis básica</h3>
+            <pre><code># Formato general
+[expresion for elemento in iterable if condicion]
+
+# Ejemplo 1: Crear lista de cuadrados
+cuadrados = [x**2 for x in range(10)]
+print(cuadrados)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# Ejemplo 2: Filtrar números pares
+numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+pares = [x for x in numeros if x % 2 == 0]
+print(pares)  # [2, 4, 6, 8, 10]
+
+# Ejemplo 3: Transformar strings
+palabras = ["hola", "mundo", "python"]
+mayusculas = [palabra.upper() for palabra in palabras]
+print(mayusculas)  # ["HOLA", "MUNDO", "PYTHON"]</code></pre>
+
+            <div class="tip">
+                Las comprensiones de lista pueden reemplazar muchos bucles for tradicionales y hacer el código más pythónico.
+            </div>
+
+            <p>Para más información, consulta la <a href="https://docs.python.org/es/3/tutorial/datastructures.html#list-comprehensions" target="_blank">documentación oficial sobre lista por comprensión</a>.</p>
         </section>
+
         <section id="argumento">
             <h2>¿Qué es un argumento en Python?</h2>
-            <p>Un argumento es un valor que se pasa a una función cuando se llama. Las funciones pueden aceptar uno o más argumentos para realizar operaciones. <a href="https://docs.python.org/es/3/tutorial/controlflow.html#defining-functions" target="_blank">Más sobre funciones y argumentos en la documentación oficial</a>.</p>
-            <h3>Sintaxis</h3>
-            <pre><code>def function_name(arg1, arg2, ...):
-    # código que usa los argumentos</code></pre>
-            <h3>Ejemplo</h3>
-            <pre><code>def greet(name):
-    print(f"Hello, {name}!")
+            <p>Un argumento es un valor que se pasa a una función cuando se la llama. Los argumentos permiten que las funciones sean más flexibles y reutilizables al poder trabajar con diferentes valores.</p>
 
-greet("Alice")  # Imprime "Hello, Alice!"</code></pre>
+            <h3>Tipos de argumentos</h3>
+            <pre><code># 1. Argumentos posicionales
+def saludar(nombre, edad):
+    print(f"Hola {nombre}, tienes {edad} años")
+
+saludar("Ana", 25)
+
+# 2. Argumentos con valores por defecto
+def saludar_default(nombre="Usuario", edad=0):
+    print(f"Hola {nombre}, tienes {edad} años")
+
+saludar_default()  # Usa valores por defecto
+saludar_default("Juan", 30)  # Sobreescribe valores
+
+# 3. Argumentos con palabra clave (kwargs)
+def imprimir_info(**kwargs):
+    for clave, valor in kwargs.items():
+        print(f"{clave}: {valor}")
+
+imprimir_info(nombre="Juan", edad=30, ciudad="Madrid")
+
+# 4. Argumentos variables (args)
+def sumar(*args):
+    return sum(args)
+
+print(sumar(1, 2, 3, 4, 5))  # 15</code></pre>
+
+            <p>Para más información, consulta más sobre argumentos en la <a href="https://docs.python.org/es/3/tutorial/controlflow.html#more-on-defining-functions" target="_blank">documentación oficial de funciones</a>.</p>
         </section>
+
         <section id="lambda">
             <h2>¿Qué es una función Lambda en Python?</h2>
-            <p>Una función lambda es una pequeña función anónima definida con la palabra clave <code>lambda</code>. Puede tener cualquier número de argumentos pero solo una expresión. <a href="https://docs.python.org/es/3/tutorial/controlflow.html#lambda-expressions" target="_blank">Más sobre funciones lambda en la documentación oficial</a>.</p>
-            <h3>Sintaxis</h3>
-            <pre><code>lambda arguments: expression</code></pre>
-            <h3>Ejemplo</h3>
-            <pre><code>sum = lambda a, b: a + b
-print(sum(2, 3))  # Salida: 5</code></pre>
+            <p>Una función lambda es una pequeña función anónima que puede tener cualquier número de argumentos pero solo puede tener una expresión. Son útiles cuando necesitas una función simple por un corto período de tiempo.</p>
+
+            <h3>Características principales</h3>
+            <ul>
+                <li>Son anónimas (no tienen nombre)</li>
+                <li>Pueden tener múltiples argumentos</li>
+                <li>Solo pueden contener una expresión</li>
+                <li>Son ideales para operaciones simples y cortas</li>
+            </ul>
+
+            <h3>Ejemplos prácticos</h3>
+            <pre><code># Ejemplo 1: Función lambda simple
+cuadrado = lambda x: x**2
+print(cuadrado(5))  # 25
+
+# Ejemplo 2: Lambda con múltiples argumentos
+suma = lambda a, b: a + b
+print(suma(3, 4))  # 7
+
+# Ejemplo 3: Lambda en funciones de orden superior
+numeros = [1, 2, 3, 4, 5]
+pares = list(filter(lambda x: x % 2 == 0, numeros))
+print(pares)  # [2, 4]
+
+# Ejemplo 4: Lambda con map
+duplicados = list(map(lambda x: x * 2, numeros))
+print(duplicados)  # [2, 4, 6, 8, 10]</code></pre>
+
+            <div class="tip">
+                Las funciones lambda son especialmente útiles cuando se usan con <code>map()</code>, <code>filter()</code> y <code>reduce()</code>.
+            </div>
+
+            <p>Para más información, consulta la <a href="https://docs.python.org/es/3/tutorial/controlflow.html#lambda-expressions" target="_blank">documentación oficial sobre expresiones lambda</a>.</p>
         </section>
+
         <section id="pip">
             <h2>¿Qué es un paquete pip?</h2>
-            <p><code>pip</code> es el sistema de gestión de paquetes para Python. Se utiliza para instalar y gestionar bibliotecas y dependencias adicionales que no están incluidas en la biblioteca estándar de Python. <a href="https://pip.pypa.io/en/stable/" target="_blank">Documentación oficial de pip</a>.</p>
-            <h3>Instalación</h3>
-            <pre><code>pip install nombre_paquete</code></pre>
-            <h3>Ejemplo</h3>
-            <pre><code>pip install requests  # Instala la biblioteca requests</code></pre>
+            <p>pip (Package Installer for Python) es el sistema de gestión de paquetes estándar de Python. Permite instalar y administrar bibliotecas y dependencias adicionales que no vienen incluidas en la biblioteca estándar de Python.</p>
+
+            <h3>Comandos básicos de pip</h3>
+            <pre><code># Instalar un paquete
+pip install nombre_paquete
+
+# Instalar una versión específica
+pip install nombre_paquete==1.0.4
+
+# Actualizar un paquete
+pip install --upgrade nombre_paquete
+
+# Desinstalar un paquete
+pip uninstall nombre_paquete
+
+# Ver paquetes instalados
+pip list
+
+# Guardar dependencias en un archivo
+pip freeze > requirements.txt
+
+# Instalar desde requirements.txt
+pip install -r requirements.txt</code></pre>
+
+            <h3>Ejemplos de paquetes populares</h3>
+            <pre><code># Numpy para cálculos numéricos
+pip install numpy
+
+# Pandas para análisis de datos
+pip install pandas
+
+# Requests para HTTP
+pip install requests
+
+# Django para desarrollo web
+pip install django
+
+# Flask para aplicaciones web ligeras
+pip install flask
+
+# Matplotlib para visualización
+pip install matplotlib</code></pre>
+
+            <div class="tip">
+                <strong>Buenas prácticas con pip:</strong>
+                <ul>
+                    <li>Usa entornos virtuales para aislar las dependencias de cada proyecto</li>
+                    <li>Mantén un archivo requirements.txt actualizado</li>
+                    <li>Especifica las versiones de los paquetes para evitar incompatibilidades</li>
+                    <li>Actualiza regularmente tus paquetes por seguridad</li>
+                </ul>
+            </div>
+
+            <h3>Creación de un entorno virtual</h3>
+            <pre><code># Crear un entorno virtual
+python -m venv mi_entorno
+
+# Activar el entorno virtual
+# En Windows:
+mi_entorno\Scripts\activate
+# En Unix o MacOS:
+source mi_entorno/bin/activate
+
+# Desactivar el entorno virtual
+deactivate</code></pre>
+
+            <p>Para más información, consulta la <a href="https://pip.pypa.io/en/stable/" target="_blank">documentación oficial de pip</a>.</p>
         </section>
     </div>
 </body>
