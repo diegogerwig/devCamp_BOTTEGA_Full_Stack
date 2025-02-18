@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎀</text></svg>" />
+    <title>Decoradores en Python</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Decoradores en Python</h1>
+        <p>Modificación y Extensión de Funciones y Clases</p>
+    </header>
+
+    <nav>
+        <a href="../index.html">← Volver al índice</a>
+    </nav>
+
+    <div class="container">
+        <section>
+            <h2>¿Qué son los Decoradores?</h2>
+            <p>Los decoradores son una característica poderosa de Python que permite modificar o extender el comportamiento de funciones o clases sin modificar directamente su código. Son un ejemplo del patrón de diseño Decorator, que permite añadir funcionalidad de manera dinámica.</p>
+
+            <p>En esencia, un decorador es una función que toma otra función (o clase) como argumento y retorna una nueva función (o clase) con funcionalidad adicional. Los decoradores se aplican usando el símbolo @ seguido del nombre del decorador justo encima de la definición de la función o clase que se quiere decorar.</p>
+
+            <p>Los decoradores son ampliamente utilizados para:</p>
+            <ul>
+                <li>Logging (registro de ejecución)</li>
+                <li>Medición de tiempo de ejecución</li>
+                <li>Control de acceso y autenticación</li>
+                <li>Validación de parámetros</li>
+                <li>Cacheo de resultados</li>
+                <li>Gestión de transacciones</li>
+                <li>Gestión de recursos</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Decoradores de Funciones</h2>
+            <p>Los decoradores de funciones son los más comunes y pueden implementarse de varias formas:</p>
+
+            <h3>Decorador Simple</h3>
+            <p>Un decorador simple toma una función, añade funcionalidad y retorna una nueva función:</p>
+
+            <div class="example">
+                <pre><code>def registrar(funcion):
+    def wrapper(*args, **kwargs):
+        print(f"Llamando a {funcion.__name__}")
+        resultado = funcion(*args, **kwargs)
+        print(f"Finalizó la llamada a {funcion.__name__}")
+        return resultado
+    return wrapper
+
+@registrar
+def saludar(nombre):
+    print(f"¡Hola, {nombre}!")
+
+# Equivalente a:
+# saludar = registrar(saludar)</code></pre>
+            </div>
+
+            <h3>Decoradores con Argumentos</h3>
+            <p>Los decoradores pueden aceptar argumentos para personalizar su comportamiento:</p>
+
+            <div class="example">
+                <pre><code>def repetir(veces):
+    def decorador(funcion):
+        def wrapper(*args, **kwargs):
+            for _ in range(veces):
+                resultado = funcion(*args, **kwargs)
+            return resultado
+        return wrapper
+    return decorador
+
+@repetir(veces=3)
+def saludar(nombre):
+    print(f"¡Hola, {nombre}!")
+
+# Equivalente a:
+# saludar = repetir(veces=3)(saludar)</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Casos de Uso Comunes</h2>
+
+            <h3>1. Medición de Tiempo</h3>
+            <p>Medir el tiempo de ejecución de una función:</p>
+
+            <div class="example">
+                <pre><code>import time
+from functools import wraps
+
+def medir_tiempo(funcion):
+    @wraps(funcion)
+    def wrapper(*args, **kwargs):
+        inicio = time.time()
+        resultado = funcion(*args, **kwargs)
+        fin = time.time()
+        print(f"{funcion.__name__} tomó {fin - inicio:.2f} segundos")
+        return resultado
+    return wrapper
+
+@medir_tiempo
+def operacion_costosa():
+    time.sleep(1)  # Simula operación lenta</code></pre>
+            </div>
+
+            <h3>2. Caché de Resultados</h3>
+            <p>Almacenar en caché los resultados de funciones para evitar cálculos repetidos:</p>
+
+            <div class="example">
+                <pre><code>def cache(funcion):
+    memoria = {}
+    @wraps(funcion)
+    def wrapper(*args, **kwargs):
+        clave = str(args) + str(kwargs)
+        if clave not in memoria:
+            memoria[clave] = funcion(*args, **kwargs)
+        return memoria[clave]
+    return wrapper
+
+@cache
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)</code></pre>
+            </div>
+
+            <h3>3. Validación de Argumentos</h3>
+            <p>Verificar que los argumentos cumplan ciertas condiciones:</p>
+
+            <div class="example">
+                <pre><code>def validar_rango(minimo, maximo):
+    def decorador(funcion):
+        @wraps(funcion)
+        def wrapper(valor):
+            if not minimo <= valor <= maximo:
+                raise ValueError(f"Valor debe estar entre {minimo} y {maximo}")
+            return funcion(valor)
+        return wrapper
+    return decorador
+
+@validar_rango(0, 100)
+def calcular_porcentaje(valor):
+    return valor / 100</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Decoradores de Clase</h2>
+            <p>Los decoradores también pueden aplicarse a clases para modificar su comportamiento:</p>
+
+            <h3>1. Registro de Clases</h3>
+            <div class="example">
+                <pre><code>def registro_clase(cls):
+    print(f"Registrando clase: {cls.__name__}")
+    # Aquí podrías registrar la clase en algún sistema
+    return cls
+
+@registro_clase
+class MiClase:
+    pass</code></pre>
+            </div>
+
+            <h3>2. Singleton</h3>
+            <div class="example">
+                <pre><code>def singleton(cls):
+    instancias = {}
+    def obtener_instancia(*args, **kwargs):
+        if cls not in instancias:
+            instancias[cls] = cls(*args, **kwargs)
+        return instancias[cls]
+    return obtener_instancia
+
+@singleton
+class BaseDatos:
+    def __init__(self):
+        self.conexion = "Conectado a la BD"</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Decoradores Integrados en Python</h2>
+            <p>Python incluye varios decoradores útiles en su biblioteca estándar:</p>
+
+            <h3>@property</h3>
+            <p>Convierte un método en un atributo de solo lectura:</p>
+            <div class="example">
+                <pre><code>class Circulo:
+    def __init__(self, radio):
+        self._radio = radio
+
+    @property
+    def area(self):
+        return 3.14159 * self._radio ** 2</code></pre>
+            </div>
+
+            <h3>@classmethod</h3>
+            <p>Define un método que opera sobre la clase en lugar de la instancia:</p>
+            <div class="example">
+                <pre><code>class Fecha:
+    def __init__(self, año, mes, dia):
+        self.fecha = date(año, mes, dia)
+
+    @classmethod
+    def hoy(cls):
+        fecha_actual = date.today()
+        return cls(fecha_actual.year, 
+                  fecha_actual.month, 
+                  fecha_actual.day)</code></pre>
+            </div>
+
+            <h3>@staticmethod</h3>
+            <p>Define un método que no necesita acceso a la clase ni a la instancia:</p>
+            <div class="example">
+                <pre><code>class Calculadora:
+    @staticmethod
+    def es_par(numero):
+        return numero % 2 == 0</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Mejores Prácticas</h2>
+            <div class="tip">
+                <strong>Recomendaciones para el uso de decoradores:</strong>
+                <ul>
+                    <li>Usar functools.wraps para preservar metadatos de la función original</li>
+                    <li>Mantener los decoradores simples y con un propósito único</li>
+                    <li>Documentar el comportamiento añadido por el decorador</li>
+                    <li>Considerar el impacto en el rendimiento</li>
+                    <li>Manejar correctamente los argumentos y valores de retorno</li>
+                    <li>Evitar efectos secundarios no documentados</li>
+                </ul>
+            </div>
+
+            <div class="tip">
+                <strong>Patrones comunes:</strong>
+                <ul>
+                    <li>Registro de ejecución (logging)</li>
+                    <li>Control de acceso</li>
+                    <li>Validación</li>
+                    <li>Medición de rendimiento</li>
+                    <li>Gestión de recursos</li>
+                    <li>Cacheo</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Recursos Adicionales</h2>
+            <ul>
+                <li><a href="https://docs.python.org/3/glossary.html#term-decorator">Documentación oficial de Python sobre decoradores</a></li>
+                <li><a href="https://realpython.com/primer-on-python-decorators/">Real Python - Guía de decoradores</a></li>
+                <li><a href="https://www.python.org/dev/peps/pep-0318/">PEP 318 - Decorators for Functions and Methods</a></li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>

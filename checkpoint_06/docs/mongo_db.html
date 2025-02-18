@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍃</text></svg>" />
+    <title>MongoDB - Base de Datos NoSQL</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <header>
+        <h1>MongoDB</h1>
+        <p>Base de Datos NoSQL Orientada a Documentos</p>
+    </header>
+
+    <nav>
+        <a href="../index.html">← Volver al índice</a>
+    </nav>
+
+    <div class="container">
+        <section>
+            <h2>¿Qué es MongoDB?</h2>
+            <p>MongoDB es una base de datos NoSQL orientada a documentos, diseñada para el desarrollo de aplicaciones modernas y la era de la nube. A diferencia de las bases de datos SQL tradicionales, MongoDB almacena los datos en documentos tipo JSON con esquemas dinámicos, lo que significa que puedes tener registros con diferentes campos y estructuras en la misma colección.</p>
+
+            <h3>Características Principales:</h3>
+            <ul>
+                <li><strong>Orientada a Documentos:</strong> Los datos se almacenan en documentos BSON (Binary JSON)</li>
+                <li><strong>Esquema Flexible:</strong> No requiere una estructura fija, los documentos pueden tener diferentes campos</li>
+                <li><strong>Escalabilidad Horizontal:</strong> Soporta sharding y replicación para distribuir datos</li>
+                <li><strong>Alto Rendimiento:</strong> Optimizada para operaciones de lectura y escritura</li>
+                <li><strong>Soporte para Consultas Complejas:</strong> Incluye agregaciones, índices y búsqueda de texto</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>MongoDB vs SQL</h2>
+            <p>MongoDB representa un paradigma diferente al de las bases de datos relacionales tradicionales. Aquí las principales diferencias:</p>
+
+            <div class="example">
+                <pre><code>SQL                  MongoDB
+-----------------   -----------------
+Tabla               Colección
+Fila                Documento
+Columna             Campo
+JOIN                $lookup, embebido
+Clave Primaria      _id
+Clave Foránea       Referencia o embebido</code></pre>
+            </div>
+
+            <h3>Ventajas sobre SQL:</h3>
+            <ul>
+                <li><strong>Flexibilidad en el Esquema:</strong> No necesita migraciones para cambios de estructura</li>
+                <li><strong>Mejor Rendimiento en Escrituras:</strong> No requiere transacciones complejas</li>
+                <li><strong>Escalabilidad Horizontal:</strong> Más fácil de escalar que bases de datos SQL</li>
+                <li><strong>Mejor para Datos Jerárquicos:</strong> Documentos anidados de forma natural</li>
+            </ul>
+
+            <h3>Desventajas frente a SQL:</h3>
+            <ul>
+                <li><strong>Menos Soporte para Transacciones:</strong> ACID solo a nivel de documento</li>
+                <li><strong>JOIN menos Eficiente:</strong> Las relaciones se manejan diferente</li>
+                <li><strong>Mayor Uso de Memoria:</strong> Los documentos pueden tener campos repetidos</li>
+                <li><strong>Menos Madurez:</strong> Ecosistema más joven que SQL</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Estructura de Datos</h2>
+            <p>MongoDB organiza los datos en una jerarquía específica:</p>
+
+            <h3>Base de Datos → Colecciones → Documentos</h3>
+            <div class="example">
+                <pre><code>// Ejemplo de documento en MongoDB
+{
+    "_id": ObjectId("5f7d3b.."),
+    "nombre": "Juan Pérez",
+    "edad": 30,
+    "direccion": {
+        "calle": "Calle Principal",
+        "ciudad": "Madrid",
+        "cp": "28001"
+    },
+    "telefonos": [
+        {
+            "tipo": "casa",
+            "numero": "91-555-1234"
+        },
+        {
+            "tipo": "movil",
+            "numero": "666-555-4321"
+        }
+    ],
+    "activo": true
+}</code></pre>
+            </div>
+
+            <h3>Tipos de Datos:</h3>
+            <ul>
+                <li><strong>Tipos Básicos:</strong> String, Number, Boolean, Date, Null</li>
+                <li><strong>Tipos Arrays:</strong> Arrays de cualquier tipo de dato</li>
+                <li><strong>Documentos Embebidos:</strong> Objetos anidados dentro de documentos</li>
+                <li><strong>ObjectId:</strong> Identificador único generado automáticamente</li>
+                <li><strong>Binary Data:</strong> Para datos binarios</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Operaciones CRUD</h2>
+            
+            <h3>Create (Insertar)</h3>
+            <div class="example">
+                <pre><code>// Insertar un documento
+db.usuarios.insertOne({
+    nombre: "Ana",
+    edad: 25
+})
+
+// Insertar múltiples documentos
+db.usuarios.insertMany([
+    { nombre: "Luis", edad: 30 },
+    { nombre: "María", edad: 28 }
+])</code></pre>
+            </div>
+
+            <h3>Read (Consultar)</h3>
+            <div class="example">
+                <pre><code>// Encontrar todos los documentos
+db.usuarios.find()
+
+// Buscar con condiciones
+db.usuarios.find({ edad: { $gt: 25 } })
+
+// Buscar uno específico
+db.usuarios.findOne({ nombre: "Ana" })
+
+// Proyección (seleccionar campos)
+db.usuarios.find({}, { nombre: 1, edad: 1 })</code></pre>
+            </div>
+
+            <h3>Update (Actualizar)</h3>
+            <div class="example">
+                <pre><code>// Actualizar un documento
+db.usuarios.updateOne(
+    { nombre: "Ana" },
+    { $set: { edad: 26 } }
+)
+
+// Actualizar múltiples documentos
+db.usuarios.updateMany(
+    { edad: { $lt: 30 } },
+    { $inc: { edad: 1 } }
+)</code></pre>
+            </div>
+
+            <h3>Delete (Eliminar)</h3>
+            <div class="example">
+                <pre><code>// Eliminar un documento
+db.usuarios.deleteOne({ nombre: "Ana" })
+
+// Eliminar múltiples documentos
+db.usuarios.deleteMany({ edad: { $lt: 25 } })</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Operadores y Consultas Avanzadas</h2>
+            <p>MongoDB proporciona una rica variedad de operadores para consultas avanzadas:</p>
+
+            <h3>Operadores de Comparación</h3>
+            <div class="example">
+                <pre><code>// Operadores básicos
+$eq  - Igual a
+$ne  - No igual a
+$gt  - Mayor que
+$gte - Mayor o igual que
+$lt  - Menor que
+$lte - Menor o igual que
+$in  - En un array
+$nin - No en un array
+
+// Ejemplo
+db.productos.find({
+    precio: { $gte: 100, $lte: 200 },
+    categoria: { $in: ["A", "B"] }
+})</code></pre>
+            </div>
+
+            <h3>Operadores Lógicos</h3>
+            <div class="example">
+                <pre><code>// Operadores lógicos
+$and - Y lógico
+$or  - O lógico
+$not - Negación
+$nor - NI lógico
+
+// Ejemplo
+db.productos.find({
+    $or: [
+        { precio: { $lt: 50 } },
+        { stock: { $gt: 100 } }
+    ]
+})</code></pre>
+            </div>
+
+            <h3>Agregaciones</h3>
+            <div class="example">
+                <pre><code>// Pipeline de agregación
+db.ventas.aggregate([
+    { $match: { fecha: { $gte: new Date("2024-01-01") } } },
+    { $group: {
+        _id: "$categoria",
+        total: { $sum: "$monto" },
+        promedio: { $avg: "$monto" }
+    } },
+    { $sort: { total: -1 } }
+])</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Índices y Rendimiento</h2>
+            <p>Los índices son cruciales para el rendimiento de las consultas en MongoDB:</p>
+
+            <h3>Tipos de Índices:</h3>
+            <ul>
+                <li><strong>Índice Simple:</strong> Sobre un solo campo</li>
+                <li><strong>Índice Compuesto:</strong> Sobre múltiples campos</li>
+                <li><strong>Índice Multichave:</strong> Para arrays</li>
+                <li><strong>Índice de Texto:</strong> Para búsqueda full-text</li>
+                <li><strong>Índice Geoespacial:</strong> Para datos de localización</li>
+            </ul>
+
+            <div class="example">
+                <pre><code>// Crear índice simple
+db.usuarios.createIndex({ email: 1 })
+
+// Crear índice compuesto
+db.productos.createIndex({ 
+    categoria: 1, 
+    precio: -1 
+})
+
+// Crear índice de texto
+db.articulos.createIndex({ 
+    titulo: "text", 
+    descripcion: "text" 
+})
+
+// Ver índices existentes
+db.coleccion.getIndexes()</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Modelado de Datos</h2>
+            <p>El modelado de datos en MongoDB requiere un enfoque diferente al de las bases de datos relacionales:</p>
+
+            <h3>Estrategias de Modelado:</h3>
+            <ul>
+                <li><strong>Documentos Embebidos:</strong>
+                    <ul>
+                        <li>Mejor para datos que se acceden juntos</li>
+                        <li>Mejor rendimiento en lecturas</li>
+                        <li>Límite de 16MB por documento</li>
+                    </ul>
+                </li>
+                <li><strong>Referencias:</strong>
+                    <ul>
+                        <li>Mejor para datos que cambian frecuentemente</li>
+                        <li>Mejor para datos grandes</li>
+                        <li>Necesario para relaciones muchos-a-muchos</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="example">
+                <pre><code>// Ejemplo de documento embebido
+{
+    "_id": ObjectId("..."),
+    "orden": "12345",
+    "cliente": {
+        "nombre": "Juan",
+        "email": "juan@ejemplo.com"
+    },
+    "items": [
+        {
+            "producto": "Laptop",
+            "cantidad": 1,
+            "precio": 999.99
+        }
+    ]
+}
+
+// Ejemplo de referencias
+{
+    "_id": ObjectId("..."),
+    "orden": "12345",
+    "cliente_id": ObjectId("..."),
+    "items": [
+        {
+            "producto_id": ObjectId("..."),
+            "cantidad": 1
+        }
+    ]
+}</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Mejores Prácticas</h2>
+            <div class="tip">
+                <strong>Recomendaciones generales:</strong>
+                <ul>
+                    <li>Diseñar el esquema según los patrones de acceso</li>
+                    <li>Evitar documentos demasiado grandes (límite de 16MB)</li>
+                    <li>Usar índices apropiadamente</li>
+                    <li>Implementar esquemas de validación cuando sea necesario</li>
+                    <li>Mantener la consistencia en la estructura de los documentos</li>
+                    <li>Considerar la cardinalidad en las relaciones</li>
+                    <li>Usar nombres descriptivos para colecciones y campos</li>
+                </ul>
+            </div>
+
+            <div class="tip">
+                <strong>Cuándo usar MongoDB:</strong>
+                <ul>
+                    <li>Aplicaciones con datos no estructurados o semi-estructurados</li>
+                    <li>Necesidad de escalabilidad horizontal</li>
+                    <li>Alta velocidad de escritura y lectura</li>
+                    <li>Desarrollo ágil con esquemas flexibles</li>
+                    <li>Datos jerárquicos o anidados</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Recursos Adicionales</h2>
+            <ul>
+                <li><a href="https://docs.mongodb.com/">Documentación oficial de MongoDB</a></li>
+                <li><a href="https://university.mongodb.com/">MongoDB University - Cursos gratuitos</a></li>
+                <li><a href="https://www.mongodb.com/try/download/compass">MongoDB Compass - GUI para MongoDB</a></li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
