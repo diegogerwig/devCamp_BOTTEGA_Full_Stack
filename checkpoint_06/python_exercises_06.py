@@ -24,7 +24,6 @@ class Usuario:
         password = ''.join(random.choice(all_characters) for _ in range(length))
         return password
 
-# Examples of usage:
 # User with specified password
 user1 = Usuario("Carlos", "mypass123")
 print(f"User 1 ->  Username: {user1.username}  //  Password: {user1.password}")
