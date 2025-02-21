@@ -193,6 +193,64 @@ persona = Persona("Ana", 25)</code></pre>
         </section>
 
         <section>
+            <h2>@classmethod y @staticmethod</h2>
+            <p>Python ofrece dos decoradores especiales para definir métodos que no dependen de una instancia específica de la clase: <code>@classmethod</code> y <code>@staticmethod</code>.</p>
+            <li><a href="decoradores.html">Decoradores en Python</a></li>
+
+            <h3>@classmethod</h3>
+            <p>Un método de clase recibe la propia clase (<code>cls</code>) como primer argumento en lugar de la instancia (<code>self</code>). Se usa para definir métodos que operan a nivel de clase y no requieren acceso a atributos de instancia.</p>
+
+            <div class="example">
+                <h4>Ejemplo de @classmethod</h4>
+                <pre><code>class Vehiculo:
+            contador = 0  # Atributo de clase
+
+            def __init__(self, marca):
+                self.marca = marca
+                Vehiculo.contador += 1
+
+            @classmethod
+            def obtener_total(cls):
+                """Método de clase que accede al atributo de clase"""
+                return cls.contador
+
+        # Uso del método de clase
+        print(Vehiculo.obtener_total())  # Output: 0
+        v1 = Vehiculo("Toyota")
+        v2 = Vehiculo("Ford")
+        print(Vehiculo.obtener_total())  # Output: 2</code></pre>
+            </div>
+
+            <h3>@staticmethod</h3>
+            <p>Un método estático no recibe automáticamente ni la instancia (<code>self</code>) ni la clase (<code>cls</code>). Es útil para definir funciones dentro de una clase que no requieren acceder a datos de instancia o de clase.</p>
+
+            <div class="example">
+                <h4>Ejemplo de @staticmethod</h4>
+                <pre><code>class Utilidades:
+            @staticmethod
+            def es_par(numero):
+                """Método estático que no necesita acceder a la instancia o clase"""
+                return numero % 2 == 0
+
+        # Uso del método estático
+        print(Utilidades.es_par(4))  # Output: True
+        print(Utilidades.es_par(7))  # Output: False</code></pre>
+            </div>
+
+            <h3>Diferencias Clave</h3>
+            <ul>
+                <li><code>@classmethod</code> recibe la clase como primer argumento (<code>cls</code>) y puede modificar atributos de clase.</li>
+                <li><code>@staticmethod</code> no recibe automáticamente ni la instancia ni la clase, y actúa como una función normal dentro de la clase.</li>
+            </ul>
+
+            <h3>Cuándo Usarlos</h3>
+            <ul>
+                <li>Usa <code>@classmethod</code> cuando necesites acceder o modificar atributos de clase.</li>
+                <li>Usa <code>@staticmethod</code> cuando el método no dependa de atributos de instancia o clase.</li>
+            </ul>
+        </section>
+
+        <section>
             <h2>Mejores Prácticas</h2>
             <div class="tip">
                 <strong>Recomendaciones para el diseño de constructores:</strong>
