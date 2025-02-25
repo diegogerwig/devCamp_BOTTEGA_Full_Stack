@@ -10,7 +10,202 @@
 <body>
     <header>
         <h1>Métodos de API (Verbos HTTP)</h1>
-        <p>Fundamentos de las Operaciones en APIs REST</p>
+        <p>Fundamentos de la<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Diferencias de JavaScript - Documentación</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="bg-yellow-500 text-white text-center py-12 px-4 shadow-md">
+        <h1 class="text-4xl font-bold mb-2">Diferencias de JavaScript</h1>
+        <p class="text-xl">¿Qué diferencia a Javascript de cualquier otro lenguaje de programación?</p>
+    </header>
+
+    <nav class="bg-white py-4 px-6 shadow-md">
+        <a href="./index.html" class="text-yellow-600 hover:text-yellow-800 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <section class="mb-12">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="mb-4">JavaScript se diferencia de otros lenguajes de programación por varias características únicas:</p>
+                <ul class="list-disc pl-6 mb-4 space-y-2">
+                    <li><strong>Ejecución en el navegador:</strong> Es el único lenguaje que puede ejecutarse nativamente en todos los navegadores web, lo que lo convierte en el lenguaje estándar para la programación del lado del cliente.</li>
+                    <li><strong>Naturaleza asíncrona:</strong> Utiliza un modelo asíncrono y no bloqueante con un solo hilo de ejecución (event loop), lo que permite manejar múltiples operaciones sin bloquear la interfaz de usuario.</li>
+                    <li><strong>Tipado dinámico:</strong> No requiere declaración de tipos de variables, permitiendo flexibilidad en el desarrollo y cambios de tipo en tiempo de ejecución.</li>
+                    <li><strong>Paradigmas múltiples:</strong> Soporta programación funcional, orientada a objetos y basada en prototipos, permitiendo diferentes estilos de programación.</li>
+                    <li><strong>First-class functions:</strong> Las funciones son tratadas como cualquier otra variable, pueden ser pasadas como argumentos, retornadas de otras funciones y asignadas a variables.</li>
+                    <li><strong>Event-driven:</strong> Está diseñado para responder a eventos del usuario e interacciones, lo que facilita la creación de interfaces interactivas.</li>
+                    <li><strong>Sistema de prototipado:</strong> A diferencia de la herencia clásica basada en clases, JavaScript utiliza prototipos para implementar herencia y compartir propiedades entre objetos.</li>
+                </ul>
+
+                <div class="bg-yellow-50 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-2">Características destacadas:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="font-medium">Interpretado, no compilado</p>
+                            <p class="text-sm text-gray-600">El código se ejecuta directamente sin necesidad de un paso de compilación previo.</p>
+                        </div>
+                        <div>
+                            <p class="font-medium">Cierre léxico (Closures)</p>
+                            <p class="text-sm text-gray-600">Las funciones mantienen acceso al ámbito en el que fueron creadas.</p>
+                        </div>
+                        <div>
+                            <p class="font-medium">DOM API</p>
+                            <p class="text-sm text-gray-600">Proporciona acceso y manipulación al Modelo de Objetos del Documento HTML.</p>
+                        </div>
+                        <div>
+                            <p class="font-medium">Versatilidad</p>
+                            <p class="text-sm text-gray-600">Puede ser usado tanto en frontend como en backend (Node.js).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">Ejemplo:</h3>
+                    <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto"><code>// Ejemplo de características únicas de JavaScript
+
+// Asincronía con promesas
+fetch('https://api.ejemplo.com/datos')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+
+// Funciones como first-class citizens
+const saludar = function(nombre) {
+  return `Hola, ${nombre}!`;
+};
+
+const ejecutarFuncion = function(fn, valor) {
+  return fn(valor);
+};
+
+console.log(ejecutarFuncion(saludar, 'Mundo')); // "Hola, Mundo!"
+
+// Prototype
+function Persona(nombre) {
+  this.nombre = nombre;
+}
+
+Persona.prototype.saludar = function() {
+  return `Hola, soy ${this.nombre}`;
+};
+
+const juan = new Persona('Juan');
+console.log(juan.saludar()); // "Hola, soy Juan"
+
+// Closure
+function crearContador() {
+  let contador = 0;
+  return function() {
+    contador++;
+    return contador;
+  };
+}
+
+const incrementar = crearContador();
+console.log(incrementar()); // 1
+console.log(incrementar()); // 2</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-300">Evolución de JavaScript</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="mb-4">Desde su creación en 1995 por Brendan Eich, JavaScript ha evolucionado significativamente:</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                        <thead class="bg-yellow-100">
+                            <tr>
+                                <th class="py-2 px-4 text-left">Versión</th>
+                                <th class="py-2 px-4 text-left">Año</th>
+                                <th class="py-2 px-4 text-left">Características principales</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="py-2 px-4">ES1</td>
+                                <td class="py-2 px-4">1997</td>
+                                <td class="py-2 px-4">Primera estandarización</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4">ES5</td>
+                                <td class="py-2 px-4">2009</td>
+                                <td class="py-2 px-4">Métodos de array, JSON, strict mode</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4">ES6 (ES2015)</td>
+                                <td class="py-2 px-4">2015</td>
+                                <td class="py-2 px-4">let/const, arrow functions, clases, módulos, promesas</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4">ES2016-2022</td>
+                                <td class="py-2 px-4">2016-2022</td>
+                                <td class="py-2 px-4">Async/await, operador exponencial, rest/spread para objetos, nullish coalescing</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-300">Ventajas y Desafíos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4 text-green-600">Ventajas</h3>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Ubicuidad en navegadores</li>
+                        <li>Comunidad activa y gran cantidad de recursos</li>
+                        <li>Ecosistema amplio de bibliotecas y frameworks</li>
+                        <li>Velocidad de desarrollo</li>
+                        <li>Versatilidad (cliente, servidor, móvil, IoT)</li>
+                        <li>Fácil de aprender inicialmente</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4 text-red-600">Desafíos</h3>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Comportamiento inconsistente entre navegadores</li>
+                        <li>Tipado dinámico puede llevar a errores sutiles</li>
+                        <li>Problemas de seguridad si no se implementa correctamente</li>
+                        <li>Curva de aprendizaje empinada para conceptos avanzados</li>
+                        <li>Código difícil de mantener en proyectos grandes sin disciplina</li>
+                        <li>Compatibilidad con versiones anteriores</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-300">Recursos Adicionales</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="mb-4">Para profundizar en las características únicas de JavaScript, recomendamos consultar los siguientes recursos:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Guide" class="text-yellow-600 hover:text-yellow-800">MDN Web Docs - Guía de JavaScript</a></li>
+                    <li><a href="https://es.javascript.info/" class="text-yellow-600 hover:text-yellow-800">JavaScript.info - El lenguaje JavaScript moderno</a></li>
+                    <li><a href="https://github.com/getify/You-Dont-Know-JS" class="text-yellow-600 hover:text-yellow-800">You Don't Know JS (libro)</a></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-gray-800 text-white text-center py-6">
+        <p>© 2025 - JavaScript - Conceptos Fundamentales</p>
+    </footer>
+</body>
+</html>s Operaciones en APIs REST</p>
     </header>
 
     <nav>
