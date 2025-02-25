@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐍</text></svg>" />
+    <title>Constructores en Python - Documentación</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Constructores en Python</h1>
+        <p>Inicialización y Creación de Objetos</p>
+    </header>
+
+    <nav>
+        <a href="../index.html">← Volver al índice</a>
+    </nav>
+
+    <div class="container">
+        <section>
+            <h2>¿Qué es un Constructor en Python?</h2>
+            <p>En Python, los constructores son métodos especiales que se ejecutan automáticamente cuando se crea una nueva instancia de una clase. A diferencia de otros lenguajes de programación, Python proporciona dos mecanismos distintos para la creación e inicialización de objetos:</p>
+
+            <ul>
+                <li><strong>__new__:</strong> Es el verdadero constructor que crea la instancia</li>
+                <li><strong>__init__:</strong> Es el inicializador que configura la instancia creada</li>
+            </ul>
+
+            <p>Esta separación entre creación e inicialización proporciona una gran flexibilidad en el control de la instanciación de objetos, permitiendo patrones avanzados como el Singleton o la creación de inmutables.</p>
+
+            <div class="example">
+                <h3>Constructor Básico</h3>
+                <pre><code>class Persona:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+        self.inicializar_datos()
+    
+    def inicializar_datos(self):
+        self.adulto = self.edad >= 18
+        self.fecha_creacion = datetime.now()
+
+# Uso del constructor
+persona = Persona("Ana", 25)</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>El Método __init__</h2>
+            <p>El método __init__ es el inicializador más comúnmente usado en Python. Es responsable de configurar el estado inicial de un objeto después de su creación. Sus características principales son:</p>
+
+            <ul>
+                <li><strong>Ejecución Automática:</strong> Se llama automáticamente después de crear la instancia</li>
+                <li><strong>Configuración Inicial:</strong> Establece el estado inicial del objeto</li>
+                <li><strong>Validación de Datos:</strong> Puede validar los argumentos de inicialización</li>
+                <li><strong>No Retorna Valor:</strong> Cualquier valor de retorno será ignorado</li>
+            </ul>
+
+            <p>El método __init__ es fundamental para garantizar que un objeto comience su vida en un estado válido y consistente. Es el lugar apropiado para:</p>
+
+            <ul>
+                <li>Inicializar atributos de instancia</li>
+                <li>Realizar validaciones de parámetros</li>
+                <li>Establecer conexiones o recursos necesarios</li>
+                <li>Realizar cálculos iniciales</li>
+                <li>Registrar la creación del objeto</li>
+            </ul>
+
+            <div class="example">
+                <h3>Inicialización Avanzada</h3>
+                <pre><code>class CuentaBancaria:
+    def __init__(self, titular, saldo_inicial=0):
+        if saldo_inicial < 0:
+            raise ValueError("El saldo inicial no puede ser negativo")
+        
+        self.titular = titular
+        self._saldo = saldo_inicial
+        self._movimientos = []
+        self._fecha_apertura = datetime.now()
+        self._activa = True
+        
+        self._registrar_apertura()</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>El Método __new__</h2>
+            <p>El método __new__ es el verdadero constructor en Python. Es un método estático que se llama antes que __init__ y es responsable de crear y devolver la nueva instancia del objeto. Sus características principales son:</p>
+
+            <ul>
+                <li><strong>Control de Creación:</strong> Permite controlar cómo se crean las instancias</li>
+                <li><strong>Método Estático:</strong> No recibe self como primer argumento</li>
+                <li><strong>Debe Retornar:</strong> Debe devolver la nueva instancia</li>
+                <li><strong>Raramente Sobrescrito:</strong> Solo necesario en casos especiales</li>
+            </ul>
+
+            <p>Los casos comunes para sobrescribir __new__ incluyen:</p>
+
+            <ul>
+                <li>Implementación del patrón Singleton</li>
+                <li>Creación de objetos inmutables</li>
+                <li>Caché de instancias</li>
+                <li>Modificación del tipo de la instancia creada</li>
+                <li>Control fino sobre la asignación de memoria</li>
+            </ul>
+
+            <div class="example">
+                <h3>Implementación de Singleton</h3>
+                <pre><code>class Singleton:
+    _instancia = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instancia is None:
+            cls._instancia = super().__new__(cls)
+        return cls._instancia
+
+    def __init__(self, valor=None):
+        # __init__ se llamará en cada intento de creación
+        if not hasattr(self, 'inicializado'):
+            self.valor = valor
+            self.inicializado = True</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Patrones y Técnicas Avanzadas</h2>
+            <p>Los constructores en Python permiten implementar varios patrones de diseño y técnicas avanzadas:</p>
+
+            <h3>Constructores Alternativos</h3>
+            <p>Python permite definir múltiples formas de crear objetos mediante métodos de clase:</p>
+
+            <div class="example">
+                <pre><code>class Fecha:
+    def __init__(self, año, mes, dia):
+        self.año = año
+        self.mes = mes
+        self.dia = dia
+
+    @classmethod
+    def desde_string(cls, fecha_str):
+        """Constructor alternativo que acepta una fecha en formato 'YYYY-MM-DD'"""
+        año, mes, dia = map(int, fecha_str.split('-'))
+        return cls(año, mes, dia)
+
+    @classmethod
+    def hoy(cls):
+        """Constructor alternativo que crea una fecha con la fecha actual"""
+        from datetime import date
+        fecha_actual = date.today()
+        return cls(fecha_actual.year, fecha_actual.month, fecha_actual.day)</code></pre>
+            </div>
+
+            <h3>Constructores Seguros</h3>
+            <p>Es posible implementar constructores que garanticen la creación de objetos en un estado válido:</p>
+
+            <div class="example">
+                <pre><code>class Conexion:
+    def __init__(self, host, puerto):
+        self.host = host
+        self.puerto = puerto
+        self.conectado = False
+        self._socket = None
+
+    @classmethod
+    def crear_segura(cls, host, puerto):
+        """Constructor que verifica la conexión antes de crear el objeto"""
+        # Verificar que el host y puerto son válidos
+        if not cls._validar_host(host):
+            raise ValueError(f"Host inválido: {host}")
+        if not cls._validar_puerto(puerto):
+            raise ValueError(f"Puerto inválido: {puerto}")
+
+        # Crear la instancia
+        conexion = cls(host, puerto)
+        
+        # Intentar establecer la conexión
+        try:
+            conexion._conectar()
+            return conexion
+        except Exception as e:
+            raise ConnectionError(f"No se pudo establecer la conexión: {e}")
+
+    @staticmethod
+    def _validar_host(host):
+        # Lógica de validación del host
+        pass
+
+    @staticmethod
+    def _validar_puerto(puerto):
+        return isinstance(puerto, int) and 0 <= puerto <= 65535</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>@classmethod y @staticmethod</h2>
+            <p>Python ofrece dos decoradores especiales para definir métodos que no dependen de una instancia específica de la clase: <code>@classmethod</code> y <code>@staticmethod</code>.</p>
+            <li><a href="decoradores.html">Decoradores en Python</a></li>
+
+            <h3>@classmethod</h3>
+            <p>Un método de clase recibe la propia clase (<code>cls</code>) como primer argumento en lugar de la instancia (<code>self</code>). Se usa para definir métodos que operan a nivel de clase y no requieren acceso a atributos de instancia.</p>
+
+            <div class="example">
+                <h4>Ejemplo de @classmethod</h4>
+                <pre><code>class Vehiculo:
+            contador = 0  # Atributo de clase
+
+            def __init__(self, marca):
+                self.marca = marca
+                Vehiculo.contador += 1
+
+            @classmethod
+            def obtener_total(cls):
+                """Método de clase que accede al atributo de clase"""
+                return cls.contador
+
+        # Uso del método de clase
+        print(Vehiculo.obtener_total())  # Output: 0
+        v1 = Vehiculo("Toyota")
+        v2 = Vehiculo("Ford")
+        print(Vehiculo.obtener_total())  # Output: 2</code></pre>
+            </div>
+
+            <h3>@staticmethod</h3>
+            <p>Un método estático no recibe automáticamente ni la instancia (<code>self</code>) ni la clase (<code>cls</code>). Es útil para definir funciones dentro de una clase que no requieren acceder a datos de instancia o de clase.</p>
+
+            <div class="example">
+                <h4>Ejemplo de @staticmethod</h4>
+                <pre><code>class Utilidades:
+            @staticmethod
+            def es_par(numero):
+                """Método estático que no necesita acceder a la instancia o clase"""
+                return numero % 2 == 0
+
+        # Uso del método estático
+        print(Utilidades.es_par(4))  # Output: True
+        print(Utilidades.es_par(7))  # Output: False</code></pre>
+            </div>
+
+            <h3>Diferencias Clave</h3>
+            <ul>
+                <li><code>@classmethod</code> recibe la clase como primer argumento (<code>cls</code>) y puede modificar atributos de clase.</li>
+                <li><code>@staticmethod</code> no recibe automáticamente ni la instancia ni la clase, y actúa como una función normal dentro de la clase.</li>
+            </ul>
+
+            <h3>Cuándo Usarlos</h3>
+            <ul>
+                <li>Usa <code>@classmethod</code> cuando necesites acceder o modificar atributos de clase.</li>
+                <li>Usa <code>@staticmethod</code> cuando el método no dependa de atributos de instancia o clase.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Mejores Prácticas</h2>
+            <div class="tip">
+                <strong>Recomendaciones para el diseño de constructores:</strong>
+                <ul>
+                    <li>Mantén los constructores simples y enfocados en la inicialización básica</li>
+                    <li>Realiza validaciones de parámetros al inicio del constructor</li>
+                    <li>Utiliza valores por defecto para parámetros opcionales</li>
+                    <li>Documenta claramente los parámetros y su propósito</li>
+                    <li>Considera proporcionar constructores alternativos para diferentes casos de uso</li>
+                    <li>Evita la lógica compleja en __init__; muévela a métodos auxiliares</li>
+                    <li>Asegúrate de que el objeto quede en un estado válido después de la construcción</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Recursos Adicionales</h2>
+            <ul>
+                <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__new__">Documentación oficial de Python sobre __new__</a></li>
+                <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__init__">Documentación oficial de Python sobre __init__</a></li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>

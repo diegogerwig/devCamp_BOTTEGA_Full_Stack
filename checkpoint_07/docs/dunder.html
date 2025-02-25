@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐍</text></svg>" />
+    <title>Métodos Dunder en Python</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Métodos Dunder en Python</h1>
+        <p>Métodos Mágicos y Especiales</p>
+    </header>
+
+    <nav>
+        <a href="../index.html">← Volver al índice</a>
+    </nav>
+
+    <div class="container">
+        <section>
+            <h2>¿Qué son los Métodos Dunder?</h2>
+            <p>Los métodos dunder (Double UNDERscore) son métodos especiales en Python que tienen doble guion bajo al principio y al final de su nombre. También se conocen como "métodos mágicos" porque se invocan automáticamente en ciertas circunstancias.</p>
+
+            <p>Estos métodos permiten definir cómo se comportan las instancias de una clase en operaciones fundamentales como:</p>
+            <ul>
+                <li>Inicialización y creación de objetos</li>
+                <li>Representación de objetos como strings</li>
+                <li>Operaciones matemáticas y comparaciones</li>
+                <li>Acceso a atributos y elementos</li>
+                <li>Gestión de recursos</li>
+                <li>Comportamiento como iterables o contenedores</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Métodos de Inicialización y Construcción</h2>
+            <p>Estos métodos controlan cómo se crean e inicializan las instancias de una clase:</p>
+
+            <h3>1. __new__ y __init__</h3>
+            <p>__new__ es el verdadero constructor, mientras que __init__ es el inicializador:</p>
+            
+            <div class="example">
+                <pre><code>class MiClase:
+    def __new__(cls, *args, **kwargs):
+        # Crear y retornar la nueva instancia
+        instancia = super().__new__(cls)
+        return instancia
+
+    def __init__(self, valor):
+        # Inicializar la instancia
+        self.valor = valor</code></pre>
+            </div>
+
+            <h3>2. __del__</h3>
+            <p>Llamado cuando el objeto está por ser destruido:</p>
+            
+            <div class="example">
+                <pre><code>def __del__(self):
+    # Limpieza de recursos
+    print("Limpiando recursos...")</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Representación de Objetos</h2>
+            <p>Estos métodos definen cómo se representa un objeto como string:</p>
+
+            <h3>1. __str__ y __repr__</h3>
+            <p>__str__ es para usuarios finales, __repr__ es para desarrolladores:</p>
+            
+            <div class="example">
+                <pre><code>class Punto:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __str__(self):
+        return f"Punto en ({self.x}, {self.y})"
+    
+    def __repr__(self):
+        return f"Punto(x={self.x}, y={self.y})"</code></pre>
+            </div>
+
+            <h3>2. __format__</h3>
+            <p>Controla cómo se formatea el objeto con str.format():</p>
+            
+            <div class="example">
+                <pre><code>def __format__(self, format_spec):
+    if format_spec == 'coord':
+        return f"({self.x},{self.y})"
+    return str(self)</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Operadores Matemáticos y Comparación</h2>
+            <p>Estos métodos permiten que los objetos participen en operaciones matemáticas y comparaciones:</p>
+
+            <h3>Operadores Aritméticos:</h3>
+            <ul>
+                <li>__add__(self, other): +</li>
+                <li>__sub__(self, other): -</li>
+                <li>__mul__(self, other): *</li>
+                <li>__truediv__(self, other): /</li>
+                <li>__floordiv__(self, other): //</li>
+                <li>__mod__(self, other): %</li>
+                <li>__pow__(self, other): **</li>
+            </ul>
+
+            <h3>Operadores de Comparación:</h3>
+            <ul>
+                <li>__eq__(self, other): ==</li>
+                <li>__ne__(self, other): !=</li>
+                <li>__lt__(self, other): <</li>
+                <li>__le__(self, other): <=</li>
+                <li>__gt__(self, other): ></li>
+                <li>__ge__(self, other): >=</li>
+            </ul>
+
+            <div class="example">
+                <pre><code>class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+    
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+    
+    def __lt__(self, other):
+        return (self.x**2 + self.y**2) < (other.x**2 + other.y**2)</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Acceso a Atributos y Elementos</h2>
+            <p>Estos métodos controlan el acceso y modificación de atributos y elementos:</p>
+
+            <h3>Acceso a Atributos:</h3>
+            <ul>
+                <li>__getattr__(self, name): Acceso a atributos inexistentes</li>
+                <li>__setattr__(self, name, value): Asignación de atributos</li>
+                <li>__delattr__(self, name): Eliminación de atributos</li>
+                <li>__getattribute__(self, name): Acceso a cualquier atributo</li>
+            </ul>
+
+            <h3>Acceso a Elementos:</h3>
+            <ul>
+                <li>__getitem__(self, key): Acceso por índice/clave</li>
+                <li>__setitem__(self, key, value): Asignación por índice/clave</li>
+                <li>__delitem__(self, key): Eliminación por índice/clave</li>
+            </ul>
+
+            <div class="example">
+                <pre><code>class DiccionarioSeguro:
+    def __init__(self):
+        self._data = {}
+    
+    def __getitem__(self, key):
+        return self._data[key]
+    
+    def __setitem__(self, key, value):
+        if isinstance(value, (int, float, str)):
+            self._data[key] = value
+        else:
+            raise TypeError("Solo se permiten tipos básicos")
+    
+    def __getattr__(self, name):
+        if name in self._data:
+            return self._data[name]
+        raise AttributeError(f"No existe el atributo {name}")</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Comportamiento como Contenedor</h2>
+            <p>Estos métodos permiten que un objeto se comporte como una colección:</p>
+
+            <h3>Métodos de Contenedor:</h3>
+            <ul>
+                <li>__len__(self): Longitud del objeto</li>
+                <li>__contains__(self, item): Operador in</li>
+                <li>__iter__(self): Iteración</li>
+                <li>__next__(self): Siguiente elemento en iteración</li>
+                <li>__reversed__(self): Iteración reversa</li>
+            </ul>
+
+            <div class="example">
+                <pre><code>class ListaPersonalizada:
+    def __init__(self):
+        self.items = []
+    
+    def __len__(self):
+        return len(self.items)
+    
+    def __contains__(self, item):
+        return item in self.items
+    
+    def __iter__(self):
+        self._index = 0
+        return self
+    
+    def __next__(self):
+        if self._index >= len(self.items):
+            raise StopIteration
+        valor = self.items[self._index]
+        self._index += 1
+        return valor</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Gestión de Contexto</h2>
+            <p>Estos métodos permiten usar el objeto en un bloque with:</p>
+
+            <div class="example">
+                <pre><code>class Archivo:
+    def __init__(self, nombre):
+        self.nombre = nombre
+    
+    def __enter__(self):
+        self.archivo = open(self.nombre, 'r')
+        return self.archivo
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.archivo.close()
+        return False  # No maneja excepciones</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Mejores Prácticas</h2>
+            <div class="tip">
+                <strong>Recomendaciones para el uso de métodos dunder:</strong>
+                <ul>
+                    <li>No invocar métodos dunder directamente, usar las operaciones correspondientes</li>
+                    <li>Implementar __repr__ antes que __str__</li>
+                    <li>Mantener la consistencia en las operaciones matemáticas</li>
+                    <li>Documentar el comportamiento especial</li>
+                    <li>No crear métodos dunder personalizados</li>
+                    <li>Considerar los casos especiales y errores</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Recursos Adicionales</h2>
+            <ul>
+                <li><a href="https://docs.python.org/3/reference/datamodel.html">Documentación oficial del modelo de datos de Python</a></li>
+                <li><a href="https://rszalski.github.io/magicmethods/">Guía completa de métodos mágicos</a></li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>

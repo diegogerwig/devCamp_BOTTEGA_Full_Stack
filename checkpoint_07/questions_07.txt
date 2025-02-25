@@ -1,0 +1,13 @@
+¿Qué diferencia a Javascript de cualquier otro lenguaje de programación?
+
+¿Cuáles son algunos tipos de datos JS?
+
+¿Cuáles son las tres funciones de String en JS?
+
+¿Qué es un condicional?
+
+¿Qué es un operador ternario?
+
+¿Cuál es la diferencia entre una declaración de función y una expresión de función?
+
+¿Qué es la palabra clave "this" en JS?
