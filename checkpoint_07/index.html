@@ -5,68 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
     <title>JavaScript - Conceptos Fundamentales</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 font-sans">
-    <header class="bg-yellow-500 text-white text-center py-12 px-4 shadow-md">
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md">
         <h1 class="text-4xl font-bold mb-2">JavaScript</h1>
         <p class="text-xl">Conceptos fundamentales explicados en detalle</p>
     </header>
 
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <div class="container mx-auto px-4 py-8 max-w-6xl flex-grow">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a href="./js_diferencias.html" class="transform transition duration-300 hover:scale-105">
-                <div class="bg-white rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
-                    <h2 class="text-xl font-bold mb-3 text-gray-800">Diferencias de JavaScript</h2>
-                    <p class="text-gray-600">¿Qué diferencia a Javascript de cualquier otro lenguaje de programación?</p>
+            <a href="./docs/js_diferencias.html" class="transform transition duration-300 hover:scale-105">
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
+                    <h2 class="text-xl font-bold mb-3 text-gray-100">Diferencias de JavaScript</h2>
+                    <p class="text-gray-400">¿Qué diferencia a Javascript de cualquier otro lenguaje de programación?</p>
                 </div>
             </a>
 
             <a href="./js_tipos_datos.html" class="transform transition duration-300 hover:scale-105">
-                <div class="bg-white rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
-                    <h2 class="text-xl font-bold mb-3 text-gray-800">Tipos de Datos</h2>
-                    <p class="text-gray-600">¿Cuáles son algunos tipos de datos JS?</p>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
+                    <h2 class="text-xl font-bold mb-3 text-gray-100">Tipos de Datos</h2>
+                    <p class="text-gray-400">¿Cuáles son algunos tipos de datos JS?</p>
                 </div>
             </a>
 
             <a href="./js_funciones_string.html" class="transform transition duration-300 hover:scale-105">
-                <div class="bg-white rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
-                    <h2 class="text-xl font-bold mb-3 text-gray-800">Funciones de String</h2>
-                    <p class="text-gray-600">¿Cuáles son las tres funciones de String en JS?</p>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
+                    <h2 class="text-xl font-bold mb-3 text-gray-100">Funciones de String</h2>
+                    <p class="text-gray-400">¿Cuáles son las tres funciones de String en JS?</p>
                 </div>
             </a>
 
             <a href="./js_condicionales.html" class="transform transition duration-300 hover:scale-105">
-                <div class="bg-white rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
-                    <h2 class="text-xl font-bold mb-3 text-gray-800">Condicionales</h2>
-                    <p class="text-gray-600">¿Qué es un condicional?</p>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
+                    <h2 class="text-xl font-bold mb-3 text-gray-100">Condicionales</h2>
+                    <p class="text-gray-400">¿Qué es un condicional?</p>
                 </div>
             </a>
 
             <a href="./js_operador_ternario.html" class="transform transition duration-300 hover:scale-105">
-                <div class="bg-white rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
-                    <h2 class="text-xl font-bold mb-3 text-gray-800">Operador Ternario</h2>
-                    <p class="text-gray-600">¿Qué es un operador ternario?</p>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
+                    <h2 class="text-xl font-bold mb-3 text-gray-100">Operador Ternario</h2>
+                    <p class="text-gray-400">¿Qué es un operador ternario?</p>
                 </div>
             </a>
 
             <a href="./js_funciones.html" class="transform transition duration-300 hover:scale-105">
-                <div class="bg-white rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
-                    <h2 class="text-xl font-bold mb-3 text-gray-800">Declaración vs Expresión</h2>
-                    <p class="text-gray-600">¿Cuál es la diferencia entre una declaración de función y una expresión de función?</p>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
+                    <h2 class="text-xl font-bold mb-3 text-gray-100">Declaración vs Expresión</h2>
+                    <p class="text-gray-400">¿Cuál es la diferencia entre una declaración de función y una expresión de función?</p>
                 </div>
             </a>
 
             <a href="./js_this.html" class="transform transition duration-300 hover:scale-105">
-                <div class="bg-white rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
-                    <h2 class="text-xl font-bold mb-3 text-gray-800">Palabra clave "this"</h2>
-                    <p class="text-gray-600">¿Qué es la palabra clave "this" en JS?</p>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 h-full border-t-4 border-yellow-500 hover:shadow-lg">
+                    <h2 class="text-xl font-bold mb-3 text-gray-100">Palabra clave "this"</h2>
+                    <p class="text-gray-400">¿Qué es la palabra clave "this" en JS?</p>
                 </div>
             </a>
         </div>
     </div>
 
-    <footer class="bg-gray-800 text-white text-center py-6 mt-12">
+    <footer class="bg-black text-white text-center py-6 mt-auto">
         <p>© 2025 - JavaScript - Conceptos Fundamentales</p>
     </footer>
 </body>
