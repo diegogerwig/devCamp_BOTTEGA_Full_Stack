@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Palabra clave 'this' en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md">
+        <h1 class="text-4xl font-bold mb-2">Palabra clave "this" en JavaScript</h1>
+        <p class="text-xl">¿Qué es la palabra clave "this" en JS?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué es "this"?</h2>
+                
+                <p class="mb-4">La palabra clave <code class="bg-black text-green-400 p-1 rounded">this</code> en JavaScript es una referencia que se establece automáticamente cuando se ejecuta una función. A diferencia de otros lenguajes de programación, <code class="bg-black text-green-400 p-1 rounded">this</code> en JavaScript no está determinado por cómo se define la función, sino por cómo se invoca (se llama).</p>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Conceptos clave:</h3>
+                    <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                        <li><strong class="text-white">Contexto de ejecución:</strong> <code class="bg-black text-green-400 p-1 rounded">this</code> hace referencia al objeto actual en el que se está ejecutando un código.</li>
+                        <li><strong class="text-white">Dinámico:</strong> El valor de <code class="bg-black text-green-400 p-1 rounded">this</code> puede cambiar dependiendo de cómo se invoca la función.</li>
+                        <li><strong class="text-white">No léxico:</strong> A diferencia de las variables, <code class="bg-black text-green-400 p-1 rounded">this</code> no sigue las reglas del ámbito léxico (excepto en arrow functions).</li>
+                        <li><strong class="text-white">Implícito o explícito:</strong> El valor de <code class="bg-black text-green-400 p-1 rounded">this</code> puede establecerse implícitamente por el contexto o explícitamente con métodos como <code class="bg-black text-green-400 p-1 rounded">call()</code>, <code class="bg-black text-green-400 p-1 rounded">apply()</code> o <code class="bg-black text-green-400 p-1 rounded">bind()</code>.</li>
+                    </ul>
+                </div>
+                
+                <p class="mb-4">Entender cómo se determina <code class="bg-black text-green-400 p-1 rounded">this</code> en diferentes situaciones es fundamental para programar efectivamente en JavaScript y evitar errores comunes.</p>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Los 5 Patrones de Vinculación de "this"</h2>
+                
+                <p class="mb-4">El valor de <code class="bg-black text-green-400 p-1 rounded">this</code> depende de cómo se llama a la función. Hay 5 patrones principales que determinan a qué hará referencia <code class="bg-black text-green-400 p-1 rounded">this</code>:</p>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-3 text-yellow-300">1. Vinculación predeterminada (Default Binding)</h3>
+                        <p class="mb-3">Cuando una función se llama sin un contexto específico, <code class="bg-black text-green-400 p-1 rounded">this</code> se refiere al objeto global (window en el navegador, global en Node.js) o undefined en modo estricto.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function mostrarThis() {
+  console.log(this);
+}
+
+// En un navegador, en modo no estricto
+mostrarThis();  // window (objeto global)
+
+// En modo estricto
+"use strict";
+function mostrarThisEstricto() {
+  console.log(this);
+}
+mostrarThisEstricto();  // undefined</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-3 text-yellow-300">2. Vinculación implícita (Implicit Binding)</h3>
+                        <p class="mb-3">Cuando una función se llama como método de un objeto, <code class="bg-black text-green-400 p-1 rounded">this</code> se refiere al objeto que contiene el método.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const usuario = {
+  nombre: "Ana",
+  edad: 28,
+  presentarse: function() {
+    console.log(`Hola, soy ${this.nombre} y tengo ${this.edad} años.`);
+  }
+};
+
+usuario.presentarse();  // "Hola, soy Ana y tengo 28 años."
+// 'this' se refiere al objeto 'usuario'</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-3 text-yellow-300">3. Vinculación explícita (Explicit Binding)</h3>
+                        <p class="mb-3">Cuando se utilizan los métodos <code class="bg-black text-green-400 p-1 rounded">call()</code>, <code class="bg-black text-green-400 p-1 rounded">apply()</code> o <code class="bg-black text-green-400 p-1 rounded">bind()</code> para especificar el valor de <code class="bg-black text-green-400 p-1 rounded">this</code>.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function saludar() {
+  console.log(`Hola, soy ${this.nombre}`);
+}
+
+const persona1 = { nombre: "Carlos" };
+const persona2 = { nombre: "Laura" };
+
+// Usando call()
+saludar.call(persona1);  // "Hola, soy Carlos"
+
+// Usando apply()
+saludar.apply(persona2);  // "Hola, soy Laura"
+
+// Usando bind() - crea una nueva función con 'this' fijado
+const saludarCarlos = saludar.bind(persona1);
+saludarCarlos();  // "Hola, soy Carlos"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-3 text-yellow-300">4. Vinculación con 'new' (Constructor Binding)</h3>
+                        <p class="mb-3">Cuando una función se llama con el operador <code class="bg-black text-green-400 p-1 rounded">new</code>, <code class="bg-black text-green-400 p-1 rounded">this</code> se refiere a la nueva instancia del objeto que se está creando.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function Persona(nombre, edad) {
+  // 'this' se refiere a la nueva instancia
+  this.nombre = nombre;
+  this.edad = edad;
+  this.presentarse = function() {
+    console.log(`Hola, soy ${this.nombre} y tengo ${this.edad} años.`);
+  };
+}
+
+const juan = new Persona("Juan", 25);
+juan.presentarse();  // "Hola, soy Juan y tengo 25 años."</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-3 text-yellow-300">5. Vinculación de arrow function (Lexical Binding)</h3>
+                        <p class="mb-3">Las arrow functions no tienen su propio <code class="bg-black text-green-400 p-1 rounded">this</code>. En su lugar, heredan el valor de <code class="bg-black text-green-400 p-1 rounded">this</code> del ámbito que las contiene (enlace léxico).</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const usuario = {
+  nombre: "Ana",
+  decirNombreDespues: function() {
+    // La arrow function hereda 'this' del método 'decirNombreDespues'
+    setTimeout(() => {
+      console.log(`Hola, soy ${this.nombre}`);
+    }, 1000);
+  }
+};
+
+usuario.decirNombreDespues();  // Después de 1s: "Hola, soy Ana"</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Mejores Prácticas</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Usa arrow functions para callbacks</h3>
+                        <p class="text-gray-300">Aprovechar la herencia léxica de <code class="bg-black text-green-400 p-1 rounded">this</code> en arrow functions para callbacks, especialmente en event handlers o timers.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Problema con función regular
+const usuario = {
+  nombre: "Pedro",
+  cargarDatos: function() {
+    fetch('/api/datos')
+      .then(function(response) {
+        // 'this' aquí no es 'usuario'
+        this.datos = response.data;  // Error
+      });
+  }
+};
+
+// ✅ Solución con arrow function
+const usuarioCorrecto = {
+  nombre: "Pedro",
+  cargarDatos: function() {
+    fetch('/api/datos')
+      .then(response => {
+        // 'this' aquí es 'usuarioCorrecto'
+        this.datos = response.data;  // Funciona
+      });
+  }
+};</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Evita usar funciones regulares para métodos de clase</h3>
+                        <p class="text-gray-300">En clases ES6+, usar métodos de clase en lugar de asignar propiedades a funciones.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Problema: Asignar métodos en constructor
+class Componente {
+  constructor() {
+    this.valor = 42;
+    // Este método pierde su vínculo a 'this' cuando se pasa como callback
+    this.manejarClick = function() {
+      console.log(this.valor);
+    };
+  }
+}
+
+// ✅ Solución: Usar métodos de clase o arrow functions
+class ComponenteCorrecto {
+  constructor() {
+    this.valor = 42;
+    // Arrow function que mantiene el contexto
+    this.manejarClick = () => {
+      console.log(this.valor);
+    };
+  }
+  
+  // O método de clase (pero necesita binding si se pasa como callback)
+  manejarSubmit() {
+    console.log(this.valor);
+  }
+}</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Explícito es mejor que implícito</h3>
+                        <p class="text-gray-300">Cuando sea posible, haz explícito el contexto de <code class="bg-black text-green-400 p-1 rounded">this</code> usando <code class="bg-black text-green-400 p-1 rounded">bind()</code>, <code class="bg-black text-green-400 p-1 rounded">call()</code> o <code class="bg-black text-green-400 p-1 rounded">apply()</code>.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Confiando en el contexto implícito
+const boton = document.getElementById('boton');
+boton.addEventListener('click', usuario.manejarClick);  // 'this' será el botón, no el usuario
+
+// ✅ Haciendo el contexto explícito
+boton.addEventListener('click', usuario.manejarClick.bind(usuario));</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Evita definir funciones dentro de bucles</h3>
+                        <p class="text-gray-300">Esto puede causar problemas de rendimiento y comportamiento inesperado con <code class="bg-black text-green-400 p-1 rounded">this</code>.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Definir funciones dentro de un bucle
+for (let i = 0; i < elementos.length; i++) {
+  elementos[i].onclick = function() {
+    this.style.color = 'red';  // 'this' se refiere al elemento, que podría ser lo deseado
+                               // pero es ineficiente crear una nueva función por iteración
+  };
+}
+
+// ✅ Definir la función una vez y usar bind o un closure
+function cambiarColor() {
+  this.style.color = 'red';
+}
+
+for (let i = 0; i < elementos.length; i++) {
+  elementos[i].onclick = cambiarColor;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Ejemplos en Frameworks Populares</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">React</h3>
+                        <p class="mb-3">En React, el comportamiento de <code class="bg-black text-green-400 p-1 rounded">this</code> puede variar según cómo se definan y vinculen los manejadores de eventos:</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class BotonContador extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { contador: 0 };
+    
+    // Vinculación en el constructor (enfoque recomendado para métodos)
+    this.incrementarConBind = this.incrementarConBind.bind(this);
+  }
+  
+  // Método normal: requiere binding para acceder a 'this'
+  incrementarConBind() {
+    this.setState({ contador: this.state.contador + 1 });
+  }
+  
+  // Método definido como arrow function: no requiere binding
+  incrementarArrow = () => {
+    this.setState({ contador: this.state.contador + 1 });
+  };
+  
+  render() {
+    return (
+      <div>
+        <p>Contador: {this.state.contador}</p>
+        <button onClick={this.incrementarConBind}>
+          Incrementar (con bind)
+        </button>
+        <button onClick={this.incrementarArrow}>
+          Incrementar (arrow)
+        </button>
+        {/* Binding en línea: menos eficiente pero funciona */}
+        <button onClick={this.incrementarConBind.bind(this)}>
+          Incrementar (bind en línea)
+        </button>
+        {/* Arrow function en línea: menos eficiente pero funciona */}
+        <button onClick={() => this.incrementarConBind()}>
+          Incrementar (arrow en línea)
+        </button>
+      </div>
+    );
+  }
+}</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Vue.js</h3>
+                        <p class="mb-3">En Vue, <code class="bg-black text-green-400 p-1 rounded">this</code> se refiere automáticamente a la instancia del componente dentro de las plantillas y métodos:</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>new Vue({
+  el: '#app',
+  data: {
+    mensaje: 'Hola Vue!',
+    contador: 0
+  },
+  methods: {
+    incrementar: function() {
+      // 'this' se refiere a la instancia de Vue automáticamente
+      this.contador++;
+    },
+    mostrarMensaje() {  // Sintaxis de método ES2015
+      return this.mensaje;
+    }
+  },
+  created: function() {
+    // 'this' se refiere a la instancia de Vue aquí también
+    console.log('Contador inicial:', this.contador);
+    
+    // PERO, si hay funciones anidadas, 'this' puede cambiar
+    setTimeout(function() {
+      // 'this' no es la instancia Vue aquí
+      // this.contador++;  // Esto daría error
+    }, 1000);
+    
+    // Solución: usar arrow function
+    setTimeout(() => {
+      // Ahora 'this' es la instancia Vue
+      this.contador++;
+    }, 1000);
+  }
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/this" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - this</a></li>
+                    <li><a href="https://es.javascript.info/object-methods" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Métodos del objeto, "this"</a></li>
+                    <li><a href="https://www.freecodecamp.org/news/this-in-javascript-explained-with-examples/" class="text-yellow-400 hover:text-yellow-300">FreeCodeCamp - "this" en JavaScript explicado con ejemplos</a></li>
+                    <li><a href="https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/" class="text-yellow-400 hover:text-yellow-300">Yehuda Katz - Entendiendo la invocación de funciones en JavaScript y "this"</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Problemas Comunes y Soluciones</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Problema: Pérdida del contexto de 'this'</h3>
+                        <p class="mb-2">Uno de los problemas más comunes es cuando <code class="bg-black text-green-400 p-1 rounded">this</code> pierde su contexto, especialmente al pasar métodos como callbacks.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>const usuario = {
+  nombre: "Ana",
+  decirNombre: function() {
+    console.log(this.nombre);
+  }
+};
+
+// Funciona como se espera
+usuario.decirNombre();  // "Ana"
+
+// Pierde el contexto cuando se pasa como callback
+setTimeout(usuario.decirNombre, 1000);  // undefined</code></pre>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-green-200">Soluciones:</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Solución 1: Usar bind()
+setTimeout(usuario.decirNombre.bind(usuario), 1000);  // "Ana"
+
+// Solución 2: Usar una función wrapper
+setTimeout(function() {
+  usuario.decirNombre();
+}, 1000);  // "Ana"
+
+// Solución 3: Usar una arrow function
+setTimeout(() => {
+  usuario.decirNombre();
+}, 1000);  // "Ana"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Problema: 'this' en métodos anidados</h3>
+                        <p class="mb-2">Dentro de las funciones anidadas, <code class="bg-black text-green-400 p-1 rounded">this</code> no se refiere al objeto contenedor, sino que sigue sus propias reglas de vinculación.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>const contador = {
+  valor: 0,
+  incrementar: function() {
+    function sumar() {
+      this.valor++;  // Aquí 'this' no es el objeto contador
+    }
+    sumar();
+  }
+};
+
+contador.incrementar();
+console.log(contador.valor);  // Sigue siendo 0</code></pre>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-green-200">Soluciones:</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Solución 1: Capturar 'this' en una variable
+const contador1 = {
+  valor: 0,
+  incrementar: function() {
+    const self = this;  // O 'that', '_this', etc.
+    function sumar() {
+      self.valor++;  // Usa la referencia capturada
+    }
+    sumar();
+  }
+};
+
+// Solución 2: Usar bind()
+const contador2 = {
+  valor: 0,
+  incrementar: function() {
+    function sumar() {
+      this.valor++;
+    }
+    sumar.bind(this)();  // Vincula explícitamente
+  }
+};
+
+// Solución 3: Usar arrow function
+const contador3 = {
+  valor: 0,
+  incrementar: function() {
+    const sumar = () => {
+      this.valor++;  // 'this' hereda del contexto contenedor
+    };
+    sumar();
+  }
+};</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Comprendiendo call(), apply() y bind()</h2>
+                
+                <p class="mb-4">Estos tres métodos permiten controlar explícitamente el valor de <code class="bg-black text-green-400 p-1 rounded">this</code> en una función:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-3 text-yellow-300">call()</h3>
+                        <p class="mb-3 text-gray-300">Llama a una función con un valor <code class="bg-black text-green-400 p-1 rounded">this</code> específico y argumentos pasados individualmente.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function saludar(saludo, puntuacion) {
+  return `${saludo}, ${this.nombre}${puntuacion}`;
+}
+
+const persona = { nombre: "María" };
+
+// call(thisArg, arg1, arg2, ...)
+const resultado = saludar.call(
+  persona, "Hola", "!"
+);
+
+console.log(resultado);
+// "Hola, María!"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-3 text-yellow-300">apply()</h3>
+                        <p class="mb-3 text-gray-300">Similar a <code class="bg-black text-green-400 p-1 rounded">call()</code>, pero los argumentos se pasan como un array.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function saludar(saludo, puntuacion) {
+  return `${saludo}, ${this.nombre}${puntuacion}`;
+}
+
+const persona = { nombre: "María" };
+
+// apply(thisArg, [arg1, arg2, ...])
+const resultado = saludar.apply(
+  persona, ["Hola", "!"]
+);
+
+console.log(resultado);
+// "Hola, María!"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-3 text-yellow-300">bind()</h3>
+                        <p class="mb-3 text-gray-300">Crea una nueva función con <code class="bg-black text-green-400 p-1 rounded">this</code> enlazado al valor especificado, sin invocar la función original.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function saludar(saludo, puntuacion) {
+  return `${saludo}, ${this.nombre}${puntuacion}`;
+}
+
+const persona = { nombre: "María" };
+
+// bind(thisArg, arg1, arg2, ...)
+const saludarAMaria = saludar.bind(
+  persona, "Hola"
+);
+
+// Se puede llamar más tarde
+// y añadir más argumentos
+console.log(saludarAMaria("!"));
+// "Hola, María!"</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Usos comunes:</h3>
+                    <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                        <li><strong class="text-white">Borrowing methods:</strong> "Tomar prestados" métodos de otros objetos.</li>
+                        <li><strong class="text-white">Parcial application:</strong> Crear versiones específicas de funciones con algunos argumentos prefijados.</li>
+                        <li><strong class="text-white">Asegurar contexto:</strong> Garantizar que una función siempre se ejecute con un contexto particular.</li>
+                    </ul>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-3"><code>// Borrowing methods
+const persona = { nombre: "Juan" };
+const saludar = function() { return `Hola, ${this.nombre}`; };
+
+console.log(saludar.call(persona));  // "Hola, Juan"
+
+// Partial application
+function multiplicar(a, b) { return a * b; }
+const duplicar = multiplicar.bind(null, 2);  // 'this' no importa aquí
+
+console.log(duplicar(4));  // 8</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">'this' en diferentes contextos</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">'this' en el contexto global</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// En el navegador, 'this' a nivel global es window
+console.log(this === window);  // true en el navegador
+
+// En Node.js, 'this' a nivel global es globalThis
+console.log(this === globalThis);  // true en Node.js</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">'this' en funciones (modo no estricto)</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function ejemploFuncion() {
+  console.log(this);
+}
+
+// En el navegador, sin modo estricto
+ejemploFuncion();  // window</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">'this' en funciones (modo estricto)</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>"use strict";
+function ejemploFuncionEstricta() {
+  console.log(this);
+}
+
+ejemploFuncionEstricta();  // undefined</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">'this' en métodos de objetos</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const objeto = {
+  propiedad: "valor",
+  metodo: function() {
+    console.log(this.propiedad);
+  }
+};
+
+objeto.metodo();  // "valor"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">'this' en métodos de objetos anidados</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const objetoExterno = {
+  propiedad: "externa",
+  objetoInterno: {
+    propiedad: "interna",
+    metodo: function() {
+      console.log(this.propiedad);
+    }
+  }
+};
+
+objetoExterno.objetoInterno.metodo();  // "interna"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">'this' en eventos del DOM</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// En un manejador de eventos, 'this' se refiere al elemento que disparó el evento
+document.getElementById("miBoton").addEventListener("click", function() {
+  console.log(this);  // El elemento del botón
+});</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">'this' en clases (ES6+)</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class Persona {
+  constructor(nombre) {
+    this.nombre = nombre;  // 'this' se refiere a la instancia
+  }
+  
+  saludar() {
+    console.log(`Hola, soy ${this.nombre}`);
+  }
+}
+
+const persona = new Persona("Carlos");
+persona.saludar();  // "Hola, soy Carlos"</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">'this' en Arrow Functions vs. Funciones Regulares</h2>
+                
+                <p class="mb-4">Una de las diferencias más importantes introducidas en ES6 es cómo las arrow functions manejan <code class="bg-black text-green-400 p-1 rounded">this</code>:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Función Regular</h3>
+                        <ul class="list-disc pl-6 space-y-1 mb-3 text-gray-300">
+                            <li>Tiene su propio valor de <code class="bg-black text-green-400 p-1 rounded">this</code></li>
+                            <li>El valor se determina en tiempo de ejecución según cómo se llama a la función</li>
+                            <li>Puede cambiar según el contexto de invocación</li>
+                        </ul>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const obj = {
+  nombre: "Objeto",
+  metodoRegular: function() {
+    console.log(this.nombre);
+    
+    setTimeout(function() {
+      // 'this' aquí NO es 'obj'
+      console.log(this.nombre);
+    }, 100);
+  }
+};
+
+obj.metodoRegular();
+// "Objeto"
+// undefined (en el navegador, 'this' es 'window')</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Arrow Function</h3>
+                        <ul class="list-disc pl-6 space-y-1 mb-3 text-gray-300">
+                            <li>No tiene su propio valor de <code class="bg-black text-green-400 p-1 rounded">this</code></li>
+                            <li>Hereda <code class="bg-black text-green-400 p-1 rounded">this</code> del ámbito léxico (contexto contenedor)</li>
+                            <li>No puede ser cambiado, ni siquiera con <code class="bg-black text-green-400 p-1 rounded">call()</code>, <code class="bg-black text-green-400 p-1 rounded">apply()</code> o <code class="bg-black text-green-400 p-1 rounded">bind()</code></li>
+                        </ul>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const obj = {
+  nombre: "Objeto",
+  metodoArrow: function() {
+    console.log(this.nombre);
+    
+    setTimeout(() => {
+      // 'this' aquí ES 'obj'
+      console.log(this.nombre);
+    }, 100);
+  }
+};
+
+obj.metodoArrow();
+// "Objeto"
+// "Objeto"</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mt-6 border-l-4 border-red-500">
+                    <h3 class="text-lg font-semibold mb-2 text-red-300">⚠️ Advertencia: Arrow Functions como Métodos</h3>
+                    <p class="mb-2 text-gray-300">Utilizar arrow functions como métodos de objeto puede llevar a confusión, ya que no se vincularán al objeto:</p>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// ❌ Mal uso de arrow function como método
+const persona = {
+  nombre: "Ana",
+  // Al usar arrow function, 'this' NO se refiere a 'persona'
+  saludar: () => {
+    console.log(`Hola, soy ${this.nombre}`);
+  }
+};
+
+persona.saludar();  // "Hola, soy undefined"
+
+// ✅ Uso correcto con función regular
+const personaCorrecta = {
+  nombre: "Ana",
+  saludar: function() {
+    console.log(`Hola, soy ${this.nombre}`);
+  }
+};
+
+personaCorrecta.saludar();  // "Hola, soy Ana"</code></pre>
