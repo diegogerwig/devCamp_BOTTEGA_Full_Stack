@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Operador Ternario en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md">
+        <h1 class="text-4xl font-bold mb-2">Operador Ternario en JavaScript</h1>
+        <p class="text-xl">¿Qué es un operador ternario?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué es el Operador Ternario?</h2>
+                <p class="mb-4">El operador ternario (también conocido como operador condicional) es el único operador en JavaScript que toma tres operandos. Es una forma abreviada de escribir una declaración condicional <code class="bg-black text-green-400 p-1 rounded">if-else</code> simple en una sola línea.</p>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>condición ? expresión_si_verdadero : expresión_si_falso</code></pre>
+                    <ul class="list-disc pl-6 mt-4 space-y-2 text-gray-300">
+                        <li><strong class="text-white">condición:</strong> Expresión que se evalúa como verdadera o falsa</li>
+                        <li><strong class="text-white">expresión_si_verdadero:</strong> Valor que se devuelve si la condición es verdadera</li>
+                        <li><strong class="text-white">expresión_si_falso:</strong> Valor que se devuelve si la condición es falsa</li>
+                    </ul>
+                </div>
+                
+                <p class="mb-4">El operador ternario se llama "ternario" porque tiene exactamente tres operandos, a diferencia de los operadores unarios (con un solo operando) o binarios (con dos operandos).</p>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Ejemplos Básicos</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplo 1: Verificar si es mayor de edad</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Usando if-else
+const edad = 20;
+let mensaje;
+
+if (edad >= 18) {
+  mensaje = "Eres mayor de edad";
+} else {
+  mensaje = "Eres menor de edad";
+}
+
+console.log(mensaje);  // "Eres mayor de edad"
+
+// Usando operador ternario
+const edadPersona = 16;
+const mensajeTernario = edadPersona >= 18 ? "Eres mayor de edad" : "Eres menor de edad";
+
+console.log(mensajeTernario);  // "Eres menor de edad"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplo 2: Determinar paridad de un número</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numero = 7;
+const paridad = numero % 2 === 0 ? "par" : "impar";
+
+console.log(`El número ${numero} es ${paridad}`);  // "El número 7 es impar"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplo 3: Seleccionar un mensaje de bienvenida</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const horaDelDia = 14;  // 2 PM
+const saludo = horaDelDia < 12 ? "Buenos días" : horaDelDia < 18 ? "Buenas tardes" : "Buenas noches";
+
+console.log(saludo);  // "Buenas tardes"</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Comparación con if-else</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-3 text-yellow-300">Utilizando if-else</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto h-56"><code>function verificarAcceso(usuario) {
+  let mensaje;
+  
+  if (usuario.activo) {
+    if (usuario.rol === 'admin') {
+      mensaje = 'Acceso total';
+    } else {
+      mensaje = 'Acceso limitado';
+    }
+  } else {
+    mensaje = 'Acceso denegado';
+  }
+  
+  return mensaje;
+}</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-3 text-yellow-300">Utilizando operador ternario</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto h-56"><code>function verificarAcceso(usuario) {
+  return usuario.activo
+    ? usuario.rol === 'admin'
+      ? 'Acceso total'
+      : 'Acceso limitado'
+    : 'Acceso denegado';
+}
+
+// O en una sola línea (menos legible):
+function verificarAcceso(usuario) {
+  return usuario.activo ? (usuario.rol === 'admin' ? 'Acceso total' : 'Acceso limitado') : 'Acceso denegado';
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ventajas y Desventajas</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-medium text-white mb-2">Ventajas del Operador Ternario</h4>
+                            <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                                <li>Más conciso, menos verboso</li>
+                                <li>Permite asignar valores en una sola línea</li>
+                                <li>Puede usarse en expresiones</li>
+                                <li>Útil para renderizado condicional en frameworks</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-white mb-2">Desventajas del Operador Ternario</h4>
+                            <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                                <li>Puede ser difícil de leer si se anida demasiado</li>
+                                <li>No es adecuado para lógica compleja</li>
+                                <li>Puede dificultar la depuración</li>
+                                <li>Menos explícito que if-else en algunos casos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Casos de Uso Comunes</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">1. Asignación condicional de variables</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Asignar un valor predeterminado si una variable es nula o indefinida
+const nombre = nombreUsuario ? nombreUsuario : 'Invitado';
+
+// Versión más corta usando el operador de coalescencia nula (ES2020)
+const nombre = nombreUsuario ?? 'Invitado';</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">2. Renderizado condicional en React</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Mostrar un componente diferente basado en si el usuario está autenticado
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  return (
+    <div>
+      {isLoggedIn ? <Dashboard /> : <LoginForm />}
+    </div>
+  );
+}</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">3. Agregar clases CSS condicionalmente</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Agregar una clase si un elemento está activo
+const buttonClass = isActive ? 'btn btn-active' : 'btn';
+
+// Ejemplo con múltiples condiciones
+const buttonClass = `btn ${isActive ? 'btn-active' : ''} ${isDisabled ? 'btn-disabled' : ''}`.trim();</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">4. En funciones de mapeo de arrays</h3>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Transformar un array basado en condiciones
+const números = [1, 2, 3, 4, 5];
+const parOImpar = números.map(num => num % 2 === 0 ? 'par' : 'impar');
+
+console.log(parOImpar);  // ["impar", "par", "impar", "par", "impar"]</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Operador Ternario Anidado</h2>
+                
+                <p class="mb-4">Es posible anidar operadores ternarios para manejar múltiples condiciones, pero debemos tener cuidado con la legibilidad.</p>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplo: Categorizar calificaciones</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const puntuación = 85;
+
+// Operador ternario anidado
+const calificación = 
+  puntuación >= 90 ? 'A' :
+  puntuación >= 80 ? 'B' :
+  puntuación >= 70 ? 'C' :
+  puntuación >= 60 ? 'D' : 'F';
+
+console.log(`Calificación: ${calificación}`);  // "Calificación: B"</code></pre>
+                </div>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6 border-l-4 border-red-500">
+                    <h3 class="text-lg font-semibold mb-2 text-red-300">⚠️ Advertencia: Cuidado con la legibilidad</h3>
+                    <p class="text-gray-300">Aunque el operador ternario anidado es poderoso, puede hacer que el código sea difícil de leer y mantener. Si tienes más de dos o tres niveles de anidación, considera usar una declaración if-else más tradicional o un objeto de mapeo.</p>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// Alternativa usando un objeto de mapeo
+function obtenerCalificación(puntuación) {
+  const rangos = {
+    90: 'A',
+    80: 'B',
+    70: 'C',
+    60: 'D',
+    0: 'F'
+  };
+  
+  // Encontrar el primer umbral que la puntuación supera
+  const umbral = Object.keys(rangos)
+    .map(Number)
+    .sort((a, b) => b - a)
+    .find(umbral => puntuación >= umbral);
+  
+  return rangos[umbral];
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Buenas Prácticas</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Mantener la simplicidad</h3>
+                        <p class="text-gray-300">Usa el operador ternario para casos sencillos donde mejore la legibilidad. Para lógica compleja, prefiere if-else.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ✅ Bueno: Simple y claro
+const mensaje = edad >= 18 ? "Adulto" : "Menor";
+
+// ❌ Malo: Demasiado complejo
+const mensaje = edad >= 18 ? (genero === 'M' ? (casado ? "Hombre casado" : "Hombre soltero") : (casado ? "Mujer casada" : "Mujer soltera")) : "Menor de edad";</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Usar paréntesis para claridad</h3>
+                        <p class="text-gray-300">Cuando anides operadores ternarios, usa paréntesis para hacer explícito el orden de evaluación.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Difícil de leer
+const resultado = a > b ? c > d ? e : f : g > h ? i : j;
+
+// ✅ Más fácil de entender
+const resultado = a > b 
+  ? (c > d ? e : f) 
+  : (g > h ? i : j);</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Formatea adecuadamente</h3>
+                        <p class="text-gray-300">Usa saltos de línea y sangrías para mejorar la legibilidad, especialmente en operadores ternarios anidados.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// Una línea para expresiones muy simples
+const esAdulto = edad >= 18 ? true : false;
+
+// Múltiples líneas para expresiones más complejas
+const mensaje = esFinDeSemana
+  ? temperatura > 25
+    ? "Vamos a la playa"
+    : "Quedémonos en casa"
+  : "Hay que trabajar";</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Evitar efectos secundarios</h3>
+                        <p class="text-gray-300">El operador ternario está diseñado para devolver valores, no para ejecutar código con efectos secundarios.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Mal uso con efectos secundarios
+isLoggedIn ? updateUserStatus() : showLoginForm();
+
+// ✅ Mejor con if-else
+if (isLoggedIn) {
+  updateUserStatus();
+} else {
+  showLoginForm();
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Otras Alternativas al Operador Ternario</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Operador de cortocircuito (&&)</h3>
+                        <p class="mb-2">Para ejecutar código solo si una condición es verdadera (sin parte "else").</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Usando if
+if (condición) {
+  ejecutarCódigo();
+}
+
+// Usando operador &&
+condición && ejecutarCódigo();</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Operador de coalescencia nula (??)</h3>
+                        <p class="mb-2">Introducido en ES2020, devuelve el operando derecho cuando el izquierdo es null o undefined.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Usando operador ternario
+const nombre = usuario.nombre !== null && usuario.nombre !== undefined ? usuario.nombre : 'Invitado';
+
+// Usando operador de coalescencia nula
+const nombre = usuario.nombre ?? 'Invitado';</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Objetos de mapeo</h3>
+                        <p class="mb-2">Útil cuando tienes múltiples condiciones con valores diferentes.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Usando if-else o ternarios anidados
+let mensaje;
+if (status === 'success') {
+  mensaje = 'Operación exitosa';
+} else if (status === 'warning') {
+  mensaje = 'Advertencia: Continúe con precaución';
+} else if (status === 'error') {
+  mensaje = 'Error: Inténtelo de nuevo';
+} else {
+  mensaje = 'Estado desconocido';
+}
+
+// Usando un objeto de mapeo
+const mensajes = {
+  success: 'Operación exitosa',
+  warning: 'Advertencia: Continúe con precaución',
+  error: 'Error: Inténtelo de nuevo'
+};
+
+const mensaje = mensajes[status] || 'Estado desconocido';</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Ejercicios Prácticos</h2>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejercicio 1: Convertir if-else a operador ternario</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>// Convierte este código a operador ternario
+function validarPassword(password) {
+  if (password.length >= 8) {
+    return "Password válido";
+  } else {
+    return "Password demasiado corto";
+  }
+}</code></pre>
+                    <p class="text-yellow-200 mb-2">Solución:</p>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function validarPassword(password) {
+  return password.length >= 8 ? "Password válido" : "Password demasiado corto";
+}</code></pre>
+                </div>
+                
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejercicio 2: Crear un semáforo</h3>
+                    <p class="mb-2">Escribe una función que tome un color ("rojo", "amarillo" o "verde") y devuelva el mensaje correspondiente.</p>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>function mensajeSemaforo(color) {
+  // Usar operador ternario aquí
+}</code></pre>
+                    <p class="text-yellow-200 mb-2">Solución:</p>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function mensajeSemaforo(color) {
+  return color === "rojo" ? "Detente" :
+         color === "amarillo" ? "Precaución" :
+         color === "verde" ? "Avanza" :
+         "Color no válido";
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/Conditional_Operator" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Operador condicional (ternario)</a></li>
+                    <li><a href="https://es.javascript.info/ifelse#operador-condicional" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Operador condicional '?'</a></li>
+                    <li><a href="https://www.freecodecamp.org/news/ternary-operator-javascript-if-else-shortened/" class="text-yellow-400 hover:text-yellow-300">FreeCodeCamp - Ternary Operator in JavaScript</a></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Este script podría usarse para añadir ejemplos interactivos
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Página del operador ternario cargada correctamente');
+        });
+    </script>
+</body>
+</html>
