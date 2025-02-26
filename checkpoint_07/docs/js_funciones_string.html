@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Funciones de String en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md">
+        <h1 class="text-4xl font-bold mb-2">Funciones de String en JavaScript</h1>
+        <p class="text-xl">¿Cuáles son las tres funciones de String en JS?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Introducción a los Strings en JavaScript</h2>
+                <p class="mb-4">Los strings (cadenas de texto) son uno de los tipos de datos fundamentales en JavaScript. Representan texto y se crean encerrando una secuencia de caracteres entre comillas simples, dobles o backticks (acentos graves).</p>
+
+                <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Creación de Strings</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Tres formas de definir strings
+const str1 = 'Comillas simples';
+const str2 = "Comillas dobles";
+const str3 = `Backticks (template literals)`;
+
+// Los template literals permiten interpolación
+const nombre = "María";
+const saludo = `Hola, ${nombre}!`;  // "Hola, María!"
+
+// Caracteres de escape
+const lineaNueva = "Primera línea\nSegunda línea";
+const tabulador = "Texto\tcon\ttabulaciones";
+const comillaEscapada = "Ella dijo: \"Hola\"";
+</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Las Tres Funciones Principales de Manipulación de Strings</h2>
+                
+                <p class="mb-6">Aunque los strings en JavaScript tienen muchos métodos útiles, tres de los más fundamentales y ampliamente utilizados son:</p>
+                
+                <div class="space-y-8">
+                    <!-- Función 1: substring/slice -->
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-3 text-yellow-300">1. substring() / slice()</h3>
+                        <p class="mb-3">Estas funciones permiten extraer una parte de un string basándose en índices.</p>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-yellow-200">Sintaxis:</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>string.substring(indiceInicio, indiceFin);  // indiceFin no incluido
+string.slice(indiceInicio, indiceFin);      // indiceFin no incluido</code></pre>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-yellow-200">Ejemplos:</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>const texto = "JavaScript es increíble";
+
+// Obtener "JavaScript"
+console.log(texto.substring(0, 10));  // "JavaScript"
+console.log(texto.slice(0, 10));      // "JavaScript"
+
+// Obtener "increíble"
+console.log(texto.substring(14));     // "increíble" (hasta el final)
+console.log(texto.slice(14));         // "increíble" (hasta el final)
+
+// Diferencias entre substring y slice con índices negativos
+console.log(texto.substring(-5));     // "JavaScript es increíble" (convierte -5 a 0)
+console.log(texto.slice(-9));         // "increíble" (cuenta desde el final)</code></pre>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-yellow-200">Casos de uso:</h4>
+                        <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                            <li>Extraer partes específicas de una cadena</li>
+                            <li>Cortar texto para mostrar previsualizaciones</li>
+                            <li>Separar texto en diferentes componentes</li>
+                            <li>Obtener extensiones de archivos o dominios de URLs</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Función 2: replace -->
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-3 text-yellow-300">2. replace() / replaceAll()</h3>
+                        <p class="mb-3">Estas funciones permiten reemplazar texto dentro de un string con otro texto o patrón.</p>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-yellow-200">Sintaxis:</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>string.replace(buscar, reemplazar);       // Reemplaza solo la primera coincidencia
+string.replaceAll(buscar, reemplazar);   // Reemplaza todas las coincidencias (ES2021)</code></pre>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-yellow-200">Ejemplos:</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>const texto = "El perro corre con otro perro";
+
+// Reemplazar la primera coincidencia
+console.log(texto.replace("perro", "gato"));  
+// "El gato corre con otro perro"
+
+// Reemplazar todas las coincidencias (ES2021)
+console.log(texto.replaceAll("perro", "gato"));  
+// "El gato corre con otro gato"
+
+// Usando expresiones regulares
+console.log(texto.replace(/perro/g, "gato"));  
+// "El gato corre con otro gato"
+
+// Usar una función para reemplazar
+console.log(texto.replace(/perro/g, match => match.toUpperCase()));  
+// "El PERRO corre con otro PERRO"</code></pre>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-yellow-200">Casos de uso:</h4>
+                        <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                            <li>Corregir textos o formatos</li>
+                            <li>Formatear datos para mostrar</li>
+                            <li>Sanitizar entradas de usuario</li>
+                            <li>Reemplazar marcadores de posición con datos reales</li>
+                            <li>Transformar formatos de texto</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Función 3: split -->
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-3 text-yellow-300">3. split()</h3>
+                        <p class="mb-3">Esta función divide un string en un array de substrings basándose en un separador.</p>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-yellow-200">Sintaxis:</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>string.split(separador, limite);  // límite es opcional</code></pre>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-yellow-200">Ejemplos:</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mb-4"><code>const texto = "manzana,pera,uva,naranja";
+
+// Dividir por comas
+const frutas = texto.split(",");
+console.log(frutas);  // ["manzana", "pera", "uva", "naranja"]
+
+// Dividir por espacio
+const frase = "JavaScript es un lenguaje de programación";
+const palabras = frase.split(" ");
+console.log(palabras);  
+// ["JavaScript", "es", "un", "lenguaje", "de", "programación"]
+
+// Limitar el número de elementos
+console.log(frase.split(" ", 3));  // ["JavaScript", "es", "un"]
+
+// Dividir en caracteres individuales
+console.log("Hola".split(""));  // ["H", "o", "l", "a"]
+
+// String vacío si no hay coincidencias
+console.log("Sin separador".split("-"));  // ["Sin separador"]</code></pre>
+                        
+                        <h4 class="text-md font-semibold mb-2 text-yellow-200">Casos de uso:</h4>
+                        <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                            <li>Parsear datos CSV o separados por delimitadores</li>
+                            <li>Separar frases en palabras</li>
+                            <li>Dividir nombres completos en nombre y apellido</li>
+                            <li>Transformar strings en arrays para facilitar su manipulación</li>
+                            <li>Tokenizar texto para análisis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Otras Funciones Útiles de String</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">toUpperCase() / toLowerCase()</h3>
+                        <p class="text-sm text-gray-300 mb-2">Convierten un string a mayúsculas o minúsculas.</p>
+                        <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>"Hola".toUpperCase();  // "HOLA"
+"Mundo".toLowerCase();  // "mundo"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">trim() / trimStart() / trimEnd()</h3>
+                        <p class="text-sm text-gray-300 mb-2">Eliminan espacios en blanco del principio y/o final.</p>
+                        <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>"  texto  ".trim();      // "texto"
+"  texto  ".trimStart();  // "texto  "
+"  texto  ".trimEnd();    // "  texto"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">indexOf() / lastIndexOf()</h3>
+                        <p class="text-sm text-gray-300 mb-2">Buscan la posición de un substring.</p>
+                        <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>"JavaScript".indexOf("Script");    // 4
+"abcdabc".lastIndexOf("abc");      // 4</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">includes() / startsWith() / endsWith()</h3>
+                        <p class="text-sm text-gray-300 mb-2">Comprueban si un string contiene, comienza o termina con un substring.</p>
+                        <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>"JavaScript".includes("Script");    // true
+"JavaScript".startsWith("Java");   // true
+"JavaScript".endsWith("ipt");      // true</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">concat()</h3>
+                        <p class="text-sm text-gray-300 mb-2">Concatena dos o más strings.</p>
+                        <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>"Hola ".concat("Mundo");  // "Hola Mundo"
+// Mejor usar operador +:
+"Hola " + "Mundo";       // "Hola Mundo"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">padStart() / padEnd()</h3>
+                        <p class="text-sm text-gray-300 mb-2">Rellenan un string hasta una longitud específica.</p>
+                        <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>"5".padStart(2, "0");  // "05"
+"Hola".padEnd(10, ".");  // "Hola......"</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Ejemplo Práctico</h2>
+                
+                <p class="mb-4">Este ejemplo combina las tres funciones principales para procesar y formatear un texto:</p>
+                
+                <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>// Función que procesa un nombre completo
+function procesarNombre(nombreCompleto) {
+  // 1. Usar split para separar nombre y apellido
+  const partes = nombreCompleto.split(" ");
+  
+  // 2. Usar slice para extraer el primer nombre
+  const primerNombre = partes[0];
+  
+  // 3. Usar replace para formatear el apellido en mayúsculas
+  const apellido = partes[1].replace(
+    partes[1], 
+    partes[1].toUpperCase()
+  );
+  
+  return `${primerNombre} ${apellido}`;
+}
+
+// Ejemplos
+console.log(procesarNombre("john doe"));  // "john DOE"
+console.log(procesarNombre("ana smith"));  // "ana SMITH"</code></pre>
+                
+                <p class="mb-4">Otro ejemplo combinando métodos de string para formatear URLs:</p>
+                
+                <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>// Función que convierte un título en una URL amigable (slug)
+function crearSlug(titulo) {
+  return titulo
+    .toLowerCase()                      // Convertir a minúsculas
+    .replace(/[áéíóúüñ]/g, match => {  // Reemplazar acentos
+      const reemplazos = {
+        'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+        'ü': 'u', 'ñ': 'n'
+      };
+      return reemplazos[match];
+    })
+    .replace(/[^\w\s-]/g, '')          // Eliminar caracteres especiales
+    .replace(/\s+/g, '-')              // Reemplazar espacios por guiones
+    .replace(/-+/g, '-')               // Eliminar guiones duplicados
+    .trim();                           // Eliminar espacios iniciales/finales
+}
+
+// Ejemplos
+console.log(crearSlug("JavaScript: Guía Rápida"));  
+// "javascript-guia-rapida"
+
+console.log(crearSlug("¿Cómo funciona String.split()?"));  
+// "como-funciona-stringsplit"</code></pre>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/String" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - String</a></li>
+                    <li><a href="https://es.javascript.info/string" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Strings</a></li>
+                    <li><a href="https://www.w3schools.com/js/js_string_methods.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript String Methods</a></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-black text-white text-center py-6 mt-auto">
+        <p>© 2025 - JavaScript - Conceptos Fundamentales</p>
+    </footer>
+</body>
+</html>

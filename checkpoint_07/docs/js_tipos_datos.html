@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Tipos de Datos en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md">
+        <h1 class="text-4xl font-bold mb-2">Tipos de Datos en JavaScript</h1>
+        <p class="text-xl">¿Cuáles son algunos tipos de datos JS?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Tipos Primitivos</h2>
+                <p class="mb-4">JavaScript tiene 7 tipos de datos primitivos:</p>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-2 text-yellow-300">String</h3>
+                        <p class="mb-2">Secuencia de caracteres utilizada para representar texto.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const nombre = "María";
+const mensaje = 'Hola, mundo!';
+const template = `El nombre es ${nombre}`;  // Template literals (ES6)</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-2 text-yellow-300">Number</h3>
+                        <p class="mb-2">Valores numéricos, incluyendo enteros y decimales. Solo hay un tipo numérico en JS.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const entero = 42;
+const decimal = 3.14;
+const exponencial = 2.5e6;  // 2,500,000
+const binario = 0b1010;     // 10 en decimal
+const octal = 0o744;        // 484 en decimal
+const hexadecimal = 0xFF;   // 255 en decimal
+const infinito = Infinity;
+const noEsNumero = NaN;     // Not a Number</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-2 text-yellow-300">Boolean</h3>
+                        <p class="mb-2">Valor lógico que representa verdadero o falso.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const verdadero = true;
+const falso = false;
+const comparacion = 5 > 3;  // true</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-2 text-yellow-300">Undefined</h3>
+                        <p class="mb-2">Valor que tiene una variable a la que no se le ha asignado un valor.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>let sinDefinir;
+console.log(sinDefinir);    // undefined</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-2 text-yellow-300">Null</h3>
+                        <p class="mb-2">Valor que representa la ausencia intencional de cualquier valor u objeto.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const valorNulo = null;
+console.log(valorNulo);     // null</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-2 text-yellow-300">Symbol (ES6)</h3>
+                        <p class="mb-2">Tipo de datos cuyos valores son únicos e inmutables, útil como identificadores de propiedades de objetos.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const simbolo = Symbol('descripcion');
+const otroSimbolo = Symbol('descripcion');
+console.log(simbolo === otroSimbolo);  // false</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-semibold mb-2 text-yellow-300">BigInt (ES2020)</h3>
+                        <p class="mb-2">Permite representar números enteros de precisión arbitraria.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeroGrande = 9007199254740991n;
+const otroBigInt = BigInt("9007199254740991");
+const bigIntLiteral = 1234567890123456789012345678901234567890n;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Tipos de Referencia (Objetos)</h2>
+                <p class="mb-4">Además de los tipos primitivos, JavaScript tiene tipos de referencia, que son objetos y subtipos de objetos:</p>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-blue-500">
+                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Object</h3>
+                        <p class="mb-2">Colección de pares clave-valor y el bloque de construcción más básico de JavaScript.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const persona = {
+  nombre: "Juan",
+  edad: 30,
+  saludar: function() {
+    return `Hola, soy ${this.nombre}`;
+  }
+};</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-blue-500">
+                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Array</h3>
+                        <p class="mb-2">Objetos especiales utilizados para almacenar secuencias de valores ordenados.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 2, 3, 4, 5];
+const mixto = [1, "dos", true, null, {clave: "valor"}];
+const matriz = [[1, 2], [3, 4]];
+
+console.log(numeros[0]);      // 1
+console.log(numeros.length);  // 5</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-blue-500">
+                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Function</h3>
+                        <p class="mb-2">Las funciones en JavaScript son objetos de primera clase que pueden ser pasados, retornados y asignados.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Declaración de función
+function sumar(a, b) {
+  return a + b;
+}
+
+// Expresión de función
+const restar = function(a, b) {
+  return a - b;
+};
+
+// Arrow function (ES6)
+const multiplicar = (a, b) => a * b;</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-blue-500">
+                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Date</h3>
+                        <p class="mb-2">Objeto para trabajar con fechas y horas.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const hoy = new Date();
+const navidad = new Date(2024, 11, 25);  // 25 Dic 2024</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-blue-500">
+                        <h3 class="text-xl font-semibold mb-2 text-blue-300">RegExp</h3>
+                        <p class="mb-2">Objeto para trabajar con expresiones regulares.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const patron = /^[a-z]+$/i;
+const otraForma = new RegExp('^[a-z]+$', 'i');
+
+const esLetra = patron.test('AbCd');  // true</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-blue-500">
+                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Map, Set, WeakMap, WeakSet (ES6)</h3>
+                        <p class="mb-2">Estructuras de datos especializadas introducidas en ES6.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Map: colección de pares clave-valor donde las claves pueden ser de cualquier tipo
+const mapa = new Map();
+mapa.set('clave', 'valor');
+mapa.set(42, 'número');
+mapa.set({}, 'objeto');
+
+// Set: colección de valores únicos
+const conjunto = new Set([1, 2, 3, 2, 1]);  // {1, 2, 3}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Verificación de Tipos</h2>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Operador typeof</h3>
+                    <p class="mb-3">El operador typeof devuelve una cadena que indica el tipo de un operando.</p>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>typeof "Hola";      // "string"
+typeof 42;          // "number"
+typeof true;        // "boolean"
+typeof undefined;   // "undefined"
+typeof Symbol();    // "symbol"
+typeof 42n;         // "bigint"
+
+// Peculiaridades
+typeof null;        // "object" (esto es un error histórico)
+typeof [];          // "object"
+typeof new Date();  // "object"
+typeof function(){}; // "function"</code></pre>
+                </div>
+                
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">instanceof y Array.isArray()</h3>
+                    <p class="mb-3">Para verificar si un objeto es una instancia de una clase específica o si un valor es un array.</p>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const arr = [1, 2, 3];
+const obj = {a: 1};
+const date = new Date();
+
+arr instanceof Array;    // true
+obj instanceof Object;   // true
+date instanceof Date;    // true
+
+Array.isArray(arr);      // true
+Array.isArray(obj);      // false</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Conversión entre Tipos</h2>
+                
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Conversiones Comunes</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// String a Number
+Number("42");          // 42
+parseInt("42px", 10);  // 42 (base 10)
+parseFloat("3.14");    // 3.14
++"42";                 // 42 (operador unario +)
+
+// Number a String
+String(42);            // "42"
+(42).toString();       // "42"
+42 + "";               // "42" (concatenación implícita)
+
+// A Boolean
+Boolean(0);            // false
+Boolean("");           // false
+Boolean(null);         // false
+Boolean(undefined);    // false
+Boolean(NaN);          // false
+Boolean(1);            // true
+Boolean("hola");       // true
+Boolean({});           // true
+Boolean([]);           // true
+
+// Boolean a Number
+Number(true);          // 1
+Number(false);         // 0
+
+// Object a String
+const obj = {nombre: "Juan"};
+String(obj);           // "[object Object]"
+JSON.stringify(obj);   // '{"nombre":"Juan"}'</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Resumen y Buenas Prácticas</h2>
+                
+                <div class="space-y-4">
+                    <p>JavaScript es un lenguaje de tipado dinámico, lo que significa que las variables pueden cambiar de tipo durante la ejecución del programa.</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border border-yellow-700">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Consejos para trabajar con tipos en JavaScript:</h3>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                            <li>Utilizar comparaciones estrictas (<code class="text-green-400">===</code> y <code class="text-green-400">!==</code>) para evitar conversiones de tipo inesperadas</li>
+                            <li>Ser cuidadoso con las conversiones implícitas en operaciones matemáticas</li>
+                            <li>Considerar el uso de TypeScript para proyectos grandes donde el tipado estático es beneficioso</li>
+                            <li>Verificar tipos antes de realizar operaciones que dependen del tipo de datos</li>
+                            <li>Manejar adecuadamente los valores <code class="text-green-400">null</code> y <code class="text-green-400">undefined</code></li>
+                            <li>Utilizar operadores de coalescencia nula (<code class="text-green-400">??</code>) y encadenamiento opcional (<code class="text-green-400">?.</code>) en ES2020</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Data_structures" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Estructuras de datos en JavaScript</a></li>
+                    <li><a href="https://es.javascript.info/types" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Tipos de datos</a></li>
+                    <li><a href="https://www.typescriptlang.org/docs/" class="text-yellow-400 hover:text-yellow-300">TypeScript - Documentación oficial</a></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-black text-white text-center py-6 mt-auto">
+        <p>© 2025 - JavaScript - Conceptos Fundamentales</p>
+    </footer>
+</body>
+</html>
