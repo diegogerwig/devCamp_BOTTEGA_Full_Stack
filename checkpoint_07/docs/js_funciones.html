@@ -46,190 +46,6 @@
 
         <section class="mb-12">
             <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Mejores Prácticas</h2>
-                
-                <div class="space-y-4">
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Consistencia</h3>
-                        <p class="text-gray-300">Mantén un estilo consistente para definir funciones en tu código. Si optas por expresiones de función para callbacks, mantén esa convención en todo el proyecto.</p>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Usa nombres significativos</h3>
-                        <p class="text-gray-300">Incluso para expresiones de función, considera usar nombres para mejorar la depuración y la legibilidad, especialmente en callbacks complejos.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Difícil de depurar
-element.addEventListener('click', function() {
-  // código...
-});
-
-// ✅ Más fácil de depurar
-element.addEventListener('click', function handleClick() {
-  // código...
-});</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Arrow functions para callbacks cortos</h3>
-                        <p class="text-gray-300">Usa arrow functions para callbacks simples, especialmente en métodos de array.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// Versión más larga
-const numeros = [1, 2, 3, 4, 5];
-const cuadrados = numeros.map(function(n) {
-  return n * n;
-});
-
-// ✅ Más limpio y conciso
-const cuadrados = numeros.map(n => n * n);</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Declaraciones para funciones principales</h3>
-                        <p class="text-gray-300">Usa declaraciones de función para las funciones principales de tu aplicación o módulo.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ✅ Funciones principales como declaraciones
-function inicializarAplicacion() {
-  // código...
-}
-
-function procesarDatos(datos) {
-  // código...
-}
-
-// Funciones auxiliares como expresiones
-const validarEntrada = function(input) {
-  // código...
-};</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Cuidado con this</h3>
-                        <p class="text-gray-300">Ten en cuenta el comportamiento de <code>this</code> en los diferentes tipos de funciones, especialmente si trabajas con métodos de objetos o eventos.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Ejemplo Práctico: Refactorizar Código</h2>
-                
-                <div class="bg-gray-900 p-4 rounded-lg mb-6">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Código Original (Mezclado)</h3>
-                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Varias formas de definir funciones en un mismo código
-function calcularTotal(precios) {
-  return precios.reduce(function(total, precio) {
-    return total + precio;
-  }, 0);
-}
-
-var aplicarDescuento = function(total, porcentaje) {
-  return total * (1 - porcentaje / 100);
-};
-
-const formatearPrecio = precio => `${precio.toFixed(2)}`;
-
-var mostrarResultado = function mostrarEnDocumento(element, texto) {
-  document.getElementById(element).textContent = texto;
-};</code></pre>
-                </div>
-                
-                <div class="bg-gray-900 p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Código Refactorizado (Consistente)</h3>
-                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Funciones principales como declaraciones
-function calcularTotal(precios) {
-  return precios.reduce((total, precio) => total + precio, 0);
-}
-
-function aplicarDescuento(total, porcentaje) {
-  return total * (1 - porcentaje / 100);
-}
-
-function mostrarResultado(element, texto) {
-  document.getElementById(element).textContent = texto;
-}
-
-// Funciones auxiliares como arrow functions
-const formatearPrecio = precio => `${precio.toFixed(2)}`;
-
-// Ejemplo de uso
-function procesarCompra(precios, porcentajeDescuento) {
-  const total = calcularTotal(precios);
-  const totalConDescuento = aplicarDescuento(total, porcentajeDescuento);
-  const precioFormateado = formatearPrecio(totalConDescuento);
-  mostrarResultado('resultado', precioFormateado);
-}</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
-                <ul class="list-disc pl-6 space-y-2">
-                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Functions" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Funciones</a></li>
-                    <li><a href="https://es.javascript.info/function-expressions" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Expresiones de Función</a></li>
-                    <li><a href="https://dmitripavlutin.com/differences-between-arrow-and-regular-functions/" class="text-yellow-400 hover:text-yellow-300">6 diferencias entre funciones de flecha y regulares</a></li>
-                    <li><a href="https://www.freecodecamp.org/news/when-to-use-a-function-declarations-vs-a-function-expression-70f15152a0a0/" class="text-yellow-400 hover:text-yellow-300">FreeCodeCamp - Cuándo usar Declaraciones vs Expresiones</a></li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Declaración de Función (Function Declaration)</h2>
-                
-                <div class="bg-gray-900 p-4 rounded-lg mb-6">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
-                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function nombreDeLaFuncion(parametro1, parametro2, ...) {
-  // Cuerpo de la función
-  return resultadoOValor;  // opcional
-}</code></pre>
-                </div>
-                
-                <p class="mb-4">Una declaración de función comienza con la palabra clave <code class="bg-black text-green-400 p-1 rounded">function</code>, seguida por el nombre de la función. El nombre es obligatorio en las declaraciones de función.</p>
-                
-                <div class="bg-gray-900 p-4 rounded-lg mb-6">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
-                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Declaración de función simple
-function saludar() {
-  return "Hola, mundo!";
-}
-
-// Declaración de función con parámetros
-function sumar(a, b) {
-  return a + b;
-}
-
-// Declaración de función con múltiples declaraciones
-function calcularArea(radio) {
-  const PI = 3.14159;
-  const area = PI * radio * radio;
-  return area;
-}</code></pre>
-                </div>
-                
-                <div class="bg-gray-900 p-4 rounded-lg mb-6 border-l-4 border-yellow-500">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Características clave:</h3>
-                    <ul class="list-disc pl-6 space-y-2 text-gray-300">
-                        <li><strong class="text-white">Hoisting:</strong> Las declaraciones de función se elevan (hoisting) completamente en el ámbito en el que están definidas, lo que significa que puedes llamar a la función antes de declararla en el código.</li>
-                        <li><strong class="text-white">Nombre obligatorio:</strong> Debe tener un nombre y no puede ser anónima.</li>
-                        <li><strong class="text-white">Visible en todo el ámbito:</strong> Disponible en todo el ámbito en el que está definida.</li>
-                    </ul>
-                </div>
-                
-                <div class="bg-gray-900 p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplo de hoisting:</h3>
-                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Esta llamada funciona aunque la función se declare después
-console.log(multiplicar(4, 5));  // Output: 20
-
-// Declaración de función
-function multiplicar(a, b) {
-  return a * b;
-}</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
                 <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Expresión de Función (Function Expression)</h2>
                 
                 <div class="bg-gray-900 p-4 rounded-lg mb-6">
@@ -302,6 +118,62 @@ console.log(multiplicar(4, 5));  // Output: 20</code></pre>
                 </div>
             </div>
         </section>
+        
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Declaración de Función (Function Declaration)</h2>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function nombreDeLaFuncion(parametro1, parametro2, ...) {
+  // Cuerpo de la función
+  return resultadoOValor;  // opcional
+}</code></pre>
+                </div>
+                
+                <p class="mb-4">Una declaración de función comienza con la palabra clave <code class="bg-black text-green-400 p-1 rounded">function</code>, seguida por el nombre de la función. El nombre es obligatorio en las declaraciones de función.</p>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Declaración de función simple
+function saludar() {
+  return "Hola, mundo!";
+}
+
+// Declaración de función con parámetros
+function sumar(a, b) {
+  return a + b;
+}
+
+// Declaración de función con múltiples declaraciones
+function calcularArea(radio) {
+  const PI = 3.14159;
+  const area = PI * radio * radio;
+  return area;
+}</code></pre>
+                </div>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6 border-l-4 border-yellow-500">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Características clave:</h3>
+                    <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                        <li><strong class="text-white">Hoisting:</strong> Las declaraciones de función se elevan (hoisting) completamente en el ámbito en el que están definidas, lo que significa que puedes llamar a la función antes de declararla en el código.</li>
+                        <li><strong class="text-white">Nombre obligatorio:</strong> Debe tener un nombre y no puede ser anónima.</li>
+                        <li><strong class="text-white">Visible en todo el ámbito:</strong> Disponible en todo el ámbito en el que está definida.</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplo de hoisting:</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Esta llamada funciona aunque la función se declare después
+console.log(multiplicar(4, 5));  // Output: 20
+
+// Declaración de función
+function multiplicar(a, b) {
+  return a * b;
+}</code></pre>
+                </div>
+            </div>
+        </section>
 
         <section class="mb-12">
             <div class="bg-gray-800 p-6 rounded-lg shadow-md">
@@ -359,7 +231,7 @@ console.log(multiplicar(4, 5));  // Output: 20</code></pre>
                 
                 <p class="mb-4">Una de las diferencias más importantes entre declaraciones y expresiones de función es cómo se comportan con respecto al hoisting (elevación).</p>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
                     <div class="bg-gray-900 p-4 rounded-lg">
                         <h3 class="text-lg font-semibold mb-3 text-yellow-300">Declaración de Función</h3>
                         <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Esto funciona
@@ -613,6 +485,135 @@ console.log(contador());  // 2
 console.log(contador());  // 3</code></pre>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Mejores Prácticas</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Consistencia</h3>
+                        <p class="text-gray-300">Mantén un estilo consistente para definir funciones en tu código. Si optas por expresiones de función para callbacks, mantén esa convención en todo el proyecto.</p>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Usa nombres significativos</h3>
+                        <p class="text-gray-300">Incluso para expresiones de función, considera usar nombres para mejorar la depuración y la legibilidad, especialmente en callbacks complejos.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Difícil de depurar
+element.addEventListener('click', function() {
+  // código...
+});
+
+// ✅ Más fácil de depurar
+element.addEventListener('click', function handleClick() {
+  // código...
+});</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Arrow functions para callbacks cortos</h3>
+                        <p class="text-gray-300">Usa arrow functions para callbacks simples, especialmente en métodos de array.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// Versión más larga
+const numeros = [1, 2, 3, 4, 5];
+const cuadrados = numeros.map(function(n) {
+  return n * n;
+});
+
+// ✅ Más limpio y conciso
+const cuadrados = numeros.map(n => n * n);</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Declaraciones para funciones principales</h3>
+                        <p class="text-gray-300">Usa declaraciones de función para las funciones principales de tu aplicación o módulo.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ✅ Funciones principales como declaraciones
+function inicializarAplicacion() {
+  // código...
+}
+
+function procesarDatos(datos) {
+  // código...
+}
+
+// Funciones auxiliares como expresiones
+const validarEntrada = function(input) {
+  // código...
+};</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Cuidado con this</h3>
+                        <p class="text-gray-300">Ten en cuenta el comportamiento de <code>this</code> en los diferentes tipos de funciones, especialmente si trabajas con métodos de objetos o eventos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Ejemplo Práctico: Refactorizar Código</h2>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Código Original (Mezclado)</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Varias formas de definir funciones en un mismo código
+function calcularTotal(precios) {
+  return precios.reduce(function(total, precio) {
+    return total + precio;
+  }, 0);
+}
+
+var aplicarDescuento = function(total, porcentaje) {
+  return total * (1 - porcentaje / 100);
+};
+
+const formatearPrecio = precio => `${precio.toFixed(2)}`;
+
+var mostrarResultado = function mostrarEnDocumento(element, texto) {
+  document.getElementById(element).textContent = texto;
+};</code></pre>
+                </div>
+                
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Código Refactorizado (Consistente)</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Funciones principales como declaraciones
+function calcularTotal(precios) {
+  return precios.reduce((total, precio) => total + precio, 0);
+}
+
+function aplicarDescuento(total, porcentaje) {
+  return total * (1 - porcentaje / 100);
+}
+
+function mostrarResultado(element, texto) {
+  document.getElementById(element).textContent = texto;
+}
+
+// Funciones auxiliares como arrow functions
+const formatearPrecio = precio => `${precio.toFixed(2)}`;
+
+// Ejemplo de uso
+function procesarCompra(precios, porcentajeDescuento) {
+  const total = calcularTotal(precios);
+  const totalConDescuento = aplicarDescuento(total, porcentajeDescuento);
+  const precioFormateado = formatearPrecio(totalConDescuento);
+  mostrarResultado('resultado', precioFormateado);
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Functions" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Funciones</a></li>
+                    <li><a href="https://es.javascript.info/function-expressions" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Expresiones de Función</a></li>
+                    <li><a href="https://dmitripavlutin.com/differences-between-arrow-and-regular-functions/" class="text-yellow-400 hover:text-yellow-300">6 diferencias entre funciones de flecha y regulares</a></li>
+                    <li><a href="https://www.freecodecamp.org/news/when-to-use-a-function-declarations-vs-a-function-expression-70f15152a0a0/" class="text-yellow-400 hover:text-yellow-300">FreeCodeCamp - Cuándo usar Declaraciones vs Expresiones</a></li>
+                </ul>
             </div>
         </section>
 	</div>	
