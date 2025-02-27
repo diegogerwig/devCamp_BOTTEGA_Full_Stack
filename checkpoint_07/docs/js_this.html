@@ -157,208 +157,6 @@ usuario.decirNombreDespues();  // Después de 1s: "Hola, soy Ana"</code></pre>
 
         <section class="mb-12">
             <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Mejores Prácticas</h2>
-                
-                <div class="space-y-4">
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Usa arrow functions para callbacks</h3>
-                        <p class="text-gray-300">Aprovechar la herencia léxica de <code class="bg-black text-green-400 p-1 rounded">this</code> en arrow functions para callbacks, especialmente en event handlers o timers.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Problema con función regular
-const usuario = {
-  nombre: "Pedro",
-  cargarDatos: function() {
-    fetch('/api/datos')
-      .then(function(response) {
-        // 'this' aquí no es 'usuario'
-        this.datos = response.data;  // Error
-      });
-  }
-};
-
-// ✅ Solución con arrow function
-const usuarioCorrecto = {
-  nombre: "Pedro",
-  cargarDatos: function() {
-    fetch('/api/datos')
-      .then(response => {
-        // 'this' aquí es 'usuarioCorrecto'
-        this.datos = response.data;  // Funciona
-      });
-  }
-};</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Evita usar funciones regulares para métodos de clase</h3>
-                        <p class="text-gray-300">En clases ES6+, usar métodos de clase en lugar de asignar propiedades a funciones.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Problema: Asignar métodos en constructor
-class Componente {
-  constructor() {
-    this.valor = 42;
-    // Este método pierde su vínculo a 'this' cuando se pasa como callback
-    this.manejarClick = function() {
-      console.log(this.valor);
-    };
-  }
-}
-
-// ✅ Solución: Usar métodos de clase o arrow functions
-class ComponenteCorrecto {
-  constructor() {
-    this.valor = 42;
-    // Arrow function que mantiene el contexto
-    this.manejarClick = () => {
-      console.log(this.valor);
-    };
-  }
-  
-  // O método de clase (pero necesita binding si se pasa como callback)
-  manejarSubmit() {
-    console.log(this.valor);
-  }
-}</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Explícito es mejor que implícito</h3>
-                        <p class="text-gray-300">Cuando sea posible, haz explícito el contexto de <code class="bg-black text-green-400 p-1 rounded">this</code> usando <code class="bg-black text-green-400 p-1 rounded">bind()</code>, <code class="bg-black text-green-400 p-1 rounded">call()</code> o <code class="bg-black text-green-400 p-1 rounded">apply()</code>.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Confiando en el contexto implícito
-const boton = document.getElementById('boton');
-boton.addEventListener('click', usuario.manejarClick);  // 'this' será el botón, no el usuario
-
-// ✅ Haciendo el contexto explícito
-boton.addEventListener('click', usuario.manejarClick.bind(usuario));</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Evita definir funciones dentro de bucles</h3>
-                        <p class="text-gray-300">Esto puede causar problemas de rendimiento y comportamiento inesperado con <code class="bg-black text-green-400 p-1 rounded">this</code>.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Definir funciones dentro de un bucle
-for (let i = 0; i < elementos.length; i++) {
-  elementos[i].onclick = function() {
-    this.style.color = 'red';  // 'this' se refiere al elemento, que podría ser lo deseado
-                               // pero es ineficiente crear una nueva función por iteración
-  };
-}
-
-// ✅ Definir la función una vez y usar bind o un closure
-function cambiarColor() {
-  this.style.color = 'red';
-}
-
-for (let i = 0; i < elementos.length; i++) {
-  elementos[i].onclick = cambiarColor;
-}</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Ejemplos en Frameworks Populares</h2>
-                
-                <div class="space-y-6">
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">React</h3>
-                        <p class="mb-3">En React, el comportamiento de <code class="bg-black text-green-400 p-1 rounded">this</code> puede variar según cómo se definan y vinculen los manejadores de eventos:</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class BotonContador extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { contador: 0 };
-    
-    // Vinculación en el constructor (enfoque recomendado para métodos)
-    this.incrementarConBind = this.incrementarConBind.bind(this);
-  }
-  
-  // Método normal: requiere binding para acceder a 'this'
-  incrementarConBind() {
-    this.setState({ contador: this.state.contador + 1 });
-  }
-  
-  // Método definido como arrow function: no requiere binding
-  incrementarArrow = () => {
-    this.setState({ contador: this.state.contador + 1 });
-  };
-  
-  render() {
-    return (
-      <div>
-        <p>Contador: {this.state.contador}</p>
-        <button onClick={this.incrementarConBind}>
-          Incrementar (con bind)
-        </button>
-        <button onClick={this.incrementarArrow}>
-          Incrementar (arrow)
-        </button>
-        {/* Binding en línea: menos eficiente pero funciona */}
-        <button onClick={this.incrementarConBind.bind(this)}>
-          Incrementar (bind en línea)
-        </button>
-        {/* Arrow function en línea: menos eficiente pero funciona */}
-        <button onClick={() => this.incrementarConBind()}>
-          Incrementar (arrow en línea)
-        </button>
-      </div>
-    );
-  }
-}</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Vue.js</h3>
-                        <p class="mb-3">En Vue, <code class="bg-black text-green-400 p-1 rounded">this</code> se refiere automáticamente a la instancia del componente dentro de las plantillas y métodos:</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>new Vue({
-  el: '#app',
-  data: {
-    mensaje: 'Hola Vue!',
-    contador: 0
-  },
-  methods: {
-    incrementar: function() {
-      // 'this' se refiere a la instancia de Vue automáticamente
-      this.contador++;
-    },
-    mostrarMensaje() {  // Sintaxis de método ES2015
-      return this.mensaje;
-    }
-  },
-  created: function() {
-    // 'this' se refiere a la instancia de Vue aquí también
-    console.log('Contador inicial:', this.contador);
-    
-    // PERO, si hay funciones anidadas, 'this' puede cambiar
-    setTimeout(function() {
-      // 'this' no es la instancia Vue aquí
-      // this.contador++;  // Esto daría error
-    }, 1000);
-    
-    // Solución: usar arrow function
-    setTimeout(() => {
-      // Ahora 'this' es la instancia Vue
-      this.contador++;
-    }, 1000);
-  }
-});</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
-                <ul class="list-disc pl-6 space-y-2">
-                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/this" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - this</a></li>
-                    <li><a href="https://es.javascript.info/object-methods" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Métodos del objeto, "this"</a></li>
-                    <li><a href="https://www.freecodecamp.org/news/this-in-javascript-explained-with-examples/" class="text-yellow-400 hover:text-yellow-300">FreeCodeCamp - "this" en JavaScript explicado con ejemplos</a></li>
-                    <li><a href="https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/" class="text-yellow-400 hover:text-yellow-300">Yehuda Katz - Entendiendo la invocación de funciones en JavaScript y "this"</a></li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
                 <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Problemas Comunes y Soluciones</h2>
                 
                 <div class="space-y-6">
@@ -454,7 +252,7 @@ const contador3 = {
                 
                 <p class="mb-4">Estos tres métodos permiten controlar explícitamente el valor de <code class="bg-black text-green-400 p-1 rounded">this</code> en una función:</p>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
                     <div class="bg-gray-900 p-4 rounded-lg">
                         <h3 class="text-lg font-semibold mb-3 text-yellow-300">call()</h3>
                         <p class="mb-3 text-gray-300">Llama a una función con un valor <code class="bg-black text-green-400 p-1 rounded">this</code> específico y argumentos pasados individualmente.</p>
@@ -628,7 +426,7 @@ persona.saludar();  // "Hola, soy Carlos"</code></pre>
                 
                 <p class="mb-4">Una de las diferencias más importantes introducidas en ES6 es cómo las arrow functions manejan <code class="bg-black text-green-400 p-1 rounded">this</code>:</p>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
                     <div class="bg-gray-900 p-4 rounded-lg">
                         <h3 class="text-lg font-semibold mb-2 text-yellow-300">Función Regular</h3>
                         <ul class="list-disc pl-6 space-y-1 mb-3 text-gray-300">
@@ -701,3 +499,120 @@ const personaCorrecta = {
 };
 
 personaCorrecta.saludar();  // "Hola, soy Ana"</code></pre>
+                </div>
+            </div>  
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Mejores Prácticas</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Usa arrow functions para callbacks</h3>
+                        <p class="text-gray-300">Aprovechar la herencia léxica de <code class="bg-black text-green-400 p-1 rounded">this</code> en arrow functions para callbacks, especialmente en event handlers o timers.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Problema con función regular
+const usuario = {
+  nombre: "Pedro",
+  cargarDatos: function() {
+    fetch('/api/datos')
+      .then(function(response) {
+        // 'this' aquí no es 'usuario'
+        this.datos = response.data;  // Error
+      });
+  }
+};
+
+// ✅ Solución con arrow function
+const usuarioCorrecto = {
+  nombre: "Pedro",
+  cargarDatos: function() {
+    fetch('/api/datos')
+      .then(response => {
+        // 'this' aquí es 'usuarioCorrecto'
+        this.datos = response.data;  // Funciona
+      });
+  }
+};</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Evita usar funciones regulares para métodos de clase</h3>
+                        <p class="text-gray-300">En clases ES6+, usar métodos de clase en lugar de asignar propiedades a funciones.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Problema: Asignar métodos en constructor
+class Componente {
+  constructor() {
+    this.valor = 42;
+    // Este método pierde su vínculo a 'this' cuando se pasa como callback
+    this.manejarClick = function() {
+      console.log(this.valor);
+    };
+  }
+}
+
+// ✅ Solución: Usar métodos de clase o arrow functions
+class ComponenteCorrecto {
+  constructor() {
+    this.valor = 42;
+    // Arrow function que mantiene el contexto
+    this.manejarClick = () => {
+      console.log(this.valor);
+    };
+  }
+  
+  // O método de clase (pero necesita binding si se pasa como callback)
+  manejarSubmit() {
+    console.log(this.valor);
+  }
+}</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Explícito es mejor que implícito</h3>
+                        <p class="text-gray-300">Cuando sea posible, haz explícito el contexto de <code class="bg-black text-green-400 p-1 rounded">this</code> usando <code class="bg-black text-green-400 p-1 rounded">bind()</code>, <code class="bg-black text-green-400 p-1 rounded">call()</code> o <code class="bg-black text-green-400 p-1 rounded">apply()</code>.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Confiando en el contexto implícito
+const boton = document.getElementById('boton');
+boton.addEventListener('click', usuario.manejarClick);  // 'this' será el botón, no el usuario
+
+// ✅ Haciendo el contexto explícito
+boton.addEventListener('click', usuario.manejarClick.bind(usuario));</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Evita definir funciones dentro de bucles</h3>
+                        <p class="text-gray-300">Esto puede causar problemas de rendimiento y comportamiento inesperado con <code class="bg-black text-green-400 p-1 rounded">this</code>.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Definir funciones dentro de un bucle
+for (let i = 0; i < elementos.length; i++) {
+  elementos[i].onclick = function() {
+    this.style.color = 'red';  // 'this' se refiere al elemento, que podría ser lo deseado
+                               // pero es ineficiente crear una nueva función por iteración
+  };
+}
+
+// ✅ Definir la función una vez y usar bind o un closure
+function cambiarColor() {
+  this.style.color = 'red';
+}
+
+for (let i = 0; i < elementos.length; i++) {
+  elementos[i].onclick = cambiarColor;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/this" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - this</a></li>
+                    <li><a href="https://es.javascript.info/object-methods" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Métodos del objeto, "this"</a></li>
+                    <li><a href="https://www.freecodecamp.org/news/this-in-javascript-explained-with-examples/" class="text-yellow-400 hover:text-yellow-300">FreeCodeCamp - "this" en JavaScript explicado con ejemplos</a></li>
+                    <li><a href="https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/" class="text-yellow-400 hover:text-yellow-300">Yehuda Katz - Entendiendo la invocación de funciones en JavaScript y "this"</a></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
