@@ -6,19 +6,6 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
     <title>Condicionales en JavaScript - Documentación</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-        .content {
-            flex: 1 0 auto;
-        }
-    </style>
 </head>
 <body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
     <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md">
@@ -91,76 +78,7 @@ if (usuarioLogueado) {
             </div>
         </section>
 
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Condicionales en estructuras de datos</h2>
-                
-                <div class="bg-gray-900 p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Filtrado de arrays</h3>
-                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 5, 10, 15, 20, 25, 30];
 
-// Filtrar números mayores que 15
-const mayoresQue15 = numeros.filter(numero => {
-  return numero > 15;  // condición para incluir en el resultado
-});
-
-console.log(mayoresQue15);  // [20, 25, 30]
-
-// Filtrar usuarios activos
-const usuarios = [
-  { id: 1, nombre: "Ana", activo: true },
-  { id: 2, nombre: "Carlos", activo: false },
-  { id: 3, nombre: "Elena", activo: true },
-  { id: 4, nombre: "David", activo: false }
-];
-
-const usuariosActivos = usuarios.filter(usuario => usuario.activo);
-console.log(usuariosActivos);  // [{ id: 1, nombre: "Ana", activo: true }, { id: 3, nombre: "Elena", activo: true }]</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Manejo de errores condicional</h2>
-                
-                <div class="bg-gray-900 p-4 rounded-lg mb-6">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Try...catch...finally</h3>
-                    <p class="mb-3">Aunque no es un condicional tradicional, el bloque try...catch permite ejecutar código condicionalmente dependiendo de si ocurre un error.</p>
-                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function dividir(a, b) {
-  try {
-    // Se intenta ejecutar este código
-    if (b === 0) {
-      throw new Error("No se puede dividir por cero");
-    }
-    
-    const resultado = a / b;
-    return `Resultado: ${resultado}`;
-  } catch (error) {
-    // Se ejecuta solo si hay un error
-    return `Error: ${error.message}`;
-  } finally {
-    // Se ejecuta siempre, haya error o no
-    console.log("Operación finalizada");
-  }
-}
-
-console.log(dividir(10, 2));   // "Resultado: 5"
-console.log(dividir(10, 0));   // "Error: No se puede dividir por cero"</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
-                <ul class="list-disc pl-6 space-y-2">
-                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Control_flow_and_error_handling" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Control de flujo y manejo de errores</a></li>
-                    <li><a href="https://es.javascript.info/ifelse" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Condicionales: if, '?'</a></li>
-                    <li><a href="https://www.w3schools.com/js/js_if_else.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript If, Else, and Else If</a></li>
-                </ul>
-            </div>
-        </section>
 
         <section class="mb-12">
             <div class="bg-gray-800 p-6 rounded-lg shadow-md">
@@ -263,98 +181,6 @@ if (temperatura < 0) {
             </div>
         </section>
 
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Switch</h2>
-                <p class="mb-4">La declaración <code class="bg-black text-green-400 p-1 rounded">switch</code> evalúa una expresión y ejecuta el bloque de código correspondiente al valor que coincida. Es útil cuando tienes múltiples condiciones basadas en el mismo valor.</p>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
-                <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>switch (expresión) {
-  case valor1:
-    // código a ejecutar si expresión === valor1
-    break;
-  case valor2:
-    // código a ejecutar si expresión === valor2
-    break;
-  case valor3:
-    // código a ejecutar si expresión === valor3
-    break;
-  default:
-    // código a ejecutar si ninguno de los valores coincide
-}</code></pre>
-                
-                <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
-                    <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
-                    <p class="text-gray-300">La sentencia <code class="bg-black text-green-400 p-1 rounded">break</code> es crucial en cada caso para evitar la "caída" (fallthrough) a los siguientes casos. Sin el break, el código seguirá ejecutándose en los casos siguientes independientemente de si coinciden o no.</p>
-                </div>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
-                <div class="space-y-4">
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Días de la semana</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const diaDeLaSemana = 3;
-let nombreDia;
-
-switch (diaDeLaSemana) {
-  case 1:
-    nombreDia = "Lunes";
-    break;
-  case 2:
-    nombreDia = "Martes";
-    break;
-  case 3:
-    nombreDia = "Miércoles";
-    break;
-  case 4:
-    nombreDia = "Jueves";
-    break;
-  case 5:
-    nombreDia = "Viernes";
-    break;
-  case 6:
-    nombreDia = "Sábado";
-    break;
-  case 7:
-    nombreDia = "Domingo";
-    break;
-  default:
-    nombreDia = "Día inválido";
-}
-
-console.log(`Hoy es ${nombreDia}`);
-// Salida: "Hoy es Miércoles"</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Tipo de fruta (con "fallthrough" intencional)</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const fruta = "Manzana";
-let tipo;
-
-switch (fruta) {
-  case "Manzana":
-  case "Pera":
-  case "Durazno":
-    tipo = "Fruta de pepita";
-    break;
-  case "Naranja":
-  case "Limón":
-  case "Mandarina":
-    tipo = "Cítrico";
-    break;
-  case "Plátano":
-  case "Piña":
-    tipo = "Fruta tropical";
-    break;
-  default:
-    tipo = "Otro tipo de fruta";
-}
-
-console.log(`${fruta} es una ${tipo}`);
-// Salida: "Manzana es una Fruta de pepita"</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <section class="mb-12">
             <div class="bg-gray-800 p-6 rounded-lg shadow-md">
@@ -470,6 +296,162 @@ if (!estaBloqueado) {
 }</code></pre>
             </div>
         </section>
+
+
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Condicionales en estructuras de datos</h2>
+                
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Filtrado de arrays</h3>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 5, 10, 15, 20, 25, 30];
+
+// Filtrar números mayores que 15
+const mayoresQue15 = numeros.filter(numero => {
+  return numero > 15;  // condición para incluir en el resultado
+});
+
+console.log(mayoresQue15);  // [20, 25, 30]
+
+// Filtrar usuarios activos
+const usuarios = [
+  { id: 1, nombre: "Ana", activo: true },
+  { id: 2, nombre: "Carlos", activo: false },
+  { id: 3, nombre: "Elena", activo: true },
+  { id: 4, nombre: "David", activo: false }
+];
+
+const usuariosActivos = usuarios.filter(usuario => usuario.activo);
+console.log(usuariosActivos);  // [{ id: 1, nombre: "Ana", activo: true }, { id: 3, nombre: "Elena", activo: true }]</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Manejo de errores condicional</h2>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Try...catch...finally</h3>
+                    <p class="mb-3">Aunque no es un condicional tradicional, el bloque try...catch permite ejecutar código condicionalmente dependiendo de si ocurre un error.</p>
+                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function dividir(a, b) {
+  try {
+    // Se intenta ejecutar este código
+    if (b === 0) {
+      throw new Error("No se puede dividir por cero");
+    }
+    
+    const resultado = a / b;
+    return `Resultado: ${resultado}`;
+  } catch (error) {
+    // Se ejecuta solo si hay un error
+    return `Error: ${error.message}`;
+  } finally {
+    // Se ejecuta siempre, haya error o no
+    console.log("Operación finalizada");
+  }
+}
+
+console.log(dividir(10, 2));   // "Resultado: 5"
+console.log(dividir(10, 0));   // "Error: No se puede dividir por cero"</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Switch</h2>
+                <p class="mb-4">La declaración <code class="bg-black text-green-400 p-1 rounded">switch</code> evalúa una expresión y ejecuta el bloque de código correspondiente al valor que coincida. Es útil cuando tienes múltiples condiciones basadas en el mismo valor.</p>
+                
+                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
+                <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>switch (expresión) {
+  case valor1:
+    // código a ejecutar si expresión === valor1
+    break;
+  case valor2:
+    // código a ejecutar si expresión === valor2
+    break;
+  case valor3:
+    // código a ejecutar si expresión === valor3
+    break;
+  default:
+    // código a ejecutar si ninguno de los valores coincide
+}</code></pre>
+                
+                <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                    <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
+                    <p class="text-gray-300">La sentencia <code class="bg-black text-green-400 p-1 rounded">break</code> es crucial en cada caso para evitar la "caída" (fallthrough) a los siguientes casos. Sin el break, el código seguirá ejecutándose en los casos siguientes independientemente de si coinciden o no.</p>
+                </div>
+                
+                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                <div class="space-y-4">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Días de la semana</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const diaDeLaSemana = 3;
+let nombreDia;
+
+switch (diaDeLaSemana) {
+  case 1:
+    nombreDia = "Lunes";
+    break;
+  case 2:
+    nombreDia = "Martes";
+    break;
+  case 3:
+    nombreDia = "Miércoles";
+    break;
+  case 4:
+    nombreDia = "Jueves";
+    break;
+  case 5:
+    nombreDia = "Viernes";
+    break;
+  case 6:
+    nombreDia = "Sábado";
+    break;
+  case 7:
+    nombreDia = "Domingo";
+    break;
+  default:
+    nombreDia = "Día inválido";
+}
+
+console.log(`Hoy es ${nombreDia}`);
+// Salida: "Hoy es Miércoles"</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Tipo de fruta (con "fallthrough" intencional)</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const fruta = "Manzana";
+let tipo;
+
+switch (fruta) {
+  case "Manzana":
+  case "Pera":
+  case "Durazno":
+    tipo = "Fruta de pepita";
+    break;
+  case "Naranja":
+  case "Limón":
+  case "Mandarina":
+    tipo = "Cítrico";
+    break;
+  case "Plátano":
+  case "Piña":
+    tipo = "Fruta tropical";
+    break;
+  default:
+    tipo = "Otro tipo de fruta";
+}
+
+console.log(`${fruta} es una ${tipo}`);
+// Salida: "Manzana es una Fruta de pepita"</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <section class="mb-12">
             <div class="bg-gray-800 p-6 rounded-lg shadow-md">
@@ -616,6 +598,18 @@ console.log(verificarPermisos(usuario));  // "Acceso concedido: Permiso de edici
 				</div>
 			</div>
 		</section>
+    
+        <section class="mb-12">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Control_flow_and_error_handling" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Control de flujo y manejo de errores</a></li>
+                    <li><a href="https://es.javascript.info/ifelse" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Condicionales: if, '?'</a></li>
+                    <li><a href="https://www.w3schools.com/js/js_if_else.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript If, Else, and Else If</a></li>
+                </ul>
+            </div>
+        </section>
+
 	</div>
 </body>
 </html>
