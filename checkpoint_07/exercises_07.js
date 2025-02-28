@@ -1,5 +1,7 @@
 // Exercise 1: Cree una función JS que acepte 4 argumentos. Suma los dos primeros argumentos, luego los dos segundos y multiplícalos. Si el número creado es mayor que 50, la consola registra "¡El número es mayor que 50!". Si es más pequeño, la consola registra "¡El número es menor que 50!"
 
+// Ejecuta el archivo mediante la terminal con el comando "node exercises_07.js" y verifica los resultados en la consola.
+
 function calcularNumero(a, b, c, d) {
 
 	// Verificar que existen 4 argumentos
@@ -47,5 +49,4 @@ calcularNumero(5, 10, 6, 7, 5);      // ❌ Error: Sobran argumentos
 calcularNumero("a", 10, 2, 3);       // ❌ Error: Argumentos no numéricos
 calcularNumero(5, null, 2, 3);       // ❌ Error: Argumentos no numéricos
 calcularNumero(undefined, 10, 2, 3); // ❌ Error: Argumentos no numéricos
-
-// Ejecuta el archivo mediante la terminal con el comando "node exercises_07.js" y verifica los resultados en la consola.
+calcularNumero(5, 10, 2, false);     // ❌ Error: Argumentos no numéricos
