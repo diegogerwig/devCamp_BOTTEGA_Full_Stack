@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Operador de Extensión en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md fixed top-0 left-0 right-0 z-20">
+        <h1 class="text-4xl font-bold mb-2">Operador de Extensión en JavaScript</h1>
+        <p class="text-xl">¿Qué hace el operador de extensión en JS?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md fixed top-40 left-0 right-0 z-10 border-b border-gray-700">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="pt-56">
+
+        <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué es el Operador de Extensión?</h2>
+                    <p class="mb-4">El operador de extensión (spread operator) se representa con tres puntos (<code class="bg-black text-green-400 p-1 rounded">...</code>) y permite expandir elementos iterables como arrays, strings, o objetos en lugares donde se esperan múltiples elementos. Esta característica fue introducida en ES6 (ECMAScript 2015) para arrays e iterables, y ampliada para objetos en ES9 (ECMAScript 2018).</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Conceptos clave:</h3>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                            <li><strong class="text-white">Expansión:</strong> Desempaqueta elementos de una estructura iterable</li>
+                            <li><strong class="text-white">Sintaxis:</strong> Tres puntos seguidos (<code class="bg-black text-green-400 p-1 rounded">...</code>) delante de un iterable</li>
+                            <li><strong class="text-white">Aplicaciones:</strong> Copiar arrays/objetos, combinar elementos, pasar argumentos a funciones</li>
+                            <li><strong class="text-white">Inmutabilidad:</strong> Crea nuevas estructuras sin modificar las originales</li>
+                            <li><strong class="text-white">Diferencia con rest:</strong> La sintaxis es igual, pero el operador rest recolecta elementos mientras que spread los expande</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="mb-4">El operador de extensión ha revolucionado la forma en que manipulamos colecciones de datos en JavaScript, facilitando operaciones que antes requerían código más extenso y propenso a errores.</p>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Operador de Extensión con Arrays</h2>
+                    <p class="mb-4">Una de las aplicaciones más comunes del operador de extensión es con arrays, donde permite realizar operaciones de forma más concisa y legible.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Copiar un array</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Método antiguo
+const original = [1, 2, 3];
+const copia1 = original.slice();
+
+// Con el operador de extensión
+const copia2 = [...original];
+
+console.log(copia2); // [1, 2, 3]
+
+// Comprobando que es una copia real (no referencia)
+copia2.push(4);
+console.log(original); // [1, 2, 3] - No se modifica
+console.log(copia2);   // [1, 2, 3, 4]</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Combinar arrays</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Método antiguo con concat
+const array1 = [1, 2, 3];
+const array2 = [4, 5, 6];
+const combinado1 = array1.concat(array2);
+
+// Con el operador de extensión
+const combinado2 = [...array1, ...array2];
+console.log(combinado2); // [1, 2, 3, 4, 5, 6]
+
+// También podemos insertar en medio o añadir más elementos
+const resultado = [0, ...array1, 3.5, ...array2, 7];
+console.log(resultado); // [0, 1, 2, 3, 3.5, 4, 5, 6, 7]</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Convertir string a array de caracteres</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Método antiguo
+const cadena = "Hola";
+const caracteres1 = cadena.split('');
+
+// Con el operador de extensión
+const caracteres2 = [...cadena];
+
+console.log(caracteres2); // ["H", "o", "l", "a"]</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 4: Crear un array a partir de un iterable</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Convertir NodeList a Array (nodos DOM)
+const divs = document.querySelectorAll('div');
+const divsArray = [...divs];
+
+// Ahora podemos usar métodos de array como map, filter, etc.
+divsArray.map(div => div.classList.add('highlight'));
+
+// Convertir Set a Array
+const numSet = new Set([1, 2, 3, 2, 1]); // Set con valores únicos {1, 2, 3}
+const numArray = [...numSet];
+console.log(numArray); // [1, 2, 3]</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 5: Usar con Math.min/max</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [5, 3, 9, 1, 7];
+
+// Método antiguo
+const min1 = Math.min.apply(null, numeros);
+const max1 = Math.max.apply(null, numeros);
+
+// Con el operador de extensión
+const min2 = Math.min(...numeros);
+const max2 = Math.max(...numeros);
+
+console.log(min2); // 1
+console.log(max2); // 9</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Operador de Extensión con Objetos</h2>
+                    <p class="mb-4">El operador de extensión también se puede usar con objetos para crear copias superficiales y combinar propiedades. Esta funcionalidad se añadió en ES9 (ECMAScript 2018).</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Copiar un objeto</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Método antiguo
+const original = { a: 1, b: 2 };
+const copia1 = Object.assign({}, original);
+
+// Con el operador de extensión
+const copia2 = { ...original };
+
+console.log(copia2); // { a: 1, b: 2 }
+
+// Es una copia superficial
+copia2.a = 100;
+console.log(original.a); // 1 - No se modifica
+console.log(copia2.a);   // 100</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Combinar objetos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const objetoBase = { a: 1, b: 2 };
+const extensiones = { b: 3, c: 4 }; // Nota: b está en ambos
+
+// Método antiguo
+const combinado1 = Object.assign({}, objetoBase, extensiones);
+
+// Con el operador de extensión
+const combinado2 = { ...objetoBase, ...extensiones };
+
+console.log(combinado2); // { a: 1, b: 3, c: 4 }
+// Las propiedades posteriores sobrescriben a las anteriores con mismo nombre</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Crear un objeto con propiedades adicionales</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const usuario = { id: 1, nombre: "Ana" };
+
+// Añadir o sobrescribir propiedades
+const usuarioExtendido = { 
+    ...usuario, 
+    nombre: "Ana López", // Sobrescribe nombre
+    rol: "admin",        // Añade nueva propiedad
+    activo: true         // Añade nueva propiedad
+};
+
+console.log(usuarioExtendido); 
+// { id: 1, nombre: "Ana López", rol: "admin", activo: true }</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 4: Orden de extensión importa</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const defaults = { tema: "claro", notificaciones: true, fuente: "Arial" };
+const userPrefs = { tema: "oscuro", idioma: "es" };
+
+// Las preferencias del usuario sobrescriben los defaults
+const configuracion1 = { ...defaults, ...userPrefs };
+console.log(configuracion1);
+// { tema: "oscuro", notificaciones: true, fuente: "Arial", idioma: "es" }
+
+// Los defaults sobrescriben las preferencias (orden inverso)
+const configuracion2 = { ...userPrefs, ...defaults };
+console.log(configuracion2);
+// { tema: "claro", idioma: "es", notificaciones: true, fuente: "Arial" }</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 5: Copia superficial vs anidada</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const usuario = {
+    nombre: "Carlos",
+    perfil: {
+        edad: 30,
+        ciudad: "Madrid"
+    }
+};
+
+// Copia superficial con spread
+const copiaSuperf = { ...usuario };
+
+// El objeto de primer nivel es una copia
+copiaSuperf.nombre = "Luis";
+console.log(usuario.nombre); // "Carlos" - No cambia
+
+// PERO los objetos anidados siguen siendo referencias
+copiaSuperf.perfil.edad = 35;
+console.log(usuario.perfil.edad); // 35 - ¡Cambia el original!
+
+// Para una copia profunda, necesitamos otras técnicas
+const copiaProf = {
+    ...usuario,
+    perfil: { ...usuario.perfil }
+};
+
+copiaProf.perfil.ciudad = "Barcelona";
+console.log(usuario.perfil.ciudad); // "Madrid" - No cambia</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
+                        <p class="text-gray-300">El operador de extensión en objetos crea copias superficiales (shallow copies). Para objetos anidados, sólo se copia la referencia, no se crea una nueva copia del objeto anidado. Para copias profundas, considera usar técnicas como JSON.parse/stringify (con limitaciones) o bibliotecas como Lodash.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Operador de Extensión en Funciones</h2>
+                    <p class="mb-4">El operador de extensión es particularmente útil al trabajar con funciones, tanto para pasar argumentos como para recoger parámetros.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Pasar argumentos a una función</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function sumar(a, b, c) {
+    return a + b + c;
+}
+
+const numeros = [1, 2, 3];
+
+// Método antiguo
+const resultado1 = sumar.apply(null, numeros);
+
+// Con el operador de extensión
+const resultado2 = sumar(...numeros);
+
+console.log(resultado2); // 6</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Combinar con argumentos regulares</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function procesarDatos(formato, ...datos) {
+    console.log(`Formato: ${formato}`);
+    console.log(`Datos: ${datos}`);
+    return datos.map(dato => `${formato}: ${dato}`);
+}
+
+const valores = [10, 20, 30];
+
+// Pasar un argumento normal seguido de un array expandido
+const resultados = procesarDatos("Valor", ...valores);
+
+console.log(resultados); 
+// ["Valor: 10", "Valor: 20", "Valor: 30"]</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Diferencia entre spread y rest</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Parámetro rest (agrupa múltiples argumentos en un array)
+function mostrarEstudiantes(profesor, ...estudiantes) {
+    console.log(`Profesor: ${profesor}`);
+    console.log(`Estudiantes: ${estudiantes.join(', ')}`);
+}
+
+// Operador spread (expande un array en múltiples argumentos)
+const grupo = ["Ana", "Carlos", "Elena", "David"];
+mostrarEstudiantes("María", ...grupo);
+
+// Salida:
+// Profesor: María
+// Estudiantes: Ana, Carlos, Elena, David</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 4: Pasar propiedades de objeto como argumentos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function crearUsuario(nombre, email, edad) {
+    return {
+        nombre,
+        email,
+        edad,
+        activo: true,
+        fecha: new Date()
+    };
+}
+
+const datosFormulario = {
+    nombre: "Sara",
+    email: "sara@ejemplo.com",
+    edad: 27,
+    direccion: "Calle Principal 123" // Este campo extra será ignorado
+};
+
+// Expandimos las propiedades del objeto como argumentos
+const usuario = crearUsuario(...Object.values(datosFormulario));
+
+console.log(usuario);
+// { nombre: "Sara", email: "sara@ejemplo.com", edad: 27, activo: true, fecha: Date }</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Casos de Uso Prácticos</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">1. Crear copias inmutables para Redux o React</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// En un reducer de Redux
+function usuarioReducer(state = initialState, action) {
+    switch (action.type) {
+        case 'ACTUALIZAR_PERFIL':
+            return {
+                ...state,
+                perfil: {
+                    ...state.perfil,
+                    ...action.payload
+                }
+            };
+        // otros casos...
+        default:
+            return state;
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">2. Añadir elementos a un array sin mutarlo</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// React: actualizar estado sin mutar el original
+const [tareas, setTareas] = useState(['Tarea 1', 'Tarea 2']);
+
+// Añadir una tarea (inmutable)
+const agregarTarea = (nuevaTarea) => {
+    setTareas([...tareas, nuevaTarea]);
+};
+
+// Insertar en una posición específica
+const insertarTarea = (tarea, index) => {
+    setTareas([
+        ...tareas.slice(0, index),
+        tarea,
+        ...tareas.slice(index)
+    ]);
+};</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">3. Eliminar duplicados de un array</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 2, 3, 2, 4, 1, 5];
+
+// Usando Set para eliminar duplicados
+const unicos = [...new Set(numeros)];
+
+console.log(unicos); // [1, 2, 3, 4, 5]</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">4. Combinar opciones por defecto con configuración de usuario</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function inicializarApp(opciones = {}) {
+    // Opciones por defecto
+    const configuracionPorDefecto = {
+        tema: 'claro',
+        idioma: 'es',
+        notificaciones: true,
+        almacenamiento: 'local'
+    };
+    
+    // Combinar defaults con opciones del usuario
+    const configuracionFinal = {
+        ...configuracionPorDefecto,
+        ...opciones
+    };
+    
+    // Inicializar app con la configuración final
+    console.log('Iniciando con:', configuracionFinal);
+}
+
+// Llamar con opciones personalizadas
+inicializarApp({
+    tema: 'oscuro',
+    notificaciones: false
+});</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">5. Convertir argumentos variables a array</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Antes de ES6
+function registrarErrores() {
+    var errores = Array.prototype.slice.call(arguments);
+    console.error('Se encontraron errores:');
+    errores.forEach(function(error) {
+        console.error(' - ' + error);
+    });
+}
+
+// Con operador spread
+function registrarErrores(...errores) {
+    console.error('Se encontraron errores:');
+    errores.forEach(error => {
+        console.error(` - ${error}`);
+    });
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Operador de Extensión vs Otros Métodos</h2>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-700">
+                            <thead>
+                                <tr class="bg-gray-700">
+                                    <th class="p-3 text-left">Operación</th>
+                                    <th class="p-3 text-left">Con Operador Spread</th>
+                                    <th class="p-3 text-left">Método Alternativo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t border-gray-700">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Copiar array</td>
+                                    <td class="p-3 border-r border-gray-700"><code class="bg-black text-green-400 p-1 rounded">const copia = [...original];</code></td>
+                                    <td class="p-3"><code class="bg-black text-green-400 p-1 rounded">const copia = original.slice();</code></td>
+                                </tr>
+                                <tr class="border-t border-gray-700 bg-gray-900">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Combinar arrays</td>
+                                    <td class="p-3 border-r border-gray-700"><code class="bg-black text-green-400 p-1 rounded">const combo = [...arr1, ...arr2];</code></td>
+                                    <td class="p-3"><code class="bg-black text-green-400 p-1 rounded">const combo = arr1.concat(arr2);</code></td>
+                                </tr>
+                                <tr class="border-t border-gray-700">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Copiar objeto</td>
+                                    <td class="p-3 border-r border-gray-700"><code class="bg-black text-green-400 p-1 rounded">const copia = {...original};</code></td>
+                                    <td class="p-3"><code class="bg-black text-green-400 p-1 rounded">const copia = Object.assign({}, original);</code></td>
+                                </tr>
+                                <tr class="border-t border-gray-700 bg-gray-900">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Combinar objetos</td>
+                                    <td class="p-3 border-r border-gray-700"><code class="bg-black text-green-400 p-1 rounded">const combo = {...obj1, ...obj2};</code></td>
+                                    <td class="p-3"><code class="bg-black text-green-400 p-1 rounded">const combo = Object.assign({}, obj1, obj2);</code></td>
+                                </tr>
+                                <tr class="border-t border-gray-700">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Convertir iterable a array</td>
+                                    <td class="p-3 border-r border-gray-700"><code class="bg-black text-green-400 p-1 rounded">const arr = [...iterable];</code></td>
+                                    <td class="p-3"><code class="bg-black text-green-400 p-1 rounded">const arr = Array.from(iterable);</code></td>
+                                </tr>
+                                <tr class="border-t border-gray-700 bg-gray-900">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Pasar array como argumentos</td>
+                                    <td class="p-3 border-r border-gray-700"><code class="bg-black text-green-400 p-1 rounded">fn(...args);</code></td>
+                                    <td class="p-3"><code class="bg-black text-green-400 p-1 rounded">fn.apply(null, args);</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Compatibilidad en Navegadores</h2>
+                    <p class="mb-4">El operador de extensión para arrays se introdujo en ES6 (2015) y para objetos en ES9 (2018). Es compatible con todos los navegadores modernos, pero puede requerir transpilación para navegadores antiguos.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Soporte en navegadores:</h4>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong class="text-white">Operador spread en arrays:</strong> Soportado en Chrome 46+, Firefox 16+, Safari 8+, Edge 12+</li>
+                                <li><strong class="text-white">Operador spread en objetos:</strong> Soportado en Chrome 60+, Firefox 55+, Safari 11.1+, Edge 79+</li>
+                                <li><strong class="text-white">Internet Explorer:</strong> No soporta el operador spread en ninguna versión</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Opciones para compatibilidad:</h4>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong class="text-white">Transpilación:</strong> Usar Babel para convertir el código ES6/ES9 a ES5</li>
+                                <li><strong class="text-white">Polyfills:</strong> Bibliotecas que añaden soporte para características nuevas</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo de código transpilado:</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+                                <div>
+                                    <h5 class="text-sm font-medium mb-1 text-gray-400">Código ES6/ES9:</h5>
+                                    <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>const newArr = [...oldArr, 4, 5];
+const newObj = {...oldObj, c: 3};</code></pre>
+                                </div>
+                                <div>
+                                    <h5 class="text-sm font-medium mb-1 text-gray-400">Transpilado a ES5:</h5>
+                                    <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>var newArr = oldArr.concat([4, 5]);
+var newObj = Object.assign({}, oldObj, {c: 3});</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Buenas Prácticas</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Usar para operaciones inmutables</h4>
+                            <p class="mb-2">El operador spread es ideal para crear copias sin mutar los originales, especialmente importante en React, Redux, y programación funcional.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Eliminar un elemento sin mutar el original
+const eliminar = (array, index) => [
+    ...array.slice(0, index),
+    ...array.slice(index + 1)
+];
+
+// En lugar de array.splice(index, 1) que muta</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Tener cuidado con objetos anidados</h4>
+                            <p class="mb-2">Recuerda que el operador spread sólo crea copias superficiales. Para objetos anidados, extiende cada nivel que necesites copiar.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Copia profunda (sólo para el primer nivel de anidamiento)
+const copiaProfunda = {
+    ...objeto,
+    propiedad: {
+        ...objeto.propiedad
+    }
+};</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Combinar con destructuring</h4>
+                            <p class="mb-2">El operador spread funciona muy bien en combinación con la deconstrucción de objetos y arrays.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Extraer algunas propiedades y mantener el resto
+const { id, nombre, ...resto } = usuario;
+
+// Crear un nuevo objeto sin ciertas propiedades
+const datosPublicos = { ...resto }; // Sin id ni nombre</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">No abusar con objetos muy grandes</h4>
+                            <p class="mb-2">Usar spread con objetos muy grandes puede tener impacto en el rendimiento, especialmente si lo haces frecuentemente.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Si sólo necesitas actualizar una propiedad específica
+// en un objeto grande anidado, considera otra aproximación:
+const actualizarPropProfunda = (objeto, ruta, valor) => {
+    const partes = ruta.split('.');
+    if (partes.length === 1) {
+        return { ...objeto, [ruta]: valor };
+    }
+    const [primera, ...resto] = partes;
+    return {
+        ...objeto,
+        [primera]: actualizarPropProfunda(
+            objeto[primera] || {},
+            resto.join('.'),
+            valor
+        )
+    };
+};</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Mantener el orden para evitar sobrescrituras</h4>
+                            <p class="mb-2">El orden de operaciones con spread importa, ya que las propiedades posteriores sobrescriben a las anteriores.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Valores por defecto que pueden ser sobrescritos
+const opciones = {
+    ...valorPorDefecto,  // Se aplican primero
+    ...valoresUsuario    // Sobrescriben los defaults
+};
+
+// Si necesitas que ciertas propiedades nunca se sobrescriban:
+const opcionesSeguras = {
+    ...valoresUsuario,            // Se aplican primero  
+    id: valorPorDefecto.id        // Garantiza que id nunca cambia
+};</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/Spread_syntax" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Sintaxis extendida (spread)</a></li>
+                        <li><a href="https://es.javascript.info/rest-parameters-spread" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Parámetros rest y operador spread</a></li>
+                        <li><a href="https://www.w3schools.com/howto/howto_js_spread_operator.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript Spread Operator</a></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
