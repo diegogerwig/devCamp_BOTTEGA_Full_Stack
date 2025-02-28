@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
-    <title>Condicionales en JavaScript - Documentación</title>
+    <title>Bucles en JavaScript - Documentación</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
-    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md">
-        <h1 class="text-4xl font-bold mb-2">Condicionales en JavaScript</h1>
-        <p class="text-xl">¿Qué es un condicional?</p>
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md fixed top-0 left-0 right-0 z-20">
+        <h1 class="text-4xl font-bold mb-2">Bucles en JavaScript</h1>
+        <p class="text-xl">¿Qué tipo de bucles hay en JS?</p>
     </header>
 
-    <nav class="bg-gray-800 py-4 px-6 shadow-md">
+    <nav class="bg-gray-800 py-4 px-6 shadow-md fixed top-40 left-0 right-0 z-10 border-b border-gray-700">
         <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -22,595 +22,398 @@
         </a>
     </nav>
 
-    <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué es un Condicional?</h2>
-                <p class="mb-4">Un condicional en programación es una estructura que permite ejecutar diferentes bloques de código dependiendo de si una condición se evalúa como verdadera o falsa. Los condicionales son fundamentales para la toma de decisiones en el código y controlan el flujo de ejecución de un programa.</p>
-                
-                <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Conceptos clave:</h3>
-                    <ul class="list-disc pl-6 space-y-2 text-gray-300">
-                        <li><strong class="text-white">Condición:</strong> Una expresión que se evalúa como verdadera (true) o falsa (false)</li>
-                        <li><strong class="text-white">Bloque de código:</strong> Conjunto de instrucciones que se ejecutarán si la condición se cumple</li>
-                        <li><strong class="text-white">Alternativas:</strong> Diferentes rutas de ejecución dependiendo de diferentes condiciones</li>
-                        <li><strong class="text-white">Operadores de comparación:</strong> Se utilizan para crear expresiones condicionales (==, ===, !=, !==, >, <, >=, <=)</li>
-                        <li><strong class="text-white">Operadores lógicos:</strong> Combinan condiciones (&&, ||, !)</li>
+    <div class="pt-56">
+
+        <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué es un Bucle?</h2>
+                    <p class="mb-4">Un bucle (o ciclo) en programación es una estructura que permite ejecutar un bloque de código repetidamente mientras se cumpla una condición específica. Los bucles son fundamentales para automatizar tareas repetitivas y para procesar colecciones de datos como arrays u objetos.</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Conceptos clave:</h3>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                            <li><strong class="text-white">Inicialización:</strong> Establecer un valor inicial antes de comenzar el bucle</li>
+                            <li><strong class="text-white">Condición:</strong> Expresión que determina si el bucle debe continuar o terminar</li>
+                            <li><strong class="text-white">Actualización:</strong> Modificación que se realiza después de cada iteración</li>
+                            <li><strong class="text-white">Cuerpo del bucle:</strong> Bloque de código que se ejecuta en cada iteración</li>
+                            <li><strong class="text-white">Iteración:</strong> Cada ejecución individual del cuerpo del bucle</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="mb-4">JavaScript ofrece diferentes tipos de bucles para distintas situaciones y necesidades.</p>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Bucle for</h2>
+                    <p class="mb-4">El bucle <code class="bg-black text-green-400 p-1 rounded">for</code> es el más común y versátil en JavaScript. Proporciona una forma compacta de inicializar, verificar una condición y actualizar una variable en una sola línea.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>for (inicialización; condición; actualización) {
+    // código a ejecutar en cada iteración
+    }</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Contar del 1 al 5</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>for (let i = 1; i <= 5; i++) {
+    console.log(i);
+    }
+
+    // Salida:
+    // 1
+    // 2
+    // 3
+    // 4
+    // 5</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Recorrer un array</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const frutas = ["Manzana", "Banana", "Naranja", "Pera", "Uva"];
+
+    for (let i = 0; i < frutas.length; i++) {
+    console.log(`Fruta ${i+1}: ${frutas[i]}`);
+    }
+
+    // Salida:
+    // Fruta 1: Manzana
+    // Fruta 2: Banana
+    // Fruta 3: Naranja
+    // Fruta 4: Pera
+    // Fruta 5: Uva</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Bucle while</h2>
+                    <p class="mb-4">El bucle <code class="bg-black text-green-400 p-1 rounded">while</code> ejecuta un bloque de código mientras una condición específica sea verdadera. La condición se evalúa antes de cada iteración.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>while (condición) {
+    // código a ejecutar mientras la condición sea verdadera
+    }</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Contar mientras sea menor que 5</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>let contador = 1;
+
+    while (contador <= 5) {
+    console.log(contador);
+    contador++;
+    }
+
+    // Salida:
+    // 1
+    // 2
+    // 3
+    // 4
+    // 5</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Búsqueda en un array</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [4, 8, 15, 16, 23, 42];
+    let i = 0;
+    let encontrado = false;
+
+    while (i < numeros.length && !encontrado) {
+    if (numeros[i] === 23) {
+        encontrado = true;
+        console.log(`Número 23 encontrado en la posición ${i}`);
+    }
+    i++;
+    }
+
+    // Salida: Número 23 encontrado en la posición 4</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
+                        <p class="text-gray-300">Si la condición inicial es falsa, el código dentro del bucle <code class="bg-black text-green-400 p-1 rounded">while</code> nunca se ejecutará. Asegúrate de que la condición pueda ser verdadera al menos una vez si quieres que el bucle se ejecute.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Bucle do...while</h2>
+                    <p class="mb-4">El bucle <code class="bg-black text-green-400 p-1 rounded">do...while</code> es similar al bucle <code class="bg-black text-green-400 p-1 rounded">while</code>, pero con una diferencia crucial: el código dentro del bucle se ejecuta al menos una vez, incluso si la condición es falsa inicialmente. La condición se evalúa después de cada iteración.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>do {
+    // código a ejecutar al menos una vez
+    } while (condición);</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Contar del 1 al 5</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>let contador = 1;
+
+    do {
+    console.log(contador);
+    contador++;
+    } while (contador <= 5);
+
+    // Salida:
+    // 1
+    // 2
+    // 3
+    // 4
+    // 5</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Se ejecuta al menos una vez aunque la condición sea falsa</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>let numero = 10;
+
+    do {
+    console.log(`Número: ${numero}`);
+    numero++;
+    } while (numero < 5);
+
+    // Salida:
+    // Número: 10
+    // (El bucle se detiene porque la condición es falsa después de la primera iteración)</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Bucle for...in</h2>
+                    <p class="mb-4">El bucle <code class="bg-black text-green-400 p-1 rounded">for...in</code> está diseñado para iterar sobre las propiedades enumerables de un objeto (las claves). Este bucle no está diseñado para iterar sobre arrays, aunque técnicamente puede hacerlo.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>for (let propiedad in objeto) {
+    // código a ejecutar para cada propiedad
+    }</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Recorrer propiedades de un objeto</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const persona = {
+    nombre: "Ana",
+    edad: 28,
+    profesion: "Ingeniera",
+    ciudad: "Barcelona"
+    };
+
+    for (let propiedad in persona) {
+    console.log(`${propiedad}: ${persona[propiedad]}`);
+    }
+
+    // Salida:
+    // nombre: Ana
+    // edad: 28
+    // profesion: Ingeniera
+    // ciudad: Barcelona</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Uso con arrays (no recomendado)</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const colores = ["Rojo", "Verde", "Azul"];
+
+    // No recomendado para arrays, usar for...of en su lugar
+    for (let indice in colores) {
+    console.log(`Índice ${indice}: ${colores[indice]}`);
+    }
+
+    // Salida:
+    // Índice 0: Rojo
+    // Índice 1: Verde
+    // Índice 2: Azul</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Advertencia:</h4>
+                        <p class="text-gray-300">El bucle <code class="bg-black text-green-400 p-1 rounded">for...in</code> itera sobre todas las propiedades enumerables, incluidas las heredadas del prototipo. Si solo quieres las propiedades propias del objeto, puedes usar <code class="bg-black text-green-400 p-1 rounded">hasOwnProperty()</code>:</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>for (let propiedad in objeto) {
+    if (objeto.hasOwnProperty(propiedad)) {
+        // Código para propiedades no heredadas
+    }
+    }</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Bucle for...of</h2>
+                    <p class="mb-4">El bucle <code class="bg-black text-green-400 p-1 rounded">for...of</code> (introducido en ES6) está diseñado para iterar sobre elementos de objetos iterables como arrays, strings, Maps, Sets, etc. A diferencia de <code class="bg-black text-green-400 p-1 rounded">for...in</code>, devuelve los valores en lugar de los índices o propiedades.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>for (let valor of iterable) {
+    // código a ejecutar para cada valor
+    }</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Recorrer un array</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const colores = ["Rojo", "Verde", "Azul"];
+
+    for (let color of colores) {
+    console.log(color);
+    }
+
+    // Salida:
+    // Rojo
+    // Verde
+    // Azul</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Recorrer un string</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const texto = "Hola";
+
+    for (let caracter of texto) {
+    console.log(caracter);
+    }
+
+    // Salida:
+    // H
+    // o
+    // l
+    // a</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Recorrer un Set</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = new Set([1, 2, 3, 4, 5]);
+
+    for (let numero of numeros) {
+    console.log(numero);
+    }
+
+    // Salida:
+    // 1
+    // 2
+    // 3
+    // 4
+    // 5</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">forEach() y otros métodos de iteración</h2>
+                    <p class="mb-4">Además de los bucles tradicionales, JavaScript ofrece métodos de iteración de arrays que permiten procesar elementos de una forma más funcional y declarativa. Estos métodos son especialmente útiles para operaciones como transformación, filtrado y acumulación de datos.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Método forEach()</h3>
+                    <p class="mb-3">El método <code class="bg-black text-green-400 p-1 rounded">forEach()</code> ejecuta una función para cada elemento del array.</p>
+                    
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>array.forEach(function(elemento, indice, array) {
+    // código a ejecutar para cada elemento
+    });</code></pre>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo:</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 2, 3, 4, 5];
+
+    numeros.forEach(function(numero, indice) {
+    console.log(`Número ${indice}: ${numero}`);
+    });
+
+    // Usando arrow function (más conciso)
+    numeros.forEach((numero, indice) => console.log(`Número ${indice}: ${numero}`));
+
+    // Salida:
+    // Número 0: 1
+    // Número 1: 2
+    // Número 2: 3
+    // Número 3: 4
+    // Número 4: 5</code></pre>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Otros métodos de iteración importantes</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">map()</h4>
+                            <p class="mb-2">Crea un nuevo array con los resultados de aplicar una función a cada elemento.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 2, 3, 4, 5];
+    const duplicados = numeros.map(num => num * 2);
+
+    console.log(duplicados); // [2, 4, 6, 8, 10]</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">filter()</h4>
+                            <p class="mb-2">Crea un nuevo array con todos los elementos que cumplen una condición.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const pares = numeros.filter(num => num % 2 === 0);
+
+    console.log(pares); // [2, 4, 6, 8, 10]</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">reduce()</h4>
+                            <p class="mb-2">Reduce el array a un único valor aplicando una función acumuladora.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 2, 3, 4, 5];
+    const suma = numeros.reduce((acumulador, valorActual) => acumulador + valorActual, 0);
+
+    console.log(suma); // 15</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">find()</h4>
+                            <p class="mb-2">Devuelve el primer elemento que cumple con una condición.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const usuarios = [
+    { id: 1, nombre: "Ana", edad: 28 },
+    { id: 2, nombre: "Carlos", edad: 17 },
+    { id: 3, nombre: "Elena", edad: 32 }
+    ];
+
+    const mayor = usuarios.find(usuario => usuario.edad > 18);
+    console.log(mayor); // { id: 1, nombre: "Ana", edad: 28 }</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">some() y every()</h4>
+                            <p class="mb-2">Verifican si alguno o todos los elementos cumplen una condición.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const edades = [16, 18, 22, 14, 30];
+
+    // ¿Hay algún menor de edad?
+    const hayMenores = edades.some(edad => edad < 18);
+    console.log(hayMenores); // true
+
+    // ¿Son todos mayores de edad?
+    const todosMayores = edades.every(edad => edad >= 18);
+    console.log(todosMayores); // false</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Loops_and_iteration" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Bucles e iteración</a></li>
+                        <li><a href="https://es.javascript.info/while-for" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Bucles: while y for</a></li>
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Statements/for-await...of" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - for await...of</a></li>
+                        <li><a href="https://www.w3schools.com/js/js_loop_for.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript Loops</a></li>
+                        <li><a href="https://eloquentjavascript.net/02_program_structure.html#h_oupMC+5FKN" class="text-yellow-400 hover:text-yellow-300">Eloquent JavaScript - Loops</a></li>
                     </ul>
                 </div>
-                
-                <p class="mb-4">En JavaScript, hay varias formas de implementar condicionales, cada una con sus propios casos de uso y sintaxis.</p>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Declaración if</h2>
-                <p class="mb-4">La forma más básica de condicional en JavaScript es la declaración <code class="bg-black text-green-400 p-1 rounded">if</code>. Permite ejecutar un bloque de código si una condición especificada es verdadera.</p>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
-                <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>if (condición) {
-  // código a ejecutar si la condición es verdadera
-}</code></pre>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
-                <div class="space-y-4">
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Verificación de edad</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const edad = 18;
-
-if (edad >= 18) {
-  console.log("Eres mayor de edad");
-}
-// Salida: "Eres mayor de edad"</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Verificación de usuario</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const usuarioLogueado = true;
-
-if (usuarioLogueado) {
-  console.log("Bienvenido de nuevo");
-}
-// Salida: "Bienvenido de nuevo"</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Declaración if...else</h2>
-                <p class="mb-4">La declaración <code class="bg-black text-green-400 p-1 rounded">if...else</code> permite ejecutar un bloque de código si la condición es verdadera y otro bloque diferente si la condición es falsa.</p>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
-                <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>if (condición) {
-  // código a ejecutar si la condición es verdadera
-} else {
-  // código a ejecutar si la condición es falsa
-}</code></pre>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
-                <div class="space-y-4">
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Verificación de edad con alternativa</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const edad = 16;
-
-if (edad >= 18) {
-  console.log("Eres mayor de edad");
-} else {
-  console.log("Eres menor de edad");
-}
-// Salida: "Eres menor de edad"</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Verificación de contraseña</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const contraseña = "abc123";
-
-if (contraseña.length >= 8) {
-  console.log("Contraseña segura");
-} else {
-  console.log("Contraseña demasiado corta");
-}
-// Salida: "Contraseña demasiado corta"</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Declaración if...else if...else</h2>
-                <p class="mb-4">Esta estructura permite verificar múltiples condiciones en secuencia, ejecutando el bloque de código correspondiente a la primera condición que se evalúe como verdadera.</p>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
-                <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>if (condición1) {
-  // código a ejecutar si condición1 es verdadera
-} else if (condición2) {
-  // código a ejecutar si condición1 es falsa y condición2 es verdadera
-} else if (condición3) {
-  // código a ejecutar si condición1 y condición2 son falsas y condición3 es verdadera
-} else {
-  // código a ejecutar si todas las condiciones anteriores son falsas
-}</code></pre>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
-                <div class="space-y-4">
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Calificaciones</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const puntuacion = 85;
-let calificacion;
-
-if (puntuacion >= 90) {
-  calificacion = "A";
-} else if (puntuacion >= 80) {
-  calificacion = "B";
-} else if (puntuacion >= 70) {
-  calificacion = "C";
-} else if (puntuacion >= 60) {
-  calificacion = "D";
-} else {
-  calificacion = "F";
-}
-
-console.log(`Calificación: ${calificacion}`);
-// Salida: "Calificación: B"</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Estado del tiempo</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const temperatura = 28;
-
-if (temperatura < 0) {
-  console.log("Temperatura bajo cero. ¡Abrígate mucho!");
-} else if (temperatura < 10) {
-  console.log("Hace frío. Necesitas un abrigo.");
-} else if (temperatura < 20) {
-  console.log("Temperatura fresca. Una chaqueta ligera es suficiente.");
-} else if (temperatura < 30) {
-  console.log("Temperatura agradable. Puedes salir en manga corta.");
-} else {
-  console.log("Hace calor. ¡No olvides hidratarte!");
-}
-// Salida: "Temperatura agradable. Puedes salir en manga corta."</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Operadores de Comparación y Lógicos</h2>
-                
-                <p class="mb-4">Los condicionales utilizan expresiones que se evalúan como verdaderas o falsas. Estas expresiones se construyen usando operadores de comparación y lógicos.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-3 text-yellow-300">Operadores de Comparación</h3>
-                        <table class="w-full text-sm">
-                            <thead>
-                                <tr class="bg-gray-800">
-                                    <th class="p-2 text-left">Operador</th>
-                                    <th class="p-2 text-left">Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded">==</code></td>
-                                    <td class="p-2">Igual (valor)</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded">===</code></td>
-                                    <td class="p-2">Estrictamente igual (valor y tipo)</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded">!=</code></td>
-                                    <td class="p-2">No igual (valor)</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded">!==</code></td>
-                                    <td class="p-2">Estrictamente no igual (valor y tipo)</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded">></code></td>
-                                    <td class="p-2">Mayor que</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded"><</code></td>
-                                    <td class="p-2">Menor que</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded">>=</code></td>
-                                    <td class="p-2">Mayor o igual que</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded"><=</code></td>
-                                    <td class="p-2">Menor o igual que</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-3 text-yellow-300">Operadores Lógicos</h3>
-                        <table class="w-full text-sm">
-                            <thead>
-                                <tr class="bg-gray-800">
-                                    <th class="p-2 text-left">Operador</th>
-                                    <th class="p-2 text-left">Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded">&&</code></td>
-                                    <td class="p-2">Y lógico (ambas condiciones deben ser verdaderas)</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded">||</code></td>
-                                    <td class="p-2">O lógico (al menos una condición debe ser verdadera)</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <td class="p-2"><code class="bg-black text-green-400 p-1 rounded">!</code></td>
-                                    <td class="p-2">NO lógico (invierte el valor de la condición)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <h3 class="text-lg font-semibold mt-6 mb-2 text-yellow-300">Ejemplos:</h3>
-                <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>// Comparaciones
-console.log(5 == "5");    // true (igualdad de valor)
-console.log(5 === "5");   // false (diferentes tipos)
-console.log(10 > 5);      // true
-console.log(10 < 20);     // true
-console.log(5 >= 5);      // true
-console.log(7 <= 5);      // false
-
-// Operadores lógicos
-const edad = 25;
-const tieneLicencia = true;
-
-// AND lógico
-if (edad >= 18 && tieneLicencia) {
-  console.log("Puede conducir");  // Se ejecuta
-}
-
-// OR lógico
-const esEstudiante = false;
-const esMayorDe65 = false;
-
-if (esEstudiante || esMayorDe65) {
-  console.log("Descuento aplicable");  // No se ejecuta
-}
-
-// NOT lógico
-const estaBloqueado = false;
-
-if (!estaBloqueado) {
-  console.log("Acceso permitido");  // Se ejecuta
-}</code></pre>
-            </div>
-        </section>
-
-
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Condicionales en estructuras de datos</h2>
-                
-                <div class="bg-gray-900 p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Filtrado de arrays</h3>
-                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 5, 10, 15, 20, 25, 30];
-
-// Filtrar números mayores que 15
-const mayoresQue15 = numeros.filter(numero => {
-  return numero > 15;  // condición para incluir en el resultado
-});
-
-console.log(mayoresQue15);  // [20, 25, 30]
-
-// Filtrar usuarios activos
-const usuarios = [
-  { id: 1, nombre: "Ana", activo: true },
-  { id: 2, nombre: "Carlos", activo: false },
-  { id: 3, nombre: "Elena", activo: true },
-  { id: 4, nombre: "David", activo: false }
-];
-
-const usuariosActivos = usuarios.filter(usuario => usuario.activo);
-console.log(usuariosActivos);  // [{ id: 1, nombre: "Ana", activo: true }, { id: 3, nombre: "Elena", activo: true }]</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Manejo de errores condicional</h2>
-                
-                <div class="bg-gray-900 p-4 rounded-lg mb-6">
-                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Try...catch...finally</h3>
-                    <p class="mb-3">Aunque no es un condicional tradicional, el bloque try...catch permite ejecutar código condicionalmente dependiendo de si ocurre un error.</p>
-                    <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function dividir(a, b) {
-  try {
-    // Se intenta ejecutar este código
-    if (b === 0) {
-      throw new Error("No se puede dividir por cero");
-    }
-    
-    const resultado = a / b;
-    return `Resultado: ${resultado}`;
-  } catch (error) {
-    // Se ejecuta solo si hay un error
-    return `Error: ${error.message}`;
-  } finally {
-    // Se ejecuta siempre, haya error o no
-    console.log("Operación finalizada");
-  }
-}
-
-console.log(dividir(10, 2));   // "Resultado: 5"
-console.log(dividir(10, 0));   // "Error: No se puede dividir por cero"</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Switch</h2>
-                <p class="mb-4">La declaración <code class="bg-black text-green-400 p-1 rounded">switch</code> evalúa una expresión y ejecuta el bloque de código correspondiente al valor que coincida. Es útil cuando tienes múltiples condiciones basadas en el mismo valor.</p>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
-                <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>switch (expresión) {
-  case valor1:
-    // código a ejecutar si expresión === valor1
-    break;
-  case valor2:
-    // código a ejecutar si expresión === valor2
-    break;
-  case valor3:
-    // código a ejecutar si expresión === valor3
-    break;
-  default:
-    // código a ejecutar si ninguno de los valores coincide
-}</code></pre>
-                
-                <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
-                    <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
-                    <p class="text-gray-300">La sentencia <code class="bg-black text-green-400 p-1 rounded">break</code> es crucial en cada caso para evitar la "caída" (fallthrough) a los siguientes casos. Sin el break, el código seguirá ejecutándose en los casos siguientes independientemente de si coinciden o no.</p>
-                </div>
-                
-                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
-                <div class="space-y-4">
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Días de la semana</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const diaDeLaSemana = 3;
-let nombreDia;
-
-switch (diaDeLaSemana) {
-  case 1:
-    nombreDia = "Lunes";
-    break;
-  case 2:
-    nombreDia = "Martes";
-    break;
-  case 3:
-    nombreDia = "Miércoles";
-    break;
-  case 4:
-    nombreDia = "Jueves";
-    break;
-  case 5:
-    nombreDia = "Viernes";
-    break;
-  case 6:
-    nombreDia = "Sábado";
-    break;
-  case 7:
-    nombreDia = "Domingo";
-    break;
-  default:
-    nombreDia = "Día inválido";
-}
-
-console.log(`Hoy es ${nombreDia}`);
-// Salida: "Hoy es Miércoles"</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Tipo de fruta (con "fallthrough" intencional)</h4>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const fruta = "Manzana";
-let tipo;
-
-switch (fruta) {
-  case "Manzana":
-  case "Pera":
-  case "Durazno":
-    tipo = "Fruta de pepita";
-    break;
-  case "Naranja":
-  case "Limón":
-  case "Mandarina":
-    tipo = "Cítrico";
-    break;
-  case "Plátano":
-  case "Piña":
-    tipo = "Fruta tropical";
-    break;
-  default:
-    tipo = "Otro tipo de fruta";
-}
-
-console.log(`${fruta} es una ${tipo}`);
-// Salida: "Manzana es una Fruta de pepita"</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Buenas Prácticas</h2>
-                
-                <div class="space-y-4">
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Utilizar === en lugar de ==</h3>
-                        <p class="text-gray-300">El operador de igualdad estricta (<code class="bg-black text-green-400 p-1 rounded">===</code>) compara tanto el valor como el tipo, evitando conversiones de tipos inesperadas.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Puede llevar a comportamientos inesperados
-if (valor == 0) { ... }
-
-// ✅ Más seguro y predecible
-if (valor === 0) { ... }</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Usar llaves incluso para bloques de una sola línea</h3>
-                        <p class="text-gray-300">Por claridad y para evitar errores, es recomendable usar llaves incluso cuando el bloque condicional contiene una sola línea.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Propenso a errores si se añaden más líneas después
-if (condicion) console.log("Una línea");
-
-// ✅ Más claro y menos propenso a errores
-if (condicion) {
-  console.log("Una línea");
-}</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Evitar anidaciones excesivas</h3>
-                        <p class="text-gray-300">Demasiados niveles de anidación pueden hacer que el código sea difícil de leer y mantener. Considera refactorizar usando funciones, operadores lógicos o retornos tempranos.</p>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Difícil de leer y mantener
-function verificarAcceso(usuario) {
-  if (usuario) {
-    if (usuario.rol) {
-      if (usuario.rol === 'admin') {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
-
-// ✅ Más legible con retornos tempranos
-function verificarAcceso(usuario) {
-  if (!usuario) return false;
-  if (!usuario.rol) return false;
-  return usuario.rol === 'admin';
-}</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Considerar el operador ternario para casos simples</h3>
-                        <p class="text-gray-300">Para asignaciones condicionales simples, el operador ternario puede hacer que el código sea más conciso.</p>
-                        <li><a href="js_operador_ternario.html">Operador Ternario en JacaScript</a></li>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// if/else tradicional
-let mensaje;
-if (edad >= 18) {
-  mensaje = "Adulto";
-} else {
-  mensaje = "Menor";
-}
-
-// ✅ Más conciso con operador ternario
-const mensaje = edad >= 18 ? "Adulto" : "Menor";</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Casos de Uso Prácticos</h2>
-                
-                <div class="space-y-6">
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Validación de formularios</h3>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function validarFormulario(usuario, contraseña) {
-  // Verificar campos vacíos
-  if (!usuario || !contraseña) {
-    return "Todos los campos son obligatorios";
-  }
-  
-  // Verificar longitud de contraseña
-  if (contraseña.length < 8) {
-    return "La contraseña debe tener al menos 8 caracteres";
-  }
-  
-  // Verificar formato de usuario (solo letras y números)
-  if (!/^[a-zA-Z0-9]+$/.test(usuario)) {
-    return "El usuario solo puede contener letras y números";
-  }
-  
-  // Todo correcto
-  return "Formulario válido";
-}
-
-console.log(validarFormulario("", "abc123"));        // "Todos los campos son obligatorios"
-console.log(validarFormulario("usuario", "123"));    // "La contraseña debe tener al menos 8 caracteres"
-console.log(validarFormulario("usuario@", "password123")); // "El usuario solo puede contener letras y números"
-console.log(validarFormulario("usuario", "password123"));  // "Formulario válido"</code></pre>
-                    </div>
-                    
-                    <div class="bg-gray-900 p-4 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Control de acceso</h3>
-                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function verificarPermisos(usuario) {
-  // Si no hay usuario, no hay acceso
-  if (!usuario) {
-    return "Acceso denegado: Usuario no encontrado";
-  }
-  
-  // Verificar si el usuario está activo
-  if (!usuario.activo) {
-    return "Acceso denegado: Usuario inactivo";
-  }
-  
-  // Verificar el rol del usuario
-  switch (usuario.rol) {
-    case "admin":
-      return "Acceso concedido: Acceso total";
-    case "editor":
-      return "Acceso concedido: Permiso de edición";
-    case "usuario":
-      return "Acceso concedido: Permiso de lectura";
-    default:
-      return "Acceso denegado: Rol desconocido";
-  }
-}
-
-// Ejemplos
-console.log(verificarPermisos(null));  // "Acceso denegado: Usuario no encontrado"
-console.log(verificarPermisos({ activo: false, rol: "usuario" }));  // "Acceso denegado: Usuario inactivo"
-console.log(verificarPermisos({ activo: true, rol: "admin" }));  // "Acceso concedido: Acceso total"
-console.log(verificarPermisos({ activo: true, rol: "invitado" }));  // "Acceso denegado: Rol desconocido"
-
-// Ejemplo con usuario activo y rol "editor"
-const usuario = { activo: true, rol: "editor" };
-console.log(verificarPermisos(usuario));  // "Acceso concedido: Permiso de edición"</code></pre>
-          </div>
+            </section>
         </div>
-      </div>
-    </section>
-    
-        <section class="mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
-                <ul class="list-disc pl-6 space-y-2">
-                    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Control_flow_and_error_handling" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Control de flujo y manejo de errores</a></li>
-                    <li><a href="https://es.javascript.info/ifelse" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Condicionales: if, '?'</a></li>
-                    <li><a href="https://www.w3schools.com/js/js_if_else.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript If, Else, and Else If</a></li>
-                </ul>
-            </div>
-        </section>
-
-  </div>
+    </div>
 </body>
 </html>
