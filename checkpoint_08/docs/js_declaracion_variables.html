@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Declaración de Variables en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md fixed top-0 left-0 right-0 z-20">
+        <h1 class="text-4xl font-bold mb-2">Declaración de Variables en JavaScript</h1>
+        <p class="text-xl">¿Cuáles son las diferencias entre const, let y var?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md fixed top-40 left-0 right-0 z-10 border-b border-gray-700">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="pt-56">
+
+        <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué son las Variables?</h2>
+                    <p class="mb-4">Las variables en JavaScript son contenedores para almacenar valores de datos. Son fundamentales en cualquier lenguaje de programación, ya que permiten guardar y manipular información durante la ejecución de un programa.</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Conceptos clave:</h3>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                            <li><strong class="text-white">Declaración:</strong> Crear una variable con un nombre específico</li>
+                            <li><strong class="text-white">Inicialización:</strong> Asignar un valor inicial a una variable</li>
+                            <li><strong class="text-white">Reasignación:</strong> Cambiar el valor de una variable existente</li>
+                            <li><strong class="text-white">Ámbito (Scope):</strong> Región del código donde una variable es accesible</li>
+                            <li><strong class="text-white">Elevación (Hoisting):</strong> Comportamiento de las declaraciones en tiempo de ejecución</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="mb-4">JavaScript ofrece tres formas principales de declarar variables: <code class="bg-black text-green-400 p-1 rounded">var</code>, <code class="bg-black text-green-400 p-1 rounded">let</code> y <code class="bg-black text-green-400 p-1 rounded">const</code>. Cada una tiene comportamientos y casos de uso específicos.</p>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Declaración con var</h2>
+                    <p class="mb-4"><code class="bg-black text-green-400 p-1 rounded">var</code> es la forma tradicional de declarar variables en JavaScript, disponible desde las primeras versiones del lenguaje. Sin embargo, tiene algunas peculiaridades que pueden causar problemas en programas más complejos.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Características:</h3>
+                    <ul class="list-disc pl-6 space-y-2 mb-6">
+                        <li>Ámbito de función o global, pero no de bloque</li>
+                        <li>Se puede redeclarar y reasignar</li>
+                        <li>Se eleva (hoisting) con valor inicial <code class="bg-black text-green-400 p-1 rounded">undefined</code></li>
+                    </ul>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Ámbito y redeclaración</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Declaración e inicialización
+var nombre = "Ana";
+console.log(nombre); // Ana
+
+// Redeclaración (permitida con var)
+var nombre = "Carlos";
+console.log(nombre); // Carlos
+
+// Ámbito de función
+function ejemploVar() {
+    var edad = 30;
+    console.log(edad); // 30
+}
+ejemploVar();
+// console.log(edad); // Error: edad is not defined
+
+// Ámbito global vs bloque
+var x = 10;
+if (true) {
+    var x = 20; // Misma variable que la x externa
+    console.log(x); // 20
+}
+console.log(x); // 20 - ¡Ha cambiado el valor global!</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Hoisting</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>console.log(ciudad); // undefined (no error)
+var ciudad = "Barcelona";
+console.log(ciudad); // Barcelona
+
+// El código anterior es interpretado como:
+// var ciudad;
+// console.log(ciudad); // undefined
+// ciudad = "Barcelona";
+// console.log(ciudad); // Barcelona</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
+                        <p class="text-gray-300">Aunque <code class="bg-black text-green-400 p-1 rounded">var</code> sigue siendo compatible, se recomienda usar <code class="bg-black text-green-400 p-1 rounded">let</code> y <code class="bg-black text-green-400 p-1 rounded">const</code> en el código moderno para evitar comportamientos inesperados y errores difíciles de detectar.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Declaración con let</h2>
+                    <p class="mb-4"><code class="bg-black text-green-400 p-1 rounded">let</code> fue introducido en ES6 (ECMAScript 2015) para solucionar muchos de los problemas asociados con <code class="bg-black text-green-400 p-1 rounded">var</code>. Proporciona un ámbito de bloque y un comportamiento más predecible.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Características:</h3>
+                    <ul class="list-disc pl-6 space-y-2 mb-6">
+                        <li>Ámbito de bloque (dentro de llaves {})</li>
+                        <li>No permite redeclaración en el mismo ámbito</li>
+                        <li>Permite reasignación</li>
+                        <li>Se eleva (hoisting) pero sin inicialización (zona muerta temporal)</li>
+                    </ul>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Ámbito de bloque</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>let x = 10;
+if (true) {
+    let x = 20; // Variable diferente a la x externa
+    console.log(x); // 20
+}
+console.log(x); // 10 - No ha cambiado el valor global
+
+// Otro ejemplo de ámbito
+for (let i = 0; i < 3; i++) {
+    console.log(i); // 0, 1, 2
+}
+// console.log(i); // Error: i is not defined</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Redeclaración y reasignación</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>let nombre = "Ana";
+// let nombre = "Carlos"; // Error: no se puede redeclarar
+
+// Pero sí podemos reasignar
+nombre = "Carlos";
+console.log(nombre); // Carlos
+
+// En diferentes ámbitos sí es posible usar el mismo nombre
+function ejemploLet() {
+    let nombre = "Elena"; // Variable diferente
+    console.log(nombre); // Elena
+}
+ejemploLet();
+console.log(nombre); // Carlos</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Zona muerta temporal (TDZ)</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// console.log(ciudad); // Error: Cannot access 'ciudad' before initialization
+let ciudad = "Madrid";
+console.log(ciudad); // Madrid
+
+// A diferencia de var, las variables let se elevan pero no se inicializan
+// y no se pueden usar antes de su declaración</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Declaración con const</h2>
+                    <p class="mb-4"><code class="bg-black text-green-400 p-1 rounded">const</code> también fue introducido en ES6 y está diseñado para declarar variables cuyo valor no cambiará durante la ejecución del programa (constantes).</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Características:</h3>
+                    <ul class="list-disc pl-6 space-y-2 mb-6">
+                        <li>Ámbito de bloque (igual que let)</li>
+                        <li>No permite redeclaración ni reasignación</li>
+                        <li>Debe inicializarse en la declaración</li>
+                        <li>Se eleva (hoisting) sin inicialización (zona muerta temporal)</li>
+                        <li>Para objetos y arrays, el contenido puede modificarse (es mutable)</li>
+                    </ul>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Declaración y uso básico</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const PI = 3.14159;
+console.log(PI); // 3.14159
+
+// const TASA; // Error: Missing initializer in const declaration
+// PI = 3.14; // Error: Assignment to constant variable
+
+// Ámbito de bloque (igual que let)
+if (true) {
+    const PI = 3; // Diferente constante
+    console.log(PI); // 3
+}
+console.log(PI); // 3.14159</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Objetos y arrays con const</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Objetos con const - La referencia es constante, pero el contenido es mutable
+const persona = {
+    nombre: "David",
+    edad: 35
+};
+
+// No se puede reasignar el objeto
+// persona = { nombre: "Laura", edad: 28 }; // Error
+
+// Pero sí se pueden modificar sus propiedades
+persona.nombre = "Laura";
+persona.edad = 28;
+console.log(persona); // { nombre: "Laura", edad: 28 }
+
+// Arrays con const - Mismo comportamiento
+const numeros = [1, 2, 3];
+// numeros = [4, 5, 6]; // Error
+numeros.push(4);
+console.log(numeros); // [1, 2, 3, 4]</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Objetos inmutables con Object.freeze()</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Para hacer un objeto completamente inmutable, use Object.freeze()
+const configuracion = Object.freeze({
+    api: "https://api.ejemplo.com",
+    timeout: 3000,
+    debug: false
+});
+
+// En modo estricto, esto lanzaría un error
+// En modo no estricto, simplemente no tiene efecto
+configuracion.timeout = 5000; 
+console.log(configuracion.timeout); // 3000 - No cambió</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Comparación entre var, let y const</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-700">
+                            <thead>
+                                <tr class="bg-gray-700">
+                                    <th class="p-3 text-left">Característica</th>
+                                    <th class="p-3 text-left">var</th>
+                                    <th class="p-3 text-left">let</th>
+                                    <th class="p-3 text-left">const</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t border-gray-700">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Ámbito</td>
+                                    <td class="p-3 border-r border-gray-700">Función o Global</td>
+                                    <td class="p-3 border-r border-gray-700">Bloque</td>
+                                    <td class="p-3">Bloque</td>
+                                </tr>
+                                <tr class="border-t border-gray-700 bg-gray-900">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Redeclaración</td>
+                                    <td class="p-3 border-r border-gray-700">Sí</td>
+                                    <td class="p-3 border-r border-gray-700">No (en el mismo ámbito)</td>
+                                    <td class="p-3">No (en el mismo ámbito)</td>
+                                </tr>
+                                <tr class="border-t border-gray-700">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Reasignación</td>
+                                    <td class="p-3 border-r border-gray-700">Sí</td>
+                                    <td class="p-3 border-r border-gray-700">Sí</td>
+                                    <td class="p-3">No</td>
+                                </tr>
+                                <tr class="border-t border-gray-700 bg-gray-900">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Hoisting</td>
+                                    <td class="p-3 border-r border-gray-700">Sí, con valor undefined</td>
+                                    <td class="p-3 border-r border-gray-700">Sí, pero sin inicialización (TDZ)</td>
+                                    <td class="p-3">Sí, pero sin inicialización (TDZ)</td>
+                                </tr>
+                                <tr class="border-t border-gray-700">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Inicialización obligatoria</td>
+                                    <td class="p-3 border-r border-gray-700">No</td>
+                                    <td class="p-3 border-r border-gray-700">No</td>
+                                    <td class="p-3">Sí</td>
+                                </tr>
+                                <tr class="border-t border-gray-700 bg-gray-900">
+                                    <td class="p-3 border-r border-gray-700 font-medium">Disponible desde</td>
+                                    <td class="p-3 border-r border-gray-700">Siempre</td>
+                                    <td class="p-3 border-r border-gray-700">ES6 (2015)</td>
+                                    <td class="p-3">ES6 (2015)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Buenas Prácticas</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Preferir const por defecto</h4>
+                            <p>Utiliza <code class="bg-black text-green-400 p-1 rounded">const</code> siempre que sea posible para variables que no necesiten ser reasignadas. Esto ayuda a prevenir errores y hace el código más predecible.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Usar let para variables que cambiarán</h4>
+                            <p>Cuando necesites reasignar valores, usa <code class="bg-black text-green-400 p-1 rounded">let</code> en lugar de <code class="bg-black text-green-400 p-1 rounded">var</code>. El ámbito de bloque de <code class="bg-black text-green-400 p-1 rounded">let</code> hace el código más seguro y fácil de entender.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Evitar var en código moderno</h4>
+                            <p>En la mayoría de los casos, <code class="bg-black text-green-400 p-1 rounded">var</code> puede ser reemplazado por <code class="bg-black text-green-400 p-1 rounded">let</code> o <code class="bg-black text-green-400 p-1 rounded">const</code>. Solo utiliza <code class="bg-black text-green-400 p-1 rounded">var</code> si tienes una razón específica para hacerlo (como compatibilidad con navegadores muy antiguos).</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Declarar variables al inicio de su ámbito</h4>
+                            <p>Declara todas las variables al principio del ámbito donde se utilizarán. Esto mejora la legibilidad y evita sorpresas con el hoisting.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Usar nombres descriptivos</h4>
+                            <p>Utiliza nombres que describan claramente lo que contiene la variable. Evita nombres de una sola letra excepto en casos muy específicos (como índices de bucles cortos).</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// Incorrecto
+const x = getUserData();
+
+// Correcto
+const userData = getUserData();</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Grammar_and_types#declaraciones" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Gramática y tipos</a></li>
+                        <li><a href="https://es.javascript.info/variables" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Variables</a></li>
+                        <li><a href="https://www.w3schools.com/js/js_variables.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript Variables</a></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
