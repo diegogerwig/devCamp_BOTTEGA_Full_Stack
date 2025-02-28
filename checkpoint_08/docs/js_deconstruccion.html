@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Deconstrucción en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md fixed top-0 left-0 right-0 z-20">
+        <h1 class="text-4xl font-bold mb-2">Deconstrucción en JavaScript</h1>
+        <p class="text-xl">¿Qué es la deconstrucción de variables?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md fixed top-40 left-0 right-0 z-10 border-b border-gray-700">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="pt-56">
+
+        <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué es la Deconstrucción?</h2>
+                    <p class="mb-4">La deconstrucción (o desestructuración) es una expresión de JavaScript que permite desempacar valores de arrays o propiedades de objetos en variables individuales de forma concisa y directa. Esta característica fue introducida en ES6 (ECMAScript 2015) y se ha convertido en una de las funcionalidades más populares del lenguaje.</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Conceptos clave:</h3>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                            <li><strong class="text-white">Deconstrucción de arrays:</strong> Extrae elementos de un array en variables individuales</li>
+                            <li><strong class="text-white">Deconstrucción de objetos:</strong> Extrae propiedades de un objeto en variables individuales</li>
+                            <li><strong class="text-white">Asignación:</strong> Asigna valores extraídos a variables nuevas o existentes</li>
+                            <li><strong class="text-white">Valores por defecto:</strong> Define valores de respaldo cuando la propiedad o elemento no existe</li>
+                            <li><strong class="text-white">Renombrado:</strong> Crea variables con nombres diferentes a las propiedades originales</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="mb-4">La deconstrucción simplifica el código, haciéndolo más limpio y legible, especialmente cuando se trabaja con estructuras de datos complejas o cuando se necesita extraer múltiples valores de un objeto o array.</p>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Deconstrucción de Arrays</h2>
+                    <p class="mb-4">La deconstrucción de arrays te permite extraer elementos de un array y asignarlos a variables individuales en una sola operación, utilizando la sintaxis de corchetes <code class="bg-black text-green-400 p-1 rounded">[]</code>.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis básica:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>const [variable1, variable2, ...] = array;</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Deconstrucción básica de array</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Método tradicional
+const colores = ["rojo", "verde", "azul"];
+const color1 = colores[0];
+const color2 = colores[1];
+const color3 = colores[2];
+
+// Con deconstrucción
+const [rojo, verde, azul] = colores;
+
+console.log(rojo);   // "rojo"
+console.log(verde);  // "verde"
+console.log(azul);   // "azul"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Omitir elementos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const numeros = [1, 2, 3, 4, 5];
+
+// Omitir el segundo y cuarto elemento
+const [primero, , tercero, , quinto] = numeros;
+
+console.log(primero);  // 1
+console.log(tercero);  // 3
+console.log(quinto);   // 5</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Valores por defecto</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const coordenadas = [10, 20];
+
+// El tercer valor no existe, se usa el valor por defecto
+const [x, y, z = 0] = coordenadas;
+
+console.log(x);  // 10
+console.log(y);  // 20
+console.log(z);  // 0 (valor por defecto)</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 4: Operador rest</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
+// Obtener el primer día y agrupar el resto
+const [primerDia, ...restoDias] = diasSemana;
+
+console.log(primerDia);   // "Lunes"
+console.log(restoDias);   // ["Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 5: Intercambio de variables</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Método tradicional
+let a = 5;
+let b = 10;
+let temp = a;
+a = b;
+b = temp;
+
+// Con deconstrucción (más elegante)
+let x = 5;
+let y = 10;
+[x, y] = [y, x];
+
+console.log(x);  // 10
+console.log(y);  // 5</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Deconstrucción de Objetos</h2>
+                    <p class="mb-4">La deconstrucción de objetos te permite extraer propiedades de un objeto y asignarlas a variables con el mismo nombre (o uno diferente) en una sola operación, utilizando la sintaxis de llaves <code class="bg-black text-green-400 p-1 rounded">{}</code>.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis básica:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>const { propiedad1, propiedad2, ... } = objeto;</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Deconstrucción básica de objeto</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Método tradicional
+const persona = {
+    nombre: "Ana",
+    edad: 28,
+    ciudad: "Barcelona"
+};
+
+const nombre = persona.nombre;
+const edad = persona.edad;
+const ciudad = persona.ciudad;
+
+// Con deconstrucción
+const { nombre, edad, ciudad } = persona;
+
+console.log(nombre);  // "Ana"
+console.log(edad);    // 28
+console.log(ciudad);  // "Barcelona"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Renombrar variables</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const usuario = {
+    id: 1,
+    nombre: "Carlos",
+    email: "carlos@ejemplo.com"
+};
+
+// Extraer y renombrar propiedades
+const { id: usuarioId, nombre: nombreUsuario, email: correo } = usuario;
+
+console.log(usuarioId);     // 1
+console.log(nombreUsuario); // "Carlos"
+console.log(correo);        // "carlos@ejemplo.com"
+
+// La variable 'nombre' no existe, solo 'nombreUsuario'
+// console.log(nombre); // Error: nombre is not defined</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Valores por defecto</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const configuracion = {
+    tema: "oscuro",
+    notificaciones: true
+};
+
+// La propiedad 'idioma' no existe, se usa el valor por defecto
+const { tema, notificaciones, idioma = "es" } = configuracion;
+
+console.log(tema);            // "oscuro"
+console.log(notificaciones);  // true
+console.log(idioma);          // "es" (valor por defecto)
+
+// También funciona con renombrado
+const { tema: colorTema, fuente = "Arial" } = configuracion;
+console.log(colorTema);  // "oscuro"
+console.log(fuente);     // "Arial" (valor por defecto)</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 4: Operador rest en objetos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const empleado = {
+    id: 42,
+    nombre: "Elena",
+    edad: 32,
+    departamento: "Desarrollo",
+    proyecto: "Web App",
+    lenguajes: ["JavaScript", "Python", "PHP"]
+};
+
+// Extraer algunas propiedades y agrupar el resto
+const { id, nombre, ...detalles } = empleado;
+
+console.log(id);       // 42
+console.log(nombre);   // "Elena"
+console.log(detalles); // { edad: 32, departamento: "Desarrollo", proyecto: "Web App", lenguajes: [...] }</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 5: Deconstrucción de objetos anidados</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const usuario = {
+    id: 1,
+    nombre: "Laura",
+    cuenta: {
+        tipo: "premium",
+        saldo: 1500,
+        info: {
+            creada: "2020-01-15",
+            ultimoAcceso: "2023-07-20"
+        }
+    }
+};
+
+// Deconstrucción de propiedades anidadas
+const { 
+    nombre, 
+    cuenta: { 
+        tipo, 
+        info: { creada, ultimoAcceso } 
+    } 
+} = usuario;
+
+console.log(nombre);        // "Laura"
+console.log(tipo);          // "premium"
+console.log(creada);        // "2020-01-15"
+console.log(ultimoAcceso);  // "2023-07-20"
+
+// Nota: la variable 'cuenta' e 'info' no se crean, solo sus propiedades internas
+// console.log(cuenta); // Error: cuenta is not defined</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Consejo importante:</h4>
+                        <p class="text-gray-300">Al deconstruir objetos, las variables creadas deben tener el mismo nombre que las propiedades del objeto, a menos que uses la sintaxis de renombrado <code class="bg-black text-green-400 p-1 rounded">{ propiedad: nuevoNombre }</code>. Esto es diferente de la deconstrucción de arrays, donde los nombres de variables pueden ser cualquiera.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Usos Prácticos de la Deconstrucción</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">1. Parámetros de funciones</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Antes de ES6
+function mostrarInfoUsuario(usuario) {
+    console.log("Nombre: " + usuario.nombre);
+    console.log("Edad: " + usuario.edad);
+    console.log("Ciudad: " + (usuario.ciudad || "Desconocida"));
+}
+
+// Con deconstrucción
+function mostrarInfoUsuario({ nombre, edad, ciudad = "Desconocida" }) {
+    console.log(`Nombre: ${nombre}`);
+    console.log(`Edad: ${edad}`);
+    console.log(`Ciudad: ${ciudad}`);
+}
+
+mostrarInfoUsuario({
+    nombre: "David",
+    edad: 35
+}); // La ciudad usará el valor por defecto "Desconocida"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">2. Retorno múltiple en funciones</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function obtenerDimensiones() {
+    return { ancho: 100, alto: 200 };
+}
+
+// Deconstrucción del objeto retornado
+const { ancho, alto } = obtenerDimensiones();
+console.log(`Dimensiones: ${ancho}x${alto}`); // "Dimensiones: 100x200"
+
+// Con arrays también funciona
+function obtenerCoordenadas() {
+    return [10, 20, 30];
+}
+
+const [x, y, z] = obtenerCoordenadas();
+console.log(`Coordenadas: (${x}, ${y}, ${z})`); // "Coordenadas: (10, 20, 30)"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">3. Importaciones en módulos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Importar solo lo que necesitas de un módulo
+import { useState, useEffect } from 'react';
+
+// Equivalente a:
+// import React from 'react';
+// const useState = React.useState;
+// const useEffect = React.useEffect;</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">4. Deconstrucción con bucle for...of</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const estudiantes = [
+    { id: 1, nombre: "Ana", nota: 8.5 },
+    { id: 2, nombre: "Carlos", nota: 7.2 },
+    { id: 3, nombre: "Elena", nota: 9.7 }
+];
+
+// Deconstrucción en cada iteración
+for (const { nombre, nota } of estudiantes) {
+    console.log(`${nombre}: ${nota}`);
+}
+
+// Salida:
+// Ana: 8.5
+// Carlos: 7.2
+// Elena: 9.7</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">5. Procesar datos de APIs</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>async function obtenerDatosUsuario(id) {
+    const respuesta = await fetch(`https://api.ejemplo.com/usuarios/${id}`);
+    const { nombre, email, perfil: { avatar, rol } } = await respuesta.json();
+    
+    return {
+        nombreUsuario: nombre,
+        contacto: email,
+        imagen: avatar,
+        permisos: rol
+    };
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">6. Intercambio de propiedades</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>let opciones = {
+    menu: "desplegable",
+    tema: "oscuro"
+};
+
+// Intercambiar valores de propiedades
+({ menu: opciones.tema, tema: opciones.menu } = { 
+    menu: opciones.menu, 
+    tema: opciones.tema 
+});
+
+console.log(opciones); 
+// { menu: "oscuro", tema: "desplegable" }</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Patrones y Técnicas Avanzadas</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">1. Combinación con el operador de propagación (spread)</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Crear un nuevo objeto con propiedades modificadas
+const usuario = {
+    nombre: "Mario",
+    edad: 32,
+    ciudad: "Madrid",
+    rol: "editor"
+};
+
+// Crear un nuevo objeto, manteniendo las propiedades originales y sobreescribiendo 'rol'
+const usuarioAdmin = { ...usuario, rol: "admin" };
+
+console.log(usuarioAdmin);
+// { nombre: "Mario", edad: 32, ciudad: "Madrid", rol: "admin" }
+
+// Con arrays
+const numeros = [1, 2, 3];
+const masNumeros = [...numeros, 4, 5];
+
+console.log(masNumeros); // [1, 2, 3, 4, 5]</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">2. Deconstrucción y asignación a variables existentes</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>let a, b;
+
+// Asignación a variables ya declaradas
+[a, b] = [1, 2];
+console.log(a, b); // 1 2
+
+// Con objetos, se necesita paréntesis para evitar que las llaves se interpreten como un bloque
+let nombre, edad;
+({ nombre, edad } = { nombre: "Sara", edad: 29 });
+console.log(nombre, edad); // "Sara" 29</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">3. Combinar con validación de parámetros</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function procesarDatos({ id, datos = [], opciones = {} } = {}) {
+    // Si no se pasa ningún argumento, se usa un objeto vacío por defecto
+    // que se deconstruye en valores predeterminados
+    console.log(id, datos, opciones);
+}
+
+// Todas estas llamadas son válidas
+procesarDatos({ id: 1, datos: [1, 2, 3], opciones: { ordenar: true } });
+procesarDatos({ id: 2 }); // datos será [] y opciones será {}
+procesarDatos(); // id será undefined, datos será [] y opciones será {}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">4. Deconstrucción mixta de arrays y objetos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const datos = [
+    { id: 1, nombre: "Producto A", precio: 50 },
+    { id: 2, nombre: "Producto B", precio: 75 }
+];
+
+// Obtener el primer elemento y deconstruir sus propiedades
+const [{ nombre, precio }] = datos;
+console.log(nombre, precio); // "Producto A" 50
+
+// Objetos que contienen arrays
+const respuesta = {
+    status: 200,
+    data: ["a", "b", "c"]
+};
+
+const { status, data: [primerItem] } = respuesta;
+console.log(status, primerItem); // 200 "a"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">5. Desestructuración dinámica (nombres de propiedades computados)</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const propKey = "nombre";
+const usuario = { nombre: "Luis", edad: 40 };
+
+// Usando una variable como nombre de propiedad
+const { [propKey]: valor } = usuario;
+console.log(valor); // "Luis"
+
+// Similar a:
+// const valor = usuario[propKey];</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Compatibilidad en Navegadores</h2>
+                    <p class="mb-4">La deconstrucción es una característica de ES6 (ECMAScript 2015) y es compatible con todos los navegadores modernos. Sin embargo, no es compatible con versiones antiguas como Internet Explorer.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Opciones para compatibilidad:</h4>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong class="text-white">Transpilación:</strong> Usar herramientas como Babel para convertir el código ES6 a ES5</li>
+                                <li><strong class="text-white">Polyfills:</strong> Añadir bibliotecas que proporcionan soporte para características nuevas</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo de código transpilado:</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="text-sm font-medium mb-1 text-gray-400">Código ES6:</h5>
+                                    <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>const { x, y } = punto;
+const [a, b] = lista;</code></pre>
+                                </div>
+                                <div>
+                                    <h5 class="text-sm font-medium mb-1 text-gray-400">Transpilado a ES5:</h5>
+                                    <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>var x = punto.x;
+var y = punto.y;
+var a = lista[0];
+var b = lista[1];</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Buenas Prácticas</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Usar deconstrucción para parámetros de funciones</h4>
+                            <p class="mb-2">Especialmente útil para funciones con muchos parámetros opcionales.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Mejor:
+function renderizarUsuario(nombre, edad, avatar) {
+    avatar = avatar || "default.png";
+    // código aquí
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Usar valores por defecto</h4>
+                            <p class="mb-2">Siempre define valores por defecto cuando extraigas propiedades que podrían no existir.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Seguro - con valores por defecto
+const { id, opciones = {} } = config;
+const { tema = "claro" } = opciones;
+
+// En lugar de:
+const tema = config.opciones ? config.opciones.tema : "claro";</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">No abusar de la deconstrucción anidada</h4>
+                            <p class="mb-2">La deconstrucción demasiado profunda puede hacer el código difícil de leer.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Demasiado complejo:
+const { usuario: { perfil: { preferencias: { notificaciones: { email } } } } } = datos;
+
+// Mejor aproximación:
+const { usuario } = datos;
+const { email } = usuario.perfil.preferencias.notificaciones;</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Combinar con operador nullish (??) para valores por defecto</h4>
+                            <p class="mb-2">Útil cuando 0 o cadenas vacías son valores válidos que no deberían ser reemplazados.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// El operador || usa falsy values (0, "", false se consideran falsos)
+const { cantidad = 10 } = producto;  // 0 se reemplazaría por 10
+
+// Con ES2020, es mejor usar el operador nullish (??) 
+// que solo reemplaza null o undefined
+const { cantidad } = producto;
+const cantidadFinal = cantidad ?? 10;  // 0 se mantendría como 0</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Extraer solo lo que necesitas</h4>
+                            <p class="mb-2">Evita deconstruir propiedades que no vas a utilizar.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Extraer solo las propiedades necesarias
+const { id, nombre } = usuario;  // solo lo que necesitamos
+
+// En lugar de:
+const usuario = obtenerUsuario();
+console.log(usuario.id, usuario.nombre);  // repetitivo</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Asignación por deconstrucción</a></li>
+                        <li><a href="https://es.javascript.info/destructuring-assignment" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Asignación desestructurante</a></li>
+                        <li><a href="https://www.w3schools.com/js/js_destructuring.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript Object Destructuring</a></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
