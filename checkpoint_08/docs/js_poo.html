@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>POO en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md fixed top-0 left-0 right-0 z-20">
+        <h1 class="text-4xl font-bold mb-2">POO en JavaScript</h1>
+        <p class="text-xl">¿Qué es la programación orientada a objetos?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md fixed top-40 left-0 right-0 z-10 border-b border-gray-700">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="pt-56">
+
+        <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué es la Programación Orientada a Objetos?</h2>
+                    <p class="mb-4">La Programación Orientada a Objetos (POO) es un paradigma de programación basado en el concepto de "objetos", que pueden contener datos en forma de atributos y código en forma de métodos. JavaScript, aunque originalmente fue diseñado como un lenguaje basado en prototipos, ha evolucionado para soportar características de POO, especialmente desde la introducción de ES6 (ECMAScript 2015).</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Conceptos clave:</h3>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                            <li><strong class="text-white">Objetos:</strong> Entidades que encapsulan datos y comportamiento</li>
+                            <li><strong class="text-white">Clases:</strong> Plantillas para crear objetos</li>
+                            <li><strong class="text-white">Instancias:</strong> Objetos creados a partir de una clase</li>
+                            <li><strong class="text-white">Propiedades/Atributos:</strong> Datos almacenados en un objeto</li>
+                            <li><strong class="text-white">Métodos:</strong> Funciones que definen el comportamiento de un objeto</li>
+                            <li><strong class="text-white">Encapsulamiento:</strong> Ocultar detalles internos y exponer solo lo necesario</li>
+                            <li><strong class="text-white">Herencia:</strong> Crear nuevas clases basadas en clases existentes</li>
+                            <li><strong class="text-white">Polimorfismo:</strong> Capacidad de objetos diferentes de responder al mismo mensaje de forma diferente</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="mb-4">En JavaScript, la POO ha tenido diferentes aproximaciones a lo largo de su evolución. Desde el modelo basado en prototipos, pasando por patrones como constructor con prototipos, hasta las clases modernas de ES6. Entender estas diferentes aproximaciones es fundamental para dominar la POO en JavaScript.</p>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Objetos Literales</h2>
+                    <p class="mb-4">La forma más básica de crear objetos en JavaScript es mediante objetos literales, que son colecciones de pares clave-valor. Aunque no son clases en el sentido tradicional, representan la base del sistema de objetos de JavaScript.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Objeto literal básico</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Definir un objeto literal
+const persona = {
+    // Propiedades
+    nombre: "Ana",
+    edad: 28,
+    profesion: "Desarrolladora",
+    
+    // Métodos
+    saludar: function() {
+        return `Hola, soy ${this.nombre}`;
+    },
+    
+    presentarse() { // Sintaxis de método abreviada (ES6)
+        return `Me llamo ${this.nombre}, tengo ${this.edad} años y soy ${this.profesion}`;
+    }
+};
+
+// Acceder a propiedades
+console.log(persona.nombre); // "Ana"
+console.log(persona["edad"]); // 28
+
+// Llamar a métodos
+console.log(persona.saludar()); // "Hola, soy Ana"
+console.log(persona.presentarse()); // "Me llamo Ana, tengo 28 años y soy Desarrolladora"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Añadir y modificar propiedades y métodos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Modificar propiedades existentes
+persona.edad = 29;
+console.log(persona.edad); // 29
+
+// Añadir nuevas propiedades
+persona.pais = "España";
+console.log(persona.pais); // "España"
+
+// Añadir nuevos métodos
+persona.cumplirAños = function() {
+    this.edad++;
+    return `Ahora tengo ${this.edad} años`;
+};
+
+console.log(persona.cumplirAños()); // "Ahora tengo 30 años"
+
+// Eliminar propiedades o métodos
+delete persona.pais;
+console.log(persona.pais); // undefined</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Métodos de Object con objetos literales</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Obtener todas las claves de un objeto
+const claves = Object.keys(persona);
+console.log(claves); // ["nombre", "edad", "profesion", "saludar", "presentarse", "cumplirAños"]
+
+// Obtener todos los valores
+const valores = Object.values(persona);
+console.log(valores); // ["Ana", 30, "Desarrolladora", f, f, f]
+
+// Obtener pares clave-valor
+const entradas = Object.entries(persona);
+console.log(entradas); // [["nombre", "Ana"], ["edad", 30], ...]
+
+// Congelar un objeto para hacerlo inmutable
+Object.freeze(persona);
+persona.edad = 31; // No tiene efecto si el objeto está congelado
+console.log(persona.edad); // 30
+
+// Comprobar si una propiedad existe en el objeto
+console.log('nombre' in persona); // true
+console.log(persona.hasOwnProperty('apellido')); // false</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
+                        <p class="text-gray-300">Los objetos literales son útiles para estructuras simples, pero tienen limitaciones cuando necesitamos crear múltiples objetos con la misma estructura o implementar conceptos como herencia. Para esos casos, necesitamos otras aproximaciones como constructores, prototipos o clases.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Funciones Constructoras y Prototipos</h2>
+                    <p class="mb-4">Antes de ES6, la forma estándar de crear "clases" en JavaScript era mediante funciones constructoras y el sistema de prototipos. Esta aproximación establece las bases del modelo de objetos de JavaScript y sigue siendo importante entenderla incluso en el JavaScript moderno.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Funciones Constructoras:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Definir y usar un constructor</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Función constructora
+function Persona(nombre, edad, profesion) {
+    // Propiedades
+    this.nombre = nombre;
+    this.edad = edad;
+    this.profesion = profesion;
+    
+    // Método definido dentro del constructor
+    this.saludar = function() {
+        return `Hola, soy ${this.nombre}`;
+    };
+}
+
+// Crear instancias (objetos) usando el constructor
+const persona1 = new Persona("Ana", 28, "Desarrolladora");
+const persona2 = new Persona("Carlos", 32, "Diseñador");
+
+console.log(persona1.nombre); // "Ana"
+console.log(persona2.nombre); // "Carlos"
+console.log(persona1.saludar()); // "Hola, soy Ana"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Problema: Duplicación de métodos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Cada instancia tiene su propia copia de cada método
+console.log(persona1.saludar === persona2.saludar); // false
+
+// Esto consume más memoria, ya que cada objeto tiene su propia copia
+// de métodos que hacen exactamente lo mismo</code></pre>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-semibold my-4 text-yellow-300">Prototipos:</h3>
+                    <p class="mb-4">Los prototipos resuelven el problema de duplicación de métodos permitiendo compartir propiedades y métodos entre todas las instancias.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Usar prototipos para compartir métodos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Función constructora (solo propiedades)
+function Persona(nombre, edad, profesion) {
+    this.nombre = nombre;
+    this.edad = edad;
+    this.profesion = profesion;
+    // No más métodos aquí
+}
+
+// Añadir métodos al prototipo
+Persona.prototype.saludar = function() {
+    return `Hola, soy ${this.nombre}`;
+};
+
+Persona.prototype.presentarse = function() {
+    return `Me llamo ${this.nombre}, tengo ${this.edad} años y soy ${this.profesion}`;
+};
+
+// Crear instancias
+const persona1 = new Persona("Ana", 28, "Desarrolladora");
+const persona2 = new Persona("Carlos", 32, "Diseñador");
+
+// Los métodos son compartidos
+console.log(persona1.saludar === persona2.saludar); // true
+console.log(persona1.saludar()); // "Hola, soy Ana"
+console.log(persona2.presentarse()); // "Me llamo Carlos, tengo 32 años y soy Diseñador"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Herencia con prototipos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Constructor base
+function Persona(nombre, edad) {
+    this.nombre = nombre;
+    this.edad = edad;
+}
+
+Persona.prototype.saludar = function() {
+    return `Hola, soy ${this.nombre}`;
+};
+
+// Constructor derivado
+function Empleado(nombre, edad, puesto, salario) {
+    // Llamar al constructor padre
+    Persona.call(this, nombre, edad);
+    
+    // Añadir propiedades específicas
+    this.puesto = puesto;
+    this.salario = salario;
+}
+
+// Configurar la herencia de prototipos
+Empleado.prototype = Object.create(Persona.prototype);
+Empleado.prototype.constructor = Empleado;
+
+// Añadir métodos específicos de Empleado
+Empleado.prototype.trabajar = function() {
+    return `${this.nombre} está trabajando como ${this.puesto}`;
+};
+
+// Sobrescribir métodos heredados
+Empleado.prototype.saludar = function() {
+    return `${Persona.prototype.saludar.call(this)}. Trabajo como ${this.puesto}`;
+};
+
+// Crear instancia
+const empleado1 = new Empleado("Laura", 35, "Gerente", 45000);
+
+console.log(empleado1.saludar()); // "Hola, soy Laura. Trabajo como Gerente"
+console.log(empleado1.trabajar()); // "Laura está trabajando como Gerente"</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
+                        <p class="text-gray-300">Aunque las clases de ES6 son más fáciles de usar, es importante entender el sistema de prototipos porque:</p>
+                        <ul class="list-disc pl-6 mt-2 text-gray-300">
+                            <li>Las clases de ES6 son solo "azúcar sintáctico" sobre prototipos</li>
+                            <li>Muchas bibliotecas y frameworks aún utilizan prototipos</li>
+                            <li>Comprender prototipos te da un conocimiento más profundo de cómo funciona JavaScript</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Clases en ES6</h2>
+                    <p class="mb-4">Con ES6 (ECMAScript 2015), JavaScript introdujo una sintaxis de clases que hace que la programación orientada a objetos sea más intuitiva y similar a otros lenguajes. Sin embargo, es importante recordar que esto es principalmente azúcar sintáctico sobre el sistema de prototipos existente.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis básica:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Definir una clase</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class Persona {
+    // Constructor
+    constructor(nombre, edad, profesion) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.profesion = profesion;
+    }
+    
+    // Métodos
+    saludar() {
+        return `Hola, soy ${this.nombre}`;
+    }
+    
+    presentarse() {
+        return `Me llamo ${this.nombre}, tengo ${this.edad} años y soy ${this.profesion}`;
+    }
+    
+    // Método estático (pertenece a la clase, no a las instancias)
+    static esMayorDeEdad(edad) {
+        return edad >= 18;
+    }
+}
+
+// Crear instancias
+const persona1 = new Persona("Ana", 28, "Desarrolladora");
+const persona2 = new Persona("Carlos", 32, "Diseñador");
+
+console.log(persona1.saludar()); // "Hola, soy Ana"
+console.log(persona2.presentarse()); // "Me llamo Carlos, tengo 32 años y soy Diseñador"
+
+// Llamar a un método estático
+console.log(Persona.esMayorDeEdad(16)); // false
+console.log(Persona.esMayorDeEdad(21)); // true</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Herencia con clases</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Clase base
+class Persona {
+    constructor(nombre, edad) {
+        this.nombre = nombre;
+        this.edad = edad;
+    }
+    
+    saludar() {
+        return `Hola, soy ${this.nombre}`;
+    }
+    
+    obtenerInfo() {
+        return `${this.nombre}, ${this.edad} años`;
+    }
+}
+
+// Clase derivada
+class Empleado extends Persona {
+    constructor(nombre, edad, puesto, salario) {
+        // Llamar al constructor de la clase padre
+        super(nombre, edad);
+        
+        // Propiedades adicionales
+        this.puesto = puesto;
+        this.salario = salario;
+    }
+    
+    // Método específico de Empleado
+    trabajar() {
+        return `${this.nombre} está trabajando como ${this.puesto}`;
+    }
+    
+    // Sobrescribir un método de la clase padre
+    saludar() {
+        // Llamar al método de la clase padre
+        return `${super.saludar()}. Trabajo como ${this.puesto}`;
+    }
+    
+    // Sobrescribir y extender un método
+    obtenerInfo() {
+        return `${super.obtenerInfo()}, ${this.puesto}, ${this.salario}€`;
+    }
+}
+
+const empleado = new Empleado("Laura", 35, "Gerente", 45000);
+
+console.log(empleado.saludar()); // "Hola, soy Laura. Trabajo como Gerente"
+console.log(empleado.obtenerInfo()); // "Laura, 35 años, Gerente, 45000€"
+console.log(empleado.trabajar()); // "Laura está trabajando como Gerente"
+
+// Comprobar instancias
+console.log(empleado instanceof Empleado); // true
+console.log(empleado instanceof Persona); // true</code></pre>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-semibold my-4 text-yellow-300">Getters y Setters:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Propiedades con getters y setters</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class Rectangulo {
+    constructor(alto, ancho) {
+        this._alto = alto;
+        this._ancho = ancho;
+    }
+    
+    // Getter para la propiedad alto
+    get alto() {
+        return this._alto;
+    }
+    
+    // Setter para la propiedad alto
+    set alto(nuevoAlto) {
+        if (nuevoAlto <= 0) {
+            throw new Error("El alto debe ser mayor que cero");
+        }
+        this._alto = nuevoAlto;
+    }
+    
+    // Getter para la propiedad ancho
+    get ancho() {
+        return this._ancho;
+    }
+    
+    // Setter para la propiedad ancho
+    set ancho(nuevoAncho) {
+        if (nuevoAncho <= 0) {
+            throw new Error("El ancho debe ser mayor que cero");
+        }
+        this._ancho = nuevoAncho;
+    }
+    
+    // Getter para la propiedad calculada area
+    get area() {
+        return this._alto * this._ancho;
+    }
+}
+
+const rectangulo = new Rectangulo(5, 10);
+
+// Usar getters
+console.log(rectangulo.alto); // 5
+console.log(rectangulo.ancho); // 10
+console.log(rectangulo.area); // 50
+
+// Usar setters
+rectangulo.alto = 8;
+console.log(rectangulo.alto); // 8
+console.log(rectangulo.area); // 80
+
+// Error en setter
+try {
+    rectangulo.ancho = -5; // Lanza Error
+} catch (e) {
+    console.log(e.message); // "El ancho debe ser mayor que cero"
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-semibold my-4 text-yellow-300">Campos de clase (propuesta más reciente):</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 4: Campos públicos y privados</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// NOTA: Esta sintaxis es relativamente reciente y puede
+// requerir un entorno moderno o transpilación
+
+class Persona {
+    // Campos públicos
+    nombre;
+    edad;
+    
+    // Campo privado (con #)
+    #correo;
+    
+    // Campo estático
+    static contador = 0;
+    
+    constructor(nombre, edad, correo) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.#correo = correo;
+        
+        // Incrementar campo estático
+        Persona.contador++;
+    }
+    
+    // Método para acceder al campo privado
+    getCorreo() {
+        return this.#correo;
+    }
+    
+    // Método para modificar el campo privado
+    setCorreo(nuevoCorreo) {
+        if (!nuevoCorreo.includes('@')) {
+            throw new Error("Correo inválido");
+        }
+        this.#correo = nuevoCorreo;
+    }
+}
+
+const persona = new Persona("Juan", 25, "juan@ejemplo.com");
+console.log(persona.nombre); // "Juan"
+console.log(persona.getCorreo()); // "juan@ejemplo.com"
+
+// Error al acceder a un campo privado
+try {
+    console.log(persona.#correo); // Error de sintaxis
+} catch (e) {
+    console.log("No se puede acceder a campos privados directamente");
+}
+
+// Usar campo estático
+console.log(Persona.contador); // 1</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Encapsulamiento en JavaScript</h2>
+                    <p class="mb-4">La encapsulación es un principio de POO que consiste en ocultar los detalles internos de un objeto y exponer solo lo necesario. JavaScript ha tenido varias aproximaciones a la encapsulación.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">1. Convención de nombres</h4>
+                            <p class="mb-2">Antes de ES6, la forma más común era usar una convención de nombres para indicar que una propiedad o método debería tratarse como privado.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function Cuenta(titular, saldoInicial) {
+    // Propiedades "privadas" (por convención con _)
+    this._titular = titular;
+    this._saldo = saldoInicial;
+    
+    // Métodos públicos
+    this.depositar = function(cantidad) {
+        this._saldo += cantidad;
+        return this._saldo;
+    };
+    
+    this.retirar = function(cantidad) {
+        if (cantidad <= this._saldo) {
+            this._saldo -= cantidad;
+            return true;
+        }
+        return false;
+    };
+    
+    this.getSaldo = function() {
+        return this._saldo;
+    };
+}
+
+const cuenta = new Cuenta("Ana", 1000);
+console.log(cuenta.getSaldo()); // 1000
+
+// El guion bajo es solo una convención, aún se puede acceder directamente
+console.log(cuenta._saldo); // 1000
+cuenta._saldo = 2000; // Esto funciona, no hay protección real</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">2. Cierres (closures)</h4>
+                            <p class="mb-2">Los cierres proporcionan una encapsulación real al crear un ámbito privado para las variables.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function crearCuenta(titular, saldoInicial) {
+    // Variables privadas en el ámbito de la función
+    let _titular = titular;
+    let _saldo = saldoInicial;
+    
+    // Objeto con métodos públicos
+    return {
+        depositar: function(cantidad) {
+            _saldo += cantidad;
+            return _saldo;
+        },
+        
+        retirar: function(cantidad) {
+            if (cantidad <= _saldo) {
+                _saldo -= cantidad;
+                return true;
+            }
+            return false;
+        },
+        
+        getSaldo: function() {
+            return _saldo;
+        },
+        
+        getTitular: function() {
+            return _titular;
+        }
+    };
+}
+
+const cuenta = crearCuenta("Carlos", 1500);
+console.log(cuenta.getSaldo()); // 1500
+console.log(cuenta.getTitular()); // "Carlos"
+
+// No hay acceso directo a las variables privadas
+console.log(cuenta._saldo); // undefined
+console.log(cuenta._titular); // undefined</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">3. Símbolos (ES6)</h4>
+                            <p class="mb-2">Los símbolos pueden usarse para crear propiedades "semi-privadas" que no son visibles en bucles o inspecciones normales.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Crear símbolos para las propiedades "privadas"
+const _saldo = Symbol('saldo');
+const _titular = Symbol('titular');
+
+class Cuenta {
+    constructor(titular, saldoInicial) {
+titular] = titular;
+        this[_saldo] = saldoInicial;
+    }
+    
+    depositar(cantidad) {
+        this[_saldo] += cantidad;
+        return this[_saldo];
+    }
+    
+    retirar(cantidad) {
+        if (cantidad <= this[_saldo]) {
+            this[_saldo] -= cantidad;
+            return true;
+        }
+        return false;
+    }
+    
+    getSaldo() {
+        return this[_saldo];
+    }
+    
+    getTitular() {
+        return this[_titular];
+    }
+}
+
+const cuenta = new Cuenta("Elena", 2000);
+console.log(cuenta.getSaldo()); // 2000
+
+// Las propiedades con Symbol no aparecen en iteraciones normales
+console.log(Object.keys(cuenta)); // []
+console.log(cuenta._saldo); // undefined
+
+// Pero aún se pueden acceder si se conoce el símbolo
+console.log(cuenta[_saldo]); // 2000</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">4. Campos privados (#) (ECMAScript más reciente)</h4>
+                            <p class="mb-2">La forma más moderna y recomendada de encapsulación es usando campos privados con el prefijo #.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class Cuenta {
+    // Campos privados
+    #titular;
+    #saldo;
+    
+    constructor(titular, saldoInicial) {
+        this.#titular = titular;
+        this.#saldo = saldoInicial;
+    }
+    
+    depositar(cantidad) {
+        this.#saldo += cantidad;
+        return this.#saldo;
+    }
+    
+    retirar(cantidad) {
+        if (cantidad <= this.#saldo) {
+            this.#saldo -= cantidad;
+            return true;
+        }
+        return false;
+    }
+    
+    getSaldo() {
+        return this.#saldo;
+    }
+    
+    getTitular() {
+        return this.#titular;
+    }
+}
+
+const cuenta = new Cuenta("David", 3000);
+console.log(cuenta.getSaldo()); // 3000
+
+// Intentar acceder a campos privados causa un error de sintaxis
+// console.log(cuenta.#saldo); // Error: campos privados deben ser declarados en la clase
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Polimorfismo en JavaScript</h2>
+                    <p class="mb-4">El polimorfismo permite que objetos de diferentes clases respondan al mismo método o propiedad de manera diferente. En JavaScript, debido a su naturaleza dinámica, el polimorfismo es inherente al lenguaje.</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2 text-yellow-200">Ejemplo de polimorfismo</h4>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Clase base
+class Animal {
+    constructor(nombre) {
+        this.nombre = nombre;
+    }
+    
+    hablar() {
+        return `${this.nombre} hace un sonido.`;
+    }
+}
+
+// Clases derivadas que sobrescriben el método hablar
+class Perro extends Animal {
+    hablar() {
+        return `${this.nombre} ladra.`;
+    }
+}
+
+class Gato extends Animal {
+    hablar() {
+        return `${this.nombre} maulla.`;
+    }
+}
+
+class Vaca extends Animal {
+    hablar() {
+        return `${this.nombre} muge.`;
+    }
+}
+
+// Función que utiliza polimorfismo
+function hacerHablarAlAnimal(animal) {
+    console.log(animal.hablar());
+}
+
+// Crear diferentes animales
+const animales = [
+    new Animal("Animal desconocido"),
+    new Perro("Bobby"),
+    new Gato("Michi"),
+    new Vaca("Lola")
+];
+
+// La misma función trabaja con cualquier animal
+animales.forEach(animal => hacerHablarAlAnimal(animal));
+
+// Salida:
+// "Animal desconocido hace un sonido."
+// "Bobby ladra."
+// "Michi maulla."
+// "Lola muge."</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Patrones de Diseño Comunes</h2>
+                    <p class="mb-4">Los patrones de diseño son soluciones reutilizables a problemas comunes en el desarrollo de software. Aquí hay algunos patrones importantes en la POO con JavaScript:</p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">1. Patrón Singleton</h4>
+                            <p class="mb-2">Garantiza que una clase tenga una única instancia y proporciona un punto de acceso global a ella.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class Singleton {
+    static #instancia;
+    
+    constructor() {
+        if (Singleton.#instancia) {
+            return Singleton.#instancia;
+        }
+        
+        this.configuracion = {
+            tema: "claro",
+            notificaciones: true,
+            idioma: "es"
+        };
+        
+        Singleton.#instancia = this;
+    }
+    
+    getConfiguracion() {
+        return this.configuracion;
+    }
+    
+    setTema(tema) {
+        this.configuracion.tema = tema;
+    }
+}
+
+// Crear instancias
+const configuracion1 = new Singleton();
+const configuracion2 = new Singleton();
+
+console.log(configuracion1 === configuracion2); // true
+
+// Modificar la configuración a través de una instancia
+configuracion1.setTema("oscuro");
+
+// Ver los cambios a través de la otra (misma instancia)
+console.log(configuracion2.getConfiguracion().tema); // "oscuro"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">2. Patrón Factory (Fábrica)</h4>
+                            <p class="mb-2">Proporciona una interfaz para crear objetos sin especificar sus clases concretas.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Clases de productos
+class Coche {
+    constructor(marca, puertas = 4) {
+        this.tipo = "coche";
+        this.marca = marca;
+        this.puertas = puertas;
+    }
+    
+    obtenerInfo() {
+        return `${this.marca} (${this.tipo}, ${this.puertas} puertas)`;
+    }
+}
+
+class Moto {
+    constructor(marca, cilindrada) {
+        this.tipo = "moto";
+        this.marca = marca;
+        this.cilindrada = cilindrada;
+    }
+    
+    obtenerInfo() {
+        return `${this.marca} (${this.tipo}, ${this.cilindrada}cc)`;
+    }
+}
+
+class Camion {
+    constructor(marca, carga) {
+        this.tipo = "camión";
+        this.marca = marca;
+        this.carga = carga;
+    }
+    
+    obtenerInfo() {
+        return `${this.marca} (${this.tipo}, carga: ${this.carga}kg)`;
+    }
+}
+
+// Factory (Fábrica de vehículos)
+class VehiculoFactory {
+    crearVehiculo(tipo, ...args) {
+        switch (tipo.toLowerCase()) {
+            case "coche":
+                return new Coche(...args);
+            case "moto":
+                return new Moto(...args);
+            case "camion":
+                return new Camion(...args);
+            default:
+                throw new Error(`Tipo de vehículo no soportado: ${tipo}`);
+        }
+    }
+}
+
+// Uso
+const factory = new VehiculoFactory();
+
+const vehiculos = [
+    factory.crearVehiculo("coche", "Toyota", 5),
+    factory.crearVehiculo("moto", "Honda", 750),
+    factory.crearVehiculo("camion", "Volvo", 5000)
+];
+
+vehiculos.forEach(v => console.log(v.obtenerInfo()));
+// "Toyota (coche, 5 puertas)"
+// "Honda (moto, 750cc)"
+// "Volvo (camión, carga: 5000kg)"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">3. Patrón Observer (Observador)</h4>
+                            <p class="mb-2">Define una dependencia uno-a-muchos entre objetos, de modo que cuando un objeto cambia de estado, todos sus dependientes son notificados.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class Subject {
+    constructor() {
+        this.observers = [];
+    }
+    
+    subscribe(observer) {
+        this.observers.push(observer);
+    }
+    
+    unsubscribe(observer) {
+        this.observers = this.observers.filter(obs => obs !== observer);
+    }
+    
+    notify(data) {
+        this.observers.forEach(observer => observer.update(data));
+    }
+}
+
+class Observer {
+    constructor(name) {
+        this.name = name;
+    }
+    
+    update(data) {
+        console.log(`${this.name} recibió la notificación con datos: ${data}`);
+    }
+}
+
+// Uso
+const subject = new Subject();
+
+// Crear observadores
+const observerA = new Observer("Observer A");
+const observerB = new Observer("Observer B");
+const observerC = new Observer("Observer C");
+
+// Suscribir observadores
+subject.subscribe(observerA);
+subject.subscribe(observerB);
+subject.subscribe(observerC);
+
+// Notificar a todos los observadores
+subject.notify("¡Importante actualización!");
+
+// Cancelar suscripción
+subject.unsubscribe(observerB);
+
+// Notificar de nuevo
+subject.notify("Segunda actualización");</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Buenas Prácticas en POO con JavaScript</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Usar sintaxis moderna</h4>
+                            <p>Prefiere la sintaxis de clases de ES6 sobre constructores con prototipos para mejorar la legibilidad y mantenibilidad del código.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Encapsular datos</h4>
+                            <p>Usa campos privados (#) o cierres (closures) para ocultar los detalles internos de implementación y exponer solo lo que sea necesario.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Seguir el principio de responsabilidad única</h4>
+                            <p>Cada clase debería tener una única responsabilidad. Si una clase tiene múltiples responsabilidades, considera dividirla en clases más pequeñas.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Favorecer la composición sobre la herencia</h4>
+                            <p>En lugar de crear jerarquías de herencia complejas, considera componer objetos utilizando otros objetos como propiedades.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// En lugar de:
+class SuperPoder { ... }
+class SuperHeroe extends SuperPoder { ... }
+
+// Considerar:
+class SuperPoder { ... }
+class SuperHeroe {
+    constructor(nombre, superpoder) {
+        this.nombre = nombre;
+        this.superpoder = superpoder;
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Usar métodos getters y setters</h4>
+                            <p>Utiliza getters y setters para controlar el acceso a las propiedades de un objeto, especialmente cuando necesites validar o transformar datos.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Inmutabilidad</h4>
+                            <p>Considera crear objetos inmutables (que no cambian después de ser creados) para evitar efectos secundarios inesperados.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class Punto {
+    constructor(x, y) {
+        this._x = x;
+        this._y = y;
+        Object.freeze(this); // Hace que el objeto sea inmutable
+    }
+    
+    get x() { return this._x; }
+    get y() { return this._y; }
+    
+    // En lugar de modificar, retorna una nueva instancia
+    trasladar(dx, dy) {
+        return new Punto(this._x + dx, this._y + dy);
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Classes" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Clases en JavaScript</a></li>
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Inheritance_and_the_prototype_chain" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Herencia y la cadena de prototipos</a></li>
+                        <li><a href="https://es.javascript.info/classes" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Clases</a></li>
+                        <li><a href="https://www.w3schools.com/js/js_object_classes.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript Classes</a></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
