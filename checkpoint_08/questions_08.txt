@@ -1,0 +1,15 @@
+¿Qué tipo de bucles hay en JS?
+
+¿Cuáles son las diferencias entre const, let y var?
+
+¿Qué es una función de flecha?
+
+¿Qué es la deconstrucción de variables?
+
+¿Qué hace el operador de extensión en JS?
+
+¿Qué es la programación orientada a objetos?
+
+¿Qué es una promesa en JS?
+
+¿Qué hacen async y await por nosotros?
