@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Promesas en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md fixed top-0 left-0 right-0 z-20">
+        <h1 class="text-4xl font-bold mb-2">Promesas en JavaScript</h1>
+        <p class="text-xl">¿Qué es una promesa en JS?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md fixed top-40 left-0 right-0 z-10 border-b border-gray-700">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="pt-56">
+
+        <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué son las Promesas?</h2>
+                    <p class="mb-4">Las promesas son objetos que representan el resultado eventual (éxito o fracaso) de una operación asíncrona. Una promesa puede estar en uno de estos tres estados:</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Estados de una promesa:</h3>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                            <li><strong class="text-white">Pendiente (pending):</strong> Estado inicial, la operación no ha sido completada ni rechazada.</li>
+                            <li><strong class="text-white">Cumplida (fulfilled):</strong> La operación se completó con éxito.</li>
+                            <li><strong class="text-white">Rechazada (rejected):</strong> La operación falló.</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="mb-4">Las promesas fueron introducidas en ES6 (ECMAScript 2015) para mejorar el manejo de operaciones asíncronas y evitar el llamado "callback hell" (anidamiento excesivo de callbacks). Con las promesas, podemos escribir código asíncrono de una manera más limpia y mantenible.</p>
+                    
+                    <p class="mb-4">Las promesas nos permiten:</p>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li>Encadenar operaciones asíncronas de forma elegante</li>
+                        <li>Manejar errores de manera más eficiente</li>
+                        <li>Ejecutar operaciones en paralelo y esperar a que todas se completen</li>
+                        <li>Escribir código asíncrono que se lea casi como código síncrono</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Crear Promesas</h2>
+                    <p class="mb-4">Para crear una promesa, usamos el constructor <code class="bg-black text-green-400 p-1 rounded">Promise</code>. Este constructor recibe una función (llamada ejecutor) con dos parámetros: <code class="bg-black text-green-400 p-1 rounded">resolve</code> y <code class="bg-black text-green-400 p-1 rounded">reject</code>.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis básica:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>const miPromesa = new Promise((resolve, reject) => {
+    // Aquí va el código asíncrono
+    
+    // Si la operación tiene éxito:
+    resolve(valor); // valor puede ser cualquier dato que queramos pasar
+    
+    // Si la operación falla:
+    reject(error); // error puede ser un mensaje o un objeto Error
+});</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Promesa básica</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Crear una promesa que se resuelve después de un tiempo
+function esperar(ms) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(`Esperé ${ms} milisegundos`);
+        }, ms);
+    });
+}
+
+// Usar la promesa
+esperar(2000)
+    .then(mensaje => {
+        console.log(mensaje); // "Esperé 2000 milisegundos"
+    });
+
+console.log("Este mensaje aparece antes"); // La ejecución continúa mientras la promesa está pendiente</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Promesa con éxito o fracaso</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Simular una operación que puede fallar
+function dividir(a, b) {
+    return new Promise((resolve, reject) => {
+        if (b === 0) {
+            reject(new Error("No se puede dividir por cero"));
+        } else {
+            resolve(a / b);
+        }
+    });
+}
+
+// Caso exitoso
+dividir(10, 2)
+    .then(resultado => {
+        console.log(`El resultado es: ${resultado}`); // "El resultado es: 5"
+    })
+    .catch(error => {
+        console.error(error.message); // No se ejecutará
+    });
+
+// Caso de error
+dividir(10, 0)
+    .then(resultado => {
+        console.log(`El resultado es: ${resultado}`); // No se ejecutará
+    })
+    .catch(error => {
+        console.error(error.message); // "No se puede dividir por cero"
+    });</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Convertir callbacks a promesas</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Función basada en callbacks
+function leerArchivoCallback(ruta, callback) {
+    // Simulamos la lectura de un archivo
+    setTimeout(() => {
+        if (ruta.includes('invalida')) {
+            callback(new Error('Ruta inválida'));
+        } else {
+            callback(null, `Contenido del archivo en ${ruta}`);
+        }
+    }, 1000);
+}
+
+// Convertir a promesa
+function leerArchivo(ruta) {
+    return new Promise((resolve, reject) => {
+        leerArchivoCallback(ruta, (error, datos) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(datos);
+            }
+        });
+    });
+}
+
+// Usar la función promisificada
+leerArchivo('ruta/al/archivo.txt')
+    .then(contenido => {
+        console.log(contenido); // "Contenido del archivo en ruta/al/archivo.txt"
+    })
+    .catch(error => {
+        console.error(error.message);
+    });</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Consumir Promesas</h2>
+                    <p class="mb-4">Para consumir (usar) una promesa, utilizamos los métodos <code class="bg-black text-green-400 p-1 rounded">then()</code>, <code class="bg-black text-green-400 p-1 rounded">catch()</code> y <code class="bg-black text-green-400 p-1 rounded">finally()</code>.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">El método then()</h4>
+                            <p class="mb-2">Se ejecuta cuando la promesa se resuelve con éxito.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const promesa = new Promise((resolve, reject) => {
+    resolve('Éxito');
+});
+
+promesa.then(valor => {
+    console.log(valor); // "Éxito"
+});
+
+// then() puede tomar dos funciones como argumentos
+promesa.then(
+    valor => console.log(`Éxito: ${valor}`),
+    error => console.error(`Error: ${error}`)
+);</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">El método catch()</h4>
+                            <p class="mb-2">Se ejecuta cuando la promesa es rechazada.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>const promesa = new Promise((resolve, reject) => {
+    reject(new Error('Algo salió mal'));
+});
+
+promesa
+    .then(valor => {
+        console.log(valor); // No se ejecuta
+    })
+    .catch(error => {
+        console.error(error.message); // "Algo salió mal"
+    });</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">El método finally()</h4>
+                            <p class="mb-2">Se ejecuta siempre, independientemente de si la promesa se resuelve o se rechaza.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function realizarOperacion(exito) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (exito) {
+                resolve('Operación completada');
+            } else {
+                reject(new Error('La operación falló'));
+            }
+        }, 1000);
+    });
+}
+
+// Simular una carga (loading)
+let cargando = true;
+console.log(`Cargando: ${cargando}`);
+
+realizarOperacion(true) // Cambiar a false para probar el rechazo
+    .then(mensaje => {
+        console.log(mensaje);
+    })
+    .catch(error => {
+        console.error(error.message);
+    })
+    .finally(() => {
+        // Este código se ejecutará siempre
+        cargando = false;
+        console.log(`Cargando: ${cargando}`);
+    });</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Encadenamiento de Promesas</h2>
+                    <p class="mb-4">Una de las características más potentes de las promesas es la capacidad de encadenarlas. El método <code class="bg-black text-green-400 p-1 rounded">then()</code> devuelve una nueva promesa, lo que nos permite concatenar operaciones asíncronas de forma secuencial.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Encadenamiento básico</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function pasoUno() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log('Paso 1 completado');
+            resolve(1);
+        }, 1000);
+    });
+}
+
+function pasoDos(valor) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const resultado = valor + 1;
+            console.log(`Paso 2 completado. Resultado: ${resultado}`);
+            resolve(resultado);
+        }, 1000);
+    });
+}
+
+function pasoTres(valor) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const resultado = valor * 2;
+            console.log(`Paso 3 completado. Resultado: ${resultado}`);
+            resolve(resultado);
+        }, 1000);
+    });
+}
+
+// Encadenar las promesas
+pasoUno()
+    .then(resultado => pasoDos(resultado))
+    .then(resultado => pasoTres(resultado))
+    .then(resultadoFinal => {
+        console.log(`Proceso completo. Resultado final: ${resultadoFinal}`);
+    });
+
+// Salida (con 1 segundo entre cada paso):
+// "Paso 1 completado"
+// "Paso 2 completado. Resultado: 2"
+// "Paso 3 completado. Resultado: 4"
+// "Proceso completo. Resultado final: 4"</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Manejo de errores en cadenas</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function obtenerUsuario(id) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (id <= 0) {
+                reject(new Error('ID de usuario inválido'));
+            } else {
+                resolve({ id, nombre: 'Usuario ' + id });
+            }
+        }, 1000);
+    });
+}
+
+function obtenerPosts(usuario) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (!usuario) {
+                reject(new Error('Usuario no encontrado'));
+            } else {
+                resolve([
+                    { id: 1, titulo: `Post 1 de ${usuario.nombre}` },
+                    { id: 2, titulo: `Post 2 de ${usuario.nombre}` }
+                ]);
+            }
+        }, 1000);
+    });
+}
+
+// Caso exitoso
+obtenerUsuario(1)
+    .then(usuario => {
+        console.log('Usuario encontrado:', usuario);
+        return obtenerPosts(usuario);
+    })
+    .then(posts => {
+        console.log('Posts encontrados:', posts);
+    })
+    .catch(error => {
+        // Este bloque maneja errores en cualquier punto de la cadena
+        console.error('Error:', error.message);
+    });
+
+// Caso con error
+obtenerUsuario(-1)
+    .then(usuario => {
+        console.log('Usuario encontrado:', usuario); // No se ejecuta
+        return obtenerPosts(usuario);
+    })
+    .then(posts => {
+        console.log('Posts encontrados:', posts); // No se ejecuta
+    })
+    .catch(error => {
+        // Captura el error de obtenerUsuario
+        console.error('Error:', error.message); // "Error: ID de usuario inválido"
+    });</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Retorno de valores en cadenas</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Lo que devuelves en un .then() se convierte en el valor
+// de la promesa para el siguiente .then()
+
+Promise.resolve(1)
+    .then(x => {
+        console.log(x); // 1
+        return x + 1;   // Devolver un valor simple
+    })
+    .then(x => {
+        console.log(x); // 2
+        return new Promise(resolve => {
+            setTimeout(() => resolve(x * 2), 1000); // Devolver una promesa
+        });
+    })
+    .then(x => {
+        console.log(x); // 4 (después de 1 segundo)
+        throw new Error('Oops'); // Lanzar un error
+    })
+    .catch(err => {
+        console.error(err.message); // "Oops"
+        return 'Recuperado'; // Recuperarse del error
+    })
+    .then(x => {
+        console.log(x); // "Recuperado"
+    });</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
+                        <p class="text-gray-300">Cuando encadenas promesas, cada <code class="bg-black text-green-400 p-1 rounded">then()</code> crea una nueva promesa, no modifica la original. Si devuelves un valor en un <code class="bg-black text-green-400 p-1 rounded">then()</code>, la siguiente promesa se resolverá con ese valor. Si devuelves otra promesa, el siguiente <code class="bg-black text-green-400 p-1 rounded">then()</code> esperará a que esa promesa se resuelva.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Métodos Estáticos de Promise</h2>
+                    <p class="mb-4">La clase Promise proporciona varios métodos estáticos útiles para trabajar con promesas.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Promise.resolve() y Promise.reject()</h4>
+                            <p class="mb-2">Crean promesas que ya están resueltas o rechazadas.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Crear una promesa ya resuelta
+const promesaExitosa = Promise.resolve('Éxito inmediato');
+promesaExitosa.then(valor => console.log(valor)); // "Éxito inmediato"
+
+// Crear una promesa ya rechazada
+const promesaFallida = Promise.reject(new Error('Fallo inmediato'));
+promesaFallida.catch(error => console.error(error.message)); // "Fallo inmediato"
+
+// Útil para convertir valores a promesas
+function procesarDatos(datos) {
+    // Si ya tenemos los datos, no necesitamos esperar
+    if (datos) {
+        return Promise.resolve(datos);
+    }
+    
+    // Si no, hacemos una operación asíncrona
+    return fetch('/api/datos');
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Promise.all()</h4>
+                            <p class="mb-2">Recibe un array de promesas y devuelve una nueva promesa que se resuelve cuando todas las promesas del array se resuelven, o se rechaza cuando cualquiera de ellas se rechaza.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Simular varias solicitudes a API
+function obtenerUsuario() {
+    return new Promise(resolve => {
+        setTimeout(() => resolve({ id: 1, nombre: 'Ana' }), 1000);
+    });
+}
+
+function obtenerPosts() {
+    return new Promise(resolve => {
+        setTimeout(() => resolve(['Post 1', 'Post 2', 'Post 3']), 1500);
+    });
+}
+
+function obtenerComentarios() {
+    return new Promise(resolve => {
+        setTimeout(() => resolve(['Comentario 1', 'Comentario 2']), 800);
+    });
+}
+
+// Ejecutar todas las promesas en paralelo
+Promise.all([obtenerUsuario(), obtenerPosts(), obtenerComentarios()])
+    .then(([usuario, posts, comentarios]) => {
+        // Se ejecuta cuando TODAS las promesas se han resuelto
+        console.log('Usuario:', usuario);
+        console.log('Posts:', posts);
+        console.log('Comentarios:', comentarios);
+    })
+    .catch(error => {
+        // Se ejecuta si CUALQUIERA de las promesas es rechazada
+        console.error('Error en alguna de las operaciones:', error);
+    });
+
+// Con una promesa rechazada
+const promesas = [
+    Promise.resolve(1),
+    Promise.reject(new Error('Error en promesa 2')),
+    Promise.resolve(3)
+];
+
+Promise.all(promesas)
+    .then(resultados => {
+        console.log(resultados); // No se ejecuta
+    })
+    .catch(error => {
+        console.error(error.message); // "Error en promesa 2"
+    });</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Promise.race()</h4>
+                            <p class="mb-2">Recibe un array de promesas y devuelve una nueva promesa que se resuelve o rechaza tan pronto como cualquiera de las promesas del array se resuelva o rechace, con el valor o razón de esa promesa.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Simular diferentes tiempos de respuesta
+const respuestaRapida = new Promise(resolve => {
+    setTimeout(() => resolve('Respuesta rápida'), 500);
+});
+
+const respuestaLenta = new Promise(resolve => {
+    setTimeout(() => resolve('Respuesta lenta'), 1500);
+});
+
+const timeout = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error('Tiempo de espera agotado')), 1000);
+});
+
+// La primera promesa en completarse "gana"
+Promise.race([respuestaRapida, respuestaLenta])
+    .then(resultado => {
+        console.log(resultado); // "Respuesta rápida"
+    });
+
+// Útil para implementar timeouts
+Promise.race([respuestaLenta, timeout])
+    .then(resultado => {
+        console.log(resultado); // No se ejecuta porque timeout es más rápido y rechaza
+    })
+    .catch(error => {
+        console.error(error.message); // "Tiempo de espera agotado"
+    });</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Promise.allSettled()</h4>
+                            <p class="mb-2">Recibe un array de promesas y devuelve una nueva promesa que se resuelve cuando todas las promesas del array se han cumplido (resuelto o rechazado).</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Mezcla de promesas exitosas y fallidas
+const promesas = [
+    Promise.resolve('Éxito 1'),
+    Promise.reject(new Error('Error 1')),
+    Promise.resolve('Éxito 2')
+];
+
+Promise.allSettled(promesas)
+    .then(resultados => {
+        // resultados es un array con información de cada promesa
+        console.log(resultados);
+        
+        // Ejemplo de procesamiento de resultados
+        const exitosos = resultados
+            .filter(r => r.status === 'fulfilled')
+            .map(r => r.value);
+            
+        const fallidos = resultados
+            .filter(r => r.status === 'rejected')
+            .map(r => r.reason.message);
+            
+        console.log('Operaciones exitosas:', exitosos);
+        console.log('Operaciones fallidas:', fallidos);
+    });
+
+// Salida:
+// [
+//   { status: 'fulfilled', value: 'Éxito 1' },
+//   { status: 'rejected', reason: Error: Error 1 },
+//   { status: 'fulfilled', value: 'Éxito 2' }
+// ]
+// Operaciones exitosas: ["Éxito 1", "Éxito 2"]
+// Operaciones fallidas: ["Error 1"]</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Promise.any()</h4>
+                            <p class="mb-2">Recibe un array de promesas y devuelve una nueva promesa que se resuelve tan pronto como cualquiera de las promesas del array se resuelva. Si todas son rechazadas, la promesa se rechaza con un AggregateError.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Intentar múltiples fuentes
+const fuenteA = new Promise((resolve, reject) => {
+    setTimeout(() => reject(new Error('Fuente A falló')), 1000);
+});
+
+const fuenteB = new Promise((resolve) => {
+    setTimeout(() => resolve('Datos de fuente B'), 2000);
+});
+
+const fuenteC = new Promise((resolve) => {
+    setTimeout(() => resolve('Datos de fuente C'), 1500);
+});
+
+Promise.any([fuenteA, fuenteB, fuenteC])
+    .then(primerExito => {
+        // Devuelve el primer éxito, independientemente de los fallos
+        console.log(primerExito); // "Datos de fuente C" (la más rápida en resolverse)
+    })
+    .catch(error => {
+        // Solo se ejecuta si TODAS las promesas son rechazadas
+        console.error('Todas las fuentes fallaron:', error);
+    });
+
+// Caso donde todas fallan
+const todasFallan = [
+    Promise.reject(new Error('Error 1')),
+    Promise.reject(new Error('Error 2')),
+    Promise.reject(new Error('Error 3'))
+];
+
+Promise.any(todasFallan)
+    .then(resultado => {
+        console.log(resultado); // No se ejecuta
+    })
+    .catch(error => {
+        console.error('Todas fallaron:', error);
+        // error es un AggregateError que contiene todos los errores individuales
+        console.log(error.errors.map(e => e.message)); // ["Error 1", "Error 2", "Error 3"]
+    });</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Patrones y Casos de Uso Comunes</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">1. Promisificar funciones basadas en callbacks</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Función basada en callbacks (estilo Node.js)
+function leerArchivo(ruta, callback) {
+    // Simulación
+    setTimeout(() => {
+        if (!ruta) {
+            callback(new Error('Ruta no proporcionada'));
+        } else {
+            callback(null, `Contenido del archivo ${ruta}`);
+        }
+    }, 1000);
+}
+
+// Promisificar manualmente
+function leerArchivoPromesa(ruta) {
+    return new Promise((resolve, reject) => {
+        leerArchivo(ruta, (error, contenido) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(contenido);
+            }
+        });
+    });
+}
+
+// Uso
+leerArchivoPromesa('archivo.txt')
+    .then(contenido => console.log(contenido))
+    .catch(error => console.error(error.message));</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">2. Ejecutar promesas secuencialmente</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Ejecutar un array de promesas en secuencia
+function ejecutarSecuencialmente(arrayDeFunciones) {
+    return arrayDeFunciones.reduce(
+        (promesaPrevia, funcionActual) => 
+            promesaPrevia.then(funcionActual),
+        Promise.resolve()
+    );
+}
+
+// Ejemplo de uso
+const funciones = [
+    () => new Promise(resolve => {
+        console.log('Tarea 1');
+        setTimeout(() => resolve(1), 1000);
+    }),
+    (resultadoAnterior) => new Promise(resolve => {
+        console.log(`Tarea 2 (recibió ${resultadoAnterior})`);
+        setTimeout(() => resolve(resultadoAnterior + 1), 1000);
+    }),
+    (resultadoAnterior) => new Promise(resolve => {
+        console.log(`Tarea 3 (recibió ${resultadoAnterior})`);
+        setTimeout(() => resolve(resultadoAnterior + 2), 1000);
+    })
+];
+
+ejecutarSecuencialmente(funciones).then(() => {
+    console.log('Todas las tareas completadas secuencialmente');
+});</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">3. Retry pattern (reintentar operaciones)</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Función para reintentar una operación con promesas
+function reintentarOperacion(operacion, veces, retraso) {
+    return new Promise((resolve, reject) => {
+        function intentar() {
+            operacion()
+                .then(resolve)
+                .catch(error => {
+                    if (veces === 0) {
+                        return reject(error);
+                    }
+                    
+                    console.log(`Reintentando... Quedan ${veces} intentos`);
+                    veces--;
+                    setTimeout(intentar, retraso);
+                });
+        }
+        
+        intentar();
+    });
+}
+
+// Ejemplo: Operación con 20% de probabilidad de éxito
+function operacionInestable() {
+    return new Promise((resolve, reject) => {
+        const exito = Math.random() > 0.8;
+        
+        setTimeout(() => {
+            if (exito) {
+                resolve('Operación exitosa');
+            } else {
+                reject(new Error('La operación falló'));
+            }
+        }, 500);
+    });
+}
+
+// Reintentar hasta 5 veces con 1 segundo de espera entre intentos
+reintentarOperacion(operacionInestable, 5, 1000)
+    .then(resultado => console.log('Éxito final:', resultado))
+    .catch(error => console.error('Falló después de todos los intentos:', error.message));</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">4. Caché de promesas</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Implementar caché para operaciones costosas
+function crearCacheDePromesas() {
+    const cache = {};
+    
+    return function(clave, crearPromesa) {
+        if (!cache[clave]) {
+            cache[clave] = crearPromesa().catch(error => {
+                // Eliminar del caché para permitir reintento en caso de error
+                delete cache[clave];
+                return Promise.reject(error);
+            });
+        }
+        
+        return cache[clave];
+    };
+}
+
+// Ejemplo de uso
+const obtenerDatosCacheados = crearCacheDePromesas();
+
+// Simulación de una petición API
+function buscarUsuario(id) {
+    return obtenerDatosCacheados(`usuario:${id}`, () => {
+        console.log(`Buscando usuario ${id} (solo se verá una vez por ID)`);
+        
+        return new Promise((resolve) => {
+            setTimeout(() => resolve({
+                id,
+                nombre: `Usuario ${id}`,
+                timestamp: new Date().toISOString()
+            }), 1000);
+        });
+    });
+}
+
+// Múltiples llamadas con el mismo ID usarán el caché
+buscarUsuario(1).then(datos => console.log('Primera llamada:', datos));
+buscarUsuario(2).then(datos => console.log('Otra persona:', datos));
+
+// Esta llamada usará el resultado cacheado
+setTimeout(() => {
+    buscarUsuario(1).then(datos => console.log('Segunda llamada (cacheada):', datos));
+}, 2000);</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">5. Cancelación de promesas (workaround)</h4>
+                            <p class="mb-2">Las promesas nativas no tienen soporte para cancelación, pero podemos implementar un patrón de cancelación.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function crearPromesaCancelable(promesaOriginal) {
+    let esCancelada = false;
+    
+    // Promesa envolvente
+    const envolvente = new Promise((resolve, reject) => {
+        promesaOriginal
+            .then(valor => {
+                if (esCancelada) {
+                    reject({ cancelada: true });
+                } else {
+                    resolve(valor);
+                }
+            })
+            .catch(error => {
+                if (esCancelada) {
+                    reject({ cancelada: true });
+                } else {
+                    reject(error);
+                }
+            });
+    });
+    
+    // Objeto con la promesa y método para cancelar
+    return {
+        promesa: envolvente,
+        cancelar() {
+            esCancelada = true;
+        }
+    };
+}
+
+// Ejemplo de uso
+function operacionLarga() {
+    return new Promise(resolve => {
+        const temporizadorID = setTimeout(() => {
+            resolve('Operación completada');
+        }, 5000);
+        
+        // Este truco es solo para este ejemplo específico
+        // para liberar recursos cuando se cancela
+        return () => clearTimeout(temporizadorID);
+    });
+}
+
+const { promesa, cancelar } = crearPromesaCancelable(operacionLarga());
+
+promesa
+    .then(resultado => console.log(resultado))
+    .catch(error => {
+        if (error.cancelada) {
+            console.log('La operación fue cancelada');
+        } else {
+            console.error('Error:', error);
+        }
+    });
+
+// Cancelar después de 2 segundos
+setTimeout(() => {
+    console.log('Cancelando operación...');
+    cancelar();
+}, 2000);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Promesas vs Async/Await</h2>
+                    <p class="mb-4">Async/await es una sintaxis introducida en ES2017 (ES8) que facilita el trabajo con promesas, haciendo que el código asíncrono se lea y se comporte de manera similar al código síncrono.</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6">
+                        <h4 class="font-medium mb-2 text-yellow-200">Comparación de sintaxis:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h5 class="text-sm font-medium mb-1 text-gray-400">Con promesas:</h5>
+                                <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>function obtenerDatos() {
+    return fetch('/api/datos')
+        .then(respuesta => {
+            if (!respuesta.ok) {
+                throw new Error('Error en la red');
+            }
+            return respuesta.json();
+        })
+        .then(datos => {
+            console.log(datos);
+            return datos;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            throw error;
+        });
+}</code></pre>
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-medium mb-1 text-gray-400">Con async/await:</h5>
+                                <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>async function obtenerDatos() {
+    try {
+        const respuesta = await fetch('/api/datos');
+        if (!respuesta.ok) {
+            throw new Error('Error en la red');
+        }
+        const datos = await respuesta.json();
+        console.log(datos);
+        return datos;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="mb-4">Principales diferencias:</p>
+                    <ul class="list-disc pl-6 space-y-2 mb-6">
+                        <li><strong class="text-white">Promesas:</strong> Requieren encadenamiento con .then() y .catch(), lo que puede volverse complejo en operaciones anidadas.</li>
+                        <li><strong class="text-white">Async/await:</strong> Permite escribir código asíncrono que parece y se comporta como código síncrono.</li>
+                        <li>Las funciones async <strong class="text-white">siempre</strong> devuelven una promesa.</li>
+                        <li>El operador await <strong class="text-white">solo</strong> puede usarse dentro de funciones async.</li>
+                        <li>Async/await facilita el manejo de errores con try/catch estándar.</li>
+                    </ul>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">¿Cuándo usar cada uno?</h4>
+                        <ul class="list-disc pl-6 space-y-1">
+                            <li><strong class="text-white">Usa promesas:</strong> Cuando necesitas más control sobre el flujo, operaciones en paralelo, o cuando estás trabajando con código que ya usa promesas extensivamente.</li>
+                            <li><strong class="text-white">Usa async/await:</strong> Para operaciones secuenciales, mejor legibilidad, cuando necesitas estructuras de control como bucles o try/catch.</li>
+                            <li>Es común usar una <strong class="text-white">combinación de ambos</strong>. Por ejemplo, Promise.all() junto con await para operaciones paralelas con sintaxis limpia.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Errores Comunes con Promesas</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">1. Olvidar retornar promesas en cadenas</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// ❌ Incorrecto: No retorna la promesa
+function procesarDatos(datos) {
+    obtenerMasDatos(datos)
+        .then(resultado => {
+            // Esta promesa se pierde
+            return transformarDatos(resultado);
+        });
+    // Sin retorno explícito, devuelve undefined
+}
+
+// ✅ Correcto: Retorna la cadena completa
+function procesarDatos(datos) {
+    return obtenerMasDatos(datos)
+        .then(resultado => {
+            return transformarDatos(resultado);
+        });
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">2. No manejar errores correctamente</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// ❌ Incorrecto: Errores sin manejar
+fetch('/api/datos')
+    .then(response => response.json())
+    .then(data => procesarDatos(data));
+    // Si hay un error, se pierde silenciosamente
+
+// ✅ Correcto: Manejar errores al final de la cadena
+fetch('/api/datos')
+    .then(response => response.json())
+    .then(data => procesarDatos(data))
+    .catch(error => {
+        console.error('Error:', error);
+        // Manejar el error adecuadamente
+    });</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">3. Anidamiento excesivo (Callback Hell 2.0)</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// ❌ Incorrecto: Anidamiento excesivo
+getUsuario().then(usuario => {
+    getPosts(usuario.id).then(posts => {
+        getComentarios(posts[0].id).then(comentarios => {
+            // Esto es básicamente callback hell con promesas
+            console.log(comentarios);
+        });
+    });
+});
+
+// ✅ Correcto: Encadenamiento plano
+getUsuario()
+    .then(usuario => {
+        return getPosts(usuario.id);
+    })
+    .then(posts => {
+        return getComentarios(posts[0].id);
+    })
+    .then(comentarios => {
+        console.log(comentarios);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">4. Olvidar que .then() siempre devuelve una promesa</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// ❌ Incorrecto: Tratar de usar el resultado directamente
+const datos = fetch('/api/datos')
+    .then(response => response.json());
+    
+console.log(datos); // ❌ datos es una promesa, no el resultado
+
+// ✅ Correcto: Usar el resultado dentro del .then()
+fetch('/api/datos')
+    .then(response => response.json())
+    .then(datos => {
+        console.log(datos); // ✅ Ahora datos contiene el resultado
+    });</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">5. No tratar promesas rechazadas correctamente</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// ❌ Incorrecto: Dejar los rechazos sin manejar
+function obtenerDatos() {
+    return new Promise((resolve, reject) => {
+        if (errorCondition) {
+            reject(new Error('Algo salió mal'));
+            // No se hace nada más, lo que puede causar
+            // UnhandledPromiseRejection
+        }
+        resolve(data);
+    });
+}
+
+// ✅ Correcto: Manejar los rechazos con .catch() o try/catch
+obtenerDatos()
+    .then(datos => procesarDatos(datos))
+    .catch(error => {
+        // Manejar el error adecuadamente
+        console.error('Error:', error);
+        // Posiblemente mostrar un mensaje amigable al usuario
+        mostrarErrorUsuario('No se pudieron obtener los datos');
+    });</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Buenas Prácticas</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Siempre retornar promesas en cadenas</h4>
+                            <p>Asegúrate de retornar las promesas en cada paso de la cadena para mantener el flujo asíncrono.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Manejar siempre los errores</h4>
+                            <p>Añade un .catch() al final de cada cadena de promesas o usa try/catch con async/await para evitar errores no manejados.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Evitar el anidamiento</h4>
+                            <p>Utiliza el encadenamiento plano en lugar de anidar promesas para mantener el código legible.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Nombrar correctamente tus funciones</h4>
+                            <p>Usa nombres descriptivos para las funciones que devuelven promesas, idealmente con verbos (getUser, fetchData, etc.).</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Evitar usar .then() con dos argumentos</h4>
+                            <p>Prefiere usar .catch() en lugar del segundo argumento de .then() para manejar errores, ya que es más claro y maneja errores en los .then() previos.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// Menos recomendado
+promesa.then(
+    resultado => manejarExito(resultado),
+    error => manejarError(error)
+);
+
+// Más recomendado
+promesa
+    .then(resultado => manejarExito(resultado))
+    .catch(error => manejarError(error));</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Aprovechar Promise.all() para operaciones paralelas</h4>
+                            <p>Cuando tengas múltiples operaciones independientes, usa Promise.all() para ejecutarlas en paralelo en lugar de secuencialmente.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">No usar promesas para todo</h4>
+                            <p>Las promesas son para operaciones asíncronas. Para lógica síncrona, usa código normal sin promesas.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Promesas</a></li>
+                        <li><a href="https://es.javascript.info/promise-basics" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Promesas</a></li>
+                        <li><a href="https://www.w3schools.com/js/js_promise.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript Promises</a></li>
+                        <li><a href="https://web.dev/promises/" class="text-yellow-400 hover:text-yellow-300">web.dev - JavaScript Promises: An Introduction</a></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
