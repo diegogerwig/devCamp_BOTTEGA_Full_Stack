@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟨</text></svg>" />
+    <title>Async/Await en JavaScript - Documentación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans flex flex-col min-h-screen">
+    <header class="bg-yellow-600 text-white text-center py-12 px-4 shadow-md fixed top-0 left-0 right-0 z-20">
+        <h1 class="text-4xl font-bold mb-2">Async/Await en JavaScript</h1>
+        <p class="text-xl">¿Qué hacen async y await por nosotros?</p>
+    </header>
+
+    <nav class="bg-gray-800 py-4 px-6 shadow-md fixed top-40 left-0 right-0 z-10 border-b border-gray-700">
+        <a href="../index.html" class="text-yellow-400 hover:text-yellow-300 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Volver al índice
+        </a>
+    </nav>
+
+    <div class="pt-56">
+
+        <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">¿Qué es Async/Await?</h2>
+                    <p class="mb-4">Async/await es una sintaxis introducida en ES2017 (ES8) que permite escribir código asíncrono de manera que parezca y se comporte como código síncrono. Es una forma más elegante y legible de trabajar con promesas.</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">Conceptos clave:</h3>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                            <li><strong class="text-white">async:</strong> Palabra clave que se coloca antes de una función para indicar que devolverá una promesa.</li>
+                            <li><strong class="text-white">await:</strong> Operador que pausa la ejecución de la función async hasta que una promesa se resuelva.</li>
+                            <li><strong class="text-white">Secuencialidad:</strong> El código dentro de una función async se ejecuta de manera secuencial (como código síncrono).</li>
+                            <li><strong class="text-white">Manejo de errores:</strong> Se puede usar el tradicional try/catch para capturar errores asíncronos.</li>
+                            <li><strong class="text-white">Promesas implícitas:</strong> Las funciones async siempre devuelven una promesa, incluso si no lo declaramos explícitamente.</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="mb-4">Async/await es fundamentalmente una abstracción sobre las promesas. No introduce una nueva forma de asincronía en JavaScript, sino que proporciona una sintaxis más limpia y fácil de entender para trabajar con código asíncrono basado en promesas.</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <p class="italic text-gray-300">Async/await permite escribir código asíncrono que se lee como código síncrono, facilitando la comprensión del flujo de ejecución y mejorando la legibilidad del código.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Declaración de Funciones Async</h2>
+                    <p class="mb-4">Para usar await dentro de una función, primero debes declarar esa función como async usando la palabra clave <code class="bg-black text-green-400 p-1 rounded">async</code>.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis básica:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>// Función declarativa
+async function nombreFuncion() {
+    // código asíncrono aquí
+    return valor; // Se convierte implícitamente en Promise.resolve(valor)
+}
+
+// Expresión de función
+const nombreFuncion = async function() {
+    // código asíncrono aquí
+};
+
+// Función flecha
+const nombreFuncion = async () => {
+    // código asíncrono aquí
+};
+
+// Métodos en objetos
+const objeto = {
+    async metodo() {
+        // código asíncrono aquí
+    }
+};
+
+// Métodos de clase
+class MiClase {
+    async metodo() {
+        // código asíncrono aquí
+    }
+}</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Función async básica</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>async function obtenerDatos() {
+    return "Datos obtenidos";
+}
+
+// La función async siempre devuelve una promesa
+obtenerDatos().then(datos => {
+    console.log(datos); // "Datos obtenidos"
+});
+
+// Esto es equivalente a:
+function obtenerDatosPromesa() {
+    return Promise.resolve("Datos obtenidos");
+}
+
+obtenerDatosPromesa().then(datos => {
+    console.log(datos); // "Datos obtenidos"
+});</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Devolver valores en funciones async</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Cualquier valor retornado se envuelve en una promesa
+async function obtenerNumero() {
+    return 42;
+}
+
+obtenerNumero().then(numero => {
+    console.log(numero); // 42
+});
+
+// También puedes devolver promesas explícitamente
+async function obtenerUsuario() {
+    // Aquí fetch ya devuelve una promesa
+    const respuesta = await fetch('https://api.ejemplo.com/usuario');
+    const usuario = await respuesta.json();
+    return usuario; // La promesa se resolverá con el usuario
+}
+
+// O incluso rechazar la promesa con throw
+async function verificarAcceso(usuario) {
+    if (!usuario.tieneAcceso) {
+        throw new Error('Acceso denegado');
+        // Equivalente a: return Promise.reject(new Error('Acceso denegado'));
+    }
+    return 'Acceso concedido';
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
+                        <p class="text-gray-300">Una función async puede no contener await. En este caso, simplemente se ejecutará de forma síncrona pero aun así devolverá una promesa. Sin embargo, sin await, pierde gran parte de su propósito.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">El Operador await</h2>
+                    <p class="mb-4">El operador <code class="bg-black text-green-400 p-1 rounded">await</code> pausa la ejecución de una función async hasta que una promesa se resuelva o rechace, y devuelve el valor resuelto de la promesa.</p>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Sintaxis:</h3>
+                    <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto mb-6"><code>async function nombreFuncion() {
+    const resultado = await promesa;
+    // La ejecución se pausa aquí hasta que promesa se resuelva
+    // resultado contiene el valor con el que se resolvió la promesa
+}</code></pre>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Ejemplos:</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 1: Await con promesas</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>function esperar(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function ejemplo() {
+    console.log("Iniciando...");
+    
+    // El await pausa la ejecución hasta que la promesa se resuelva
+    await esperar(2000); // Espera 2 segundos
+    
+    console.log("Después de 2 segundos");
+    
+    await esperar(1000); // Espera 1 segundo más
+    
+    console.log("Después de 3 segundos en total");
+    
+    return "¡Completado!";
+}
+
+// Usar la función
+ejemplo().then(resultado => {
+    console.log(resultado); // "¡Completado!"
+});
+
+console.log("Esto se imprime antes de que ejemplo() termine");</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 2: Await con llamadas a APIs</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>async function obtenerDatosUsuario(id) {
+    // Paso 1: Obtener información del usuario
+    const respuestaUsuario = await fetch(`https://api.ejemplo.com/usuarios/${id}`);
+    const datosUsuario = await respuestaUsuario.json();
+    
+    // Paso 2: Obtener los posts del usuario (usando los datos obtenidos)
+    const respuestaPosts = await fetch(`https://api.ejemplo.com/usuarios/${datosUsuario.id}/posts`);
+    const posts = await respuestaPosts.json();
+    
+    // Paso 3: Combinar los datos y devolverlos
+    return {
+        usuario: datosUsuario,
+        posts: posts
+    };
+}
+
+// El código de arriba con promesas sería:
+function obtenerDatosUsuarioPromesas(id) {
+    return fetch(`https://api.ejemplo.com/usuarios/${id}`)
+        .then(respuestaUsuario => respuestaUsuario.json())
+        .then(datosUsuario => {
+            return fetch(`https://api.ejemplo.com/usuarios/${datosUsuario.id}/posts`)
+                .then(respuestaPosts => respuestaPosts.json())
+                .then(posts => {
+                    return {
+                        usuario: datosUsuario,
+                        posts: posts
+                    };
+                });
+        });
+}</code></pre>
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo 3: Esperando múltiples promesas</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Esperar múltiples promesas secuencialmente
+async function secuencial() {
+    const resultado1 = await obtenerDato1();
+    const resultado2 = await obtenerDato2();
+    const resultado3 = await obtenerDato3();
+    
+    return [resultado1, resultado2, resultado3];
+}
+
+// Esperar múltiples promesas en paralelo
+async function paralelo() {
+    // Promise.all permite ejecutar todas las promesas a la vez
+    const [resultado1, resultado2, resultado3] = await Promise.all([
+        obtenerDato1(),
+        obtenerDato2(),
+        obtenerDato3()
+    ]);
+    
+    return [resultado1, resultado2, resultado3];
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Restricciones importantes:</h4>
+                        <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                            <li>El operador <code class="bg-black text-green-400 p-1 rounded">await</code> <strong class="text-white">solo puede usarse dentro de funciones async</strong>.</li>
+                            <li>Desde ES2022, también es posible usar await en el nivel superior de un módulo (top-level await).</li>
+                            <li>No se puede usar en funciones normales o en el ámbito global de scripts no modulares.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Manejo de Errores</h2>
+                    <p class="mb-4">Una de las grandes ventajas de async/await es que permite manejar errores asíncronos usando el tradicional bloque try/catch, lo que hace el código más limpio y fácil de entender.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Try/Catch con async/await</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>async function obtenerDatos() {
+    try {
+        const respuesta = await fetch('https://api.ejemplo.com/datos');
+        
+        if (!respuesta.ok) {
+            throw new Error(`Error HTTP: ${respuesta.status}`);
+        }
+        
+        const datos = await respuesta.json();
+        return datos;
+    } catch (error) {
+        console.error('Error al obtener datos:', error);
+        // Podemos manejar el error y:
+        // 1. Devolver un valor por defecto
+        return { error: true, mensaje: error.message };
+        // 2. O volver a lanzar el error para que lo maneje quien llama a la función
+        // throw error;
+    }
+}
+
+// Comparación con promesas
+function obtenerDatosPromesas() {
+    return fetch('https://api.ejemplo.com/datos')
+        .then(respuesta => {
+            if (!respuesta.ok) {
+                throw new Error(`Error HTTP: ${respuesta.status}`);
+            }
+            return respuesta.json();
+        })
+        .catch(error => {
+            console.error('Error al obtener datos:', error);
+            return { error: true, mensaje: error.message };
+        });
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Capturar errores específicos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>async function procesarArchivo(ruta) {
+    try {
+        const contenido = await leerArchivo(ruta);
+        const datos = await procesarDatos(contenido);
+        await guardarResultado(datos);
+        return true;
+    } catch (error) {
+        // Podemos manejar diferentes tipos de errores
+        if (error instanceof ArchivoNoEncontradoError) {
+            console.error(`No se encontró el archivo: ${ruta}`);
+            // Manejar específicamente este error
+        } else if (error instanceof FormatoInvalidoError) {
+            console.error(`El archivo tiene un formato inválido`);
+            // Manejar específicamente este error
+        } else {
+            console.error(`Error inesperado: ${error.message}`);
+        }
+        return false;
+    } finally {
+        // El bloque finally se ejecuta siempre, haya error o no
+        console.log('Procesamiento finalizado');
+        // Liberar recursos, cerrar conexiones, etc.
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Errores en bucles asíncronos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>async function procesarItems(items) {
+    const resultados = [];
+    
+    for (const item of items) {
+        try {
+            // Procesar cada item individualmente
+            const resultado = await procesarItem(item);
+            resultados.push(resultado);
+        } catch (error) {
+            // Si falla un item, registramos el error pero continuamos con los demás
+            console.error(`Error en item ${item}:`, error);
+            resultados.push({ item, error: true });
+        }
+    }
+    
+    return resultados;
+}
+
+// También podemos usar Promise.allSettled para gestionar errores en operaciones paralelas
+async function procesarItemsParalelo(items) {
+    // Crear un array de promesas
+    const promesas = items.map(item => procesarItem(item));
+    
+    // Promise.allSettled nos da el resultado de todas las promesas,
+    // independientemente de si se resolvieron o rechazaron
+    const resultados = await Promise.allSettled(promesas);
+    
+    return resultados.map((resultado, index) => {
+        if (resultado.status === 'fulfilled') {
+            return resultado.value;
+        } else {
+            console.error(`Error en item ${items[index]}:`, resultado.reason);
+            return { item: items[index], error: true };
+        }
+    });
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Nota importante:</h4>
+                        <p class="text-gray-300">Si no capturas los errores con try/catch dentro de una función async, la promesa que devuelve se rechazará. Es importante manejar esos rechazos ya sea:</p>
+                        <ul class="list-disc pl-6 space-y-1 mt-2 text-gray-300">
+                            <li>Capturando los errores dentro de la función async con try/catch, o</li>
+                            <li>Usando .catch() cuando llamas a la función async desde otro lugar.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Patrones Avanzados</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">1. Ejecutar tareas en paralelo</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>async function obtenerDatosDePerfil(usuarioId) {
+    // Mal: Ejecución secuencial (cada llamada espera a que termine la anterior)
+    const datosUsuario = await obtenerUsuario(usuarioId);
+    const publicaciones = await obtenerPublicaciones(usuarioId);
+    const seguidores = await obtenerSeguidores(usuarioId);
+    
+    return {
+        usuario: datosUsuario,
+        publicaciones,
+        seguidores
+    };
+}
+
+async function obtenerDatosDePerfilOptimizado(usuarioId) {
+    // Mejor: Ejecución en paralelo (todas las llamadas inician a la vez)
+    const [datosUsuario, publicaciones, seguidores] = await Promise.all([
+        obtenerUsuario(usuarioId),
+        obtenerPublicaciones(usuarioId),
+        obtenerSeguidores(usuarioId)
+    ]);
+    
+    return {
+        usuario: datosUsuario,
+        publicaciones,
+        seguidores
+    };
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">2. Procesamiento secuencial de arrays</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Procesar items uno tras otro (secuencial)
+async function procesarSecuencial(items) {
+    const resultados = [];
+    
+    for (const item of items) {
+        // await dentro del bucle = procesamiento secuencial
+        const resultado = await procesarItem(item);
+        resultados.push(resultado);
+    }
+    
+    return resultados;
+}
+
+// Versión con reduce para encadenar promesas
+async function procesarSecuencialReduce(items) {
+    return items.reduce(async (promesaAnterior, item) => {
+        // Esperar a que termine el procesamiento anterior
+        const resultados = await promesaAnterior;
+        // Procesar el item actual
+        const resultado = await procesarItem(item);
+        return [...resultados, resultado];
+    }, Promise.resolve([]));
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">3. Procesamiento paralelo con limitación de concurrencia</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Procesar items en paralelo pero con un límite de concurrencia
+async function procesarPorLotes(items, tamañoLote = 3) {
+    const resultados = [];
+    
+    // Dividir los items en lotes
+    for (let i = 0; i < items.length; i += tamañoLote) {
+        const lote = items.slice(i, i + tamañoLote);
+        
+        // Procesar un lote en paralelo
+        const resultadosLote = await Promise.all(
+            lote.map(item => procesarItem(item))
+        );
+        
+        resultados.push(...resultadosLote);
+    }
+    
+    return resultados;
+}
+
+// Implementación más avanzada con concurrencia controlada
+async function procesarConConcurrencia(items, limiteConcurrencia = 3) {
+    const pendientes = [...items];
+    const resultados = [];
+    
+    // Crear un conjunto inicial de promesas
+    const promesasActivas = new Set();
+    
+    // Función para crear y ejecutar una tarea
+    async function ejecutarTarea() {
+        // Tomar el siguiente item pendiente
+        const item = pendientes.shift();
+        
+        // Procesar el item
+        try {
+            const resultado = await procesarItem(item);
+            resultados.push(resultado);
+        } catch (error) {
+            console.error(`Error procesando item ${item}:`, error);
+            resultados.push({ item, error: true });
+        }
+        
+        // Eliminar esta promesa del conjunto de activas
+        promesasActivas.delete(promise);
+        
+        // Si quedan items pendientes, iniciar una nueva tarea
+        if (pendientes.length > 0) {
+            const nuevaPromesa = ejecutarTarea();
+            promesasActivas.add(nuevaPromesa);
+        }
+    }
+    
+    // Iniciar el número de tareas según el límite de concurrencia
+    const tareasPorIniciar = Math.min(limiteConcurrencia, items.length);
+    
+    for (let i = 0; i < tareasPorIniciar; i++) {
+        const promesa = ejecutarTarea();
+        promesasActivas.add(promesa);
+    }
+    
+    // Esperar a que todas las tareas terminen
+    await Promise.all(promesasActivas);
+    
+    return resultados;
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">4. Timeout para operaciones asíncronas</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Función para establecer un timeout en una promesa
+function conTimeout(promesa, ms) {
+    // Crear una promesa de timeout
+    const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+            reject(new Error(`Operación cancelada por timeout después de ${ms}ms`));
+        }, ms);
+    });
+    
+    // Usar Promise.race para competir entre la promesa original y el timeout
+    return Promise.race([promesa, timeoutPromise]);
+}
+
+// Uso con async/await
+async function obtenerDatos() {
+    try {
+        // Establecer un timeout de 5 segundos
+        const datos = await conTimeout(fetch('https://api.ejemplo.com/datos'), 5000);
+        return await datos.json();
+    } catch (error) {
+        console.error('Error:', error.message);
+        throw error; // O manejar de otra forma
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">5. Retry automático</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Función para reintentar una operación asíncrona
+async function conReintentos(operacion, maxIntentos = 3, retraso = 1000) {
+    let ultimoError;
+    
+    for (let intento = 1; intento <= maxIntentos; intento++) {
+        try {
+            return await operacion();
+        } catch (error) {
+            ultimoError = error;
+            console.warn(`Intento ${intento}/${maxIntentos} falló: ${error.message}`);
+            
+            if (intento < maxIntentos) {
+                // Esperar antes del siguiente intento (opcional: retraso exponencial)
+                const tiempoEspera = retraso * Math.pow(2, intento - 1);
+                console.log(`Esperando ${tiempoEspera}ms antes del siguiente intento...`);
+                await new Promise(resolve => setTimeout(resolve, tiempoEspera));
+            }
+        }
+    }
+    
+    // Si llegamos aquí, todos los intentos fallaron
+    throw new Error(`Después de ${maxIntentos} intentos: ${ultimoError.message}`);
+}
+
+// Uso
+async function obtenerDatos() {
+    try {
+        const resultado = await conReintentos(
+            async () => {
+                const respuesta = await fetch('https://api.ejemplo.com/datos');
+                if (!respuesta.ok) {
+                    throw new Error(`HTTP error: ${respuesta.status}`);
+                }
+                return respuesta.json();
+            },
+            3,  // máximo 3 intentos
+            1000 // esperar 1 segundo entre intentos (1s, 2s, 4s)
+        );
+        
+        return resultado;
+    } catch (error) {
+        console.error('Error final:', error.message);
+        // Manejar el error definitivo
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+<section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Async/Await en Bucles</h2>
+                    <p class="mb-4">El uso de async/await en bucles requiere atención especial, ya que hay diferencias importantes en cómo se ejecuta el código según el tipo de bucle y dónde se coloca el await.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">For clásico vs forEach</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>async function procesarArrayForClassico(items) {
+    // ✅ Correcto: await dentro de un bucle for espera a que cada promesa termine
+    for (let i = 0; i < items.length; i++) {
+        await procesarItem(items[i]);
+        console.log(`Item ${i} procesado`);
+    }
+}
+
+async function procesarArrayForEach(items) {
+    // ⚠️ Problema: forEach no espera a las promesas
+    // Este código NO funcionará como se espera
+    items.forEach(async (item) => {
+        await procesarItem(item);
+        console.log(`Item ${item} procesado`);
+    });
+    console.log('Todos procesados'); // Se imprime antes de que los items se procesen
+}
+
+// ✅ Alternativa a forEach: usar Promise.all con map
+async function procesarArrayMap(items) {
+    await Promise.all(items.map(async (item) => {
+        await procesarItem(item);
+        console.log(`Item ${item} procesado`);
+    }));
+    console.log('Todos procesados'); // Ahora sí espera a que terminen
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Procesar secuencialmente vs paralelamente</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Secuencial: un item a la vez
+async function procesarSecuencial(items) {
+    const resultados = [];
+    
+    for (const item of items) {
+        // El await dentro del bucle hace que se procese un item tras otro
+        const resultado = await procesarItem(item);
+        resultados.push(resultado);
+    }
+    
+    return resultados;
+}
+
+// Paralelo: todos los items a la vez
+async function procesarParalelo(items) {
+    // Generar todas las promesas de una vez sin esperar
+    const promesas = items.map(item => procesarItem(item));
+    
+    // Esperar a que todas terminen
+    const resultados = await Promise.all(promesas);
+    
+    return resultados;
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Uso de for...of y for...in</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// for...of funciona bien con await (iteración sobre valores)
+async function procesarConForOf(items) {
+    for (const item of items) {
+        // Espera a que se procese cada item antes de pasar al siguiente
+        await procesarItem(item);
+    }
+}
+
+// for...in con objetos (iteración sobre propiedades)
+async function procesarObjetoConForIn(objeto) {
+    for (const clave in objeto) {
+        if (Object.hasOwnProperty.call(objeto, clave)) {
+            // Espera a que se procese cada propiedad antes de pasar a la siguiente
+            await procesarPropiedad(clave, objeto[clave]);
+        }
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Consideraciones de rendimiento</h4>
+                            <p class="mb-2">Elegir entre procesamiento secuencial y paralelo depende de varios factores:</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong class="text-white">Secuencial:</strong> Cuando el orden importa o cuando una operación depende del resultado de la anterior.</li>
+                                <li><strong class="text-white">Paralelo:</strong> Cuando las operaciones son independientes y buscas mayor velocidad.</li>
+                                <li><strong class="text-white">Concurrencia limitada:</strong> Para balancear velocidad y uso de recursos (como se mostró en patrones avanzados).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Resumen:</h4>
+                        <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                            <li>✅ <code class="bg-black text-green-400 p-1 rounded">for</code>, <code class="bg-black text-green-400 p-1 rounded">for...of</code>, <code class="bg-black text-green-400 p-1 rounded">for...in</code>, <code class="bg-black text-green-400 p-1 rounded">while</code>: Funcionan bien con await.</li>
+                            <li>❌ <code class="bg-black text-green-400 p-1 rounded">forEach</code>, <code class="bg-black text-green-400 p-1 rounded">map</code>, <code class="bg-black text-green-400 p-1 rounded">filter</code>, etc.: No esperan a promesas por sí solos.</li>
+                            <li>✅ <code class="bg-black text-green-400 p-1 rounded">Promise.all()</code> con <code class="bg-black text-green-400 p-1 rounded">map</code>: Mejor manera de procesar arrays en paralelo.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Top-level await</h2>
+                    <p class="mb-4">A partir de ECMAScript 2022, es posible usar <code class="bg-black text-green-400 p-1 rounded">await</code> fuera de funciones async, directamente en el nivel superior (top-level) de un módulo.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">¿Qué es top-level await?</h4>
+                            <p class="mb-2">Top-level await permite usar el operador await fuera de funciones async, pero solo en módulos ES (archivos JavaScript cargados como type="module" o con la extensión .mjs).</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-3"><code>// En un archivo de módulo ES (.js con type="module" o .mjs)
+
+// Importación asíncrona de módulos
+const modulo = await import('./modulo-dinamico.js');
+
+// Cargar datos antes de que el módulo esté disponible
+const datos = await fetch('https://api.ejemplo.com/datos').then(r => r.json());
+
+// Uso de los datos para inicializar el módulo
+export const configuracion = {
+    api: datos.apiEndpoint,
+    clave: datos.apiKey
+};
+
+// Inicializar la base de datos antes de exportar módulos
+const conexion = await inicializarBaseDeDatos();
+export { conexion };</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ventajas de top-level await</h4>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Permite inicializar módulos con operaciones asíncronas</li>
+                                <li>Simplifica la carga de recursos antes de que el módulo esté disponible</li>
+                                <li>Evita patrones complejos de inicialización asíncrona</li>
+                                <li>Hace que el código sea más limpio y directo para operaciones asíncronas necesarias</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Comportamiento en la importación de módulos</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// moduleA.js
+console.log("Módulo A: inicio");
+await new Promise(resolve => setTimeout(resolve, 1000));
+console.log("Módulo A: después de esperar");
+export const valorA = "A";
+
+// moduleB.js
+import { valorA } from './moduleA.js';
+console.log("Módulo B cargado, valorA:", valorA);
+
+// index.js
+console.log("Inicio del programa");
+import './moduleB.js';
+console.log("Fin del programa");
+
+// Salida:
+// "Módulo A: inicio"
+// (espera 1 segundo)
+// "Módulo A: después de esperar"
+// "Módulo B cargado, valorA: A"
+// "Inicio del programa"
+// "Fin del programa"</code></pre>
+                            <p class="mt-2 text-gray-300">Cuando un módulo usa top-level await, los módulos que lo importan esperan a que termine antes de ejecutar su propio código.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Limitaciones:</h4>
+                        <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                            <li>Solo funciona en módulos ES, no en scripts normales</li>
+                            <li>Puede causar bloqueos en la carga de módulos si no se usa con cuidado</li>
+                            <li>El soporte en navegadores y entornos antiguos puede ser limitado</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Buenas Prácticas</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Siempre usar try/catch</h4>
+                            <p>Capturar errores en todas las operaciones asíncronas para evitar rechazos de promesas no manejados.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ✅ Buena práctica
+async function obtenerDatos() {
+    try {
+        const datos = await fetch('/api/datos');
+        return await datos.json();
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // O manejar de otra forma
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Evitar await innecesarios</h4>
+                            <p>No usar await cuando no es necesario esperar por el resultado.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Mala práctica: await innecesario
+async function procesarYEnviar(datos) {
+    const resultado = procesarDatos(datos); // No es asíncrono
+    await guardarDatos(resultado); // Es asíncrono
+    // No esperamos por el resultado de enviar
+    await enviarNotificacion(resultado);
+}
+
+// ✅ Mejor: Solo usar await donde es necesario
+async function procesarYEnviar(datos) {
+    const resultado = procesarDatos(datos);
+    await guardarDatos(resultado);
+    // Si no necesitamos esperar a que termine:
+    enviarNotificacion(resultado); // Sin await
+    return resultado;
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Aprovechar el paralelismo</h4>
+                            <p>Cuando sea posible, ejecutar operaciones asíncronas en paralelo para mejorar el rendimiento.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Mala práctica: Serial innecesario
+async function obtenerTodo() {
+    const usuarios = await obtenerUsuarios();
+    const productos = await obtenerProductos();
+    const pedidos = await obtenerPedidos();
+    return { usuarios, productos, pedidos };
+}
+
+// ✅ Mejor: Paralelismo
+async function obtenerTodo() {
+    const [usuarios, productos, pedidos] = await Promise.all([
+        obtenerUsuarios(),
+        obtenerProductos(),
+        obtenerPedidos()
+    ]);
+    return { usuarios, productos, pedidos };
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Evitar funciones async innecesarias</h4>
+                            <p>No crear funciones async si no usas await dentro de ellas.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Mala práctica: async innecesario
+async function obtenerNombre() {
+    return "Juan"; // No hay await, no necesita ser async
+}
+
+// ✅ Mejor: Función normal
+function obtenerNombre() {
+    return "Juan";
+}
+
+// ❌ Mala práctica: Envolver una promesa en async/await sin necesidad
+async function obtenerDatos() {
+    return await fetch('/api/datos').then(r => r.json());
+}
+
+// ✅ Mejor: Retornar la promesa directamente
+function obtenerDatos() {
+    return fetch('/api/datos').then(r => r.json());
+}
+
+// ✅ O si necesitas async para manejo de errores:
+async function obtenerDatos() {
+    const respuesta = await fetch('/api/datos');
+    return respuesta.json();
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Nombrar adecuadamente las funciones async</h4>
+                            <p>Usar nombres que indiquen que la función es asíncrona para mejorar la legibilidad.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Nombres que no revelan asincronía
+async function datosUsuario() {...}
+async function validacion() {...}
+
+// ✅ Nombres que indican asincronía
+async function obtenerDatosUsuario() {...}
+async function validarCredenciales() {...}
+async function cargarConfiguracion() {...}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Mantener funciones async pequeñas y enfocadas</h4>
+                            <p>Dividir funciones async grandes en componentes más pequeños para mejorar la legibilidad y el mantenimiento.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto mt-2"><code>// ❌ Función grande y compleja
+async function procesarPedido(pedidoId) {
+    // 50+ líneas de código con múltiples responsabilidades
+}
+
+// ✅ Divido en funciones más pequeñas
+async function procesarPedido(pedidoId) {
+    const pedido = await obtenerPedido(pedidoId);
+    const existencias = await verificarInventario(pedido.items);
+    
+    if (existencias.todoDisponible) {
+        await actualizarInventario(pedido.items);
+        await cobrarAlCliente(pedido);
+        await generarFactura(pedido);
+        await enviarConfirmacion(pedido);
+    } else {
+        await notificarFaltantes(pedido, existencias.faltantes);
+    }
+    
+    return { procesado: existencias.todoDisponible };
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Compatibilidad en Navegadores</h2>
+                    <p class="mb-4">Async/await es una característica relativamente moderna de JavaScript, por lo que es importante considerar la compatibilidad en navegadores y entornos antiguos.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Soporte en navegadores:</h4>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong class="text-white">Navegadores modernos:</strong> Soporte completo en Chrome 55+, Firefox 52+, Safari 11+, Edge 15+</li>
+                                <li><strong class="text-white">Internet Explorer:</strong> No soportado nativamente en ninguna versión</li>
+                                <li><strong class="text-white">Top-level await:</strong> Soporte más limitado (Chrome 89+, Firefox 89+, Safari 15+)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Opciones para compatibilidad:</h4>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong class="text-white">Transpilación:</strong> Usar Babel para convertir código async/await a promesas o generadores</li>
+                                <li><strong class="text-white">Polyfills:</strong> Incluir regenerator-runtime para soporte en navegadores antiguos</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Ejemplo de configuración Babel:</h4>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// .babelrc
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "browsers": ["last 2 versions", "ie >= 11"]
+      }
+    }]
+  ]
+}</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Cómo se transpila async/await:</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+                                <div>
+                                    <h5 class="text-sm font-medium mb-1 text-gray-400">Código ES2017+:</h5>
+                                    <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>async function obtenerDatos() {
+  try {
+    const respuesta = await fetch('/api/datos');
+    const datos = await respuesta.json();
+    return datos;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}</code></pre>
+                                </div>
+                                <div>
+                                    <h5 class="text-sm font-medium mb-1 text-gray-400">Transpilado a ES5:</h5>
+                                    <pre class="bg-black text-green-400 p-2 rounded overflow-x-auto"><code>function obtenerDatos() {
+  return regeneratorRuntime.async(function obtenerDatos$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          _context.prev = 0;
+          _context.next = 3;
+          return regeneratorRuntime.awrap(fetch('/api/datos'));
+        case 3:
+          respuesta = _context.sent;
+          _context.next = 6;
+          return regeneratorRuntime.awrap(respuesta.json());
+        case 6:
+          datos = _context.sent;
+          return _context.abrupt("return", datos);
+        case 10:
+          // ... (código para manejo de errores)
+      }
+    }
+  }, null, null, [[0, 10]]);
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Recomendación:</h4>
+                        <p class="text-gray-300">Si necesitas soporte para navegadores antiguos, asegúrate de usar un proceso de build con Babel y los polyfills adecuados. Herramientas como webpack, Parcel o Vite pueden configurarse para manejar esto automáticamente.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Recursos Adicionales</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Statements/async_function" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Función async</a></li>
+                        <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/await" class="text-yellow-400 hover:text-yellow-300">MDN Web Docs - Operador await</a></li>
+                        <li><a href="https://es.javascript.info/async-await" class="text-yellow-400 hover:text-yellow-300">JavaScript.info - Async/await</a></li>
+                        <li><a href="https://www.w3schools.com/js/js_async.asp" class="text-yellow-400 hover:text-yellow-300">W3Schools - JavaScript Async</a></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
