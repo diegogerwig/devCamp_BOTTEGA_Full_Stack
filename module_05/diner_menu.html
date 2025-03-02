@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante Bottega</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans">
+    <div class="max-w-3xl mx-auto p-6">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h1 class="text-center text-2xl font-bold text-amber-600 mb-6">Restaurante Bottega</h1>
+            
+            <!-- Sección de bienvenida -->
+            <div id="welcome-section">
+                <h2 class="text-xl font-semibold mb-4">¡Bienvenido al Restaurante Bottega!</h2>
+                <p class="mb-2">Por favor, elige tu horario de comida:</p>
+                <select id="meal-time" class="w-full p-2 mb-4 rounded bg-gray-700 border border-gray-600 text-gray-200 focus:ring-amber-500 focus:border-amber-500">
+                    <option value="">-- Selecciona --</option>
+                    <option value="desayuno">Desayuno</option>
+                    <option value="comida">Comida</option>
+                    <option value="cena">Cena</option>
+                </select>
+                <button id="show-menu-btn" class="w-full p-2 bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500">Ver Menú</button>
+            </div>
+            
+            <!-- Sección del menú -->
+            <div id="menu-section" style="display: none;">
+                <div id="menu-content"></div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-2">Plato Principal</h3>
+                    <select id="entree-select" class="w-full p-2 mb-2 rounded bg-gray-700 border border-gray-600 text-gray-200 focus:ring-amber-500 focus:border-amber-500">
+                        <option value="">-- Selecciona un plato principal --</option>
+                    </select>
+                    <div id="entree-description" class="ml-4 text-sm text-gray-400"></div>
+                    <div id="entree-comment" class="hidden mt-2 italic p-2 bg-gray-700 border-l-2 border-amber-600 text-amber-500"></div>
+                    
+                    <div id="customization-section" style="display: none;" class="mt-4">
+                        <h4 class="text-md font-semibold mb-2">Personalización</h4>
+                        <select id="customization-select" class="w-full p-2 mb-2 rounded bg-gray-700 border border-gray-600 text-gray-200 focus:ring-amber-500 focus:border-amber-500">
+                            <option value="">-- Selecciona una personalización --</option>
+                        </select>
+                        <button id="add-customization-btn" class="w-full p-2 mb-2 bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500">Añadir</button>
+                        <div id="customization-items" class="text-sm ml-4 text-gray-300"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-2">Primera Guarnición (Incluida)</h3>
+                    <select id="side1-select" class="w-full p-2 mb-2 rounded bg-gray-700 border border-gray-600 text-gray-200 focus:ring-amber-500 focus:border-amber-500">
+                        <option value="">-- Selecciona la primera guarnición --</option>
+                    </select>
+                    <div id="side1-description" class="ml-4 text-sm text-gray-400"></div>
+                    <div id="side1-comment" class="hidden mt-2 italic p-2 bg-gray-700 border-l-2 border-amber-600 text-amber-500"></div>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-2">Segunda Guarnición (Incluida)</h3>
+                    <select id="side2-select" class="w-full p-2 mb-2 rounded bg-gray-700 border border-gray-600 text-gray-200 focus:ring-amber-500 focus:border-amber-500">
+                        <option value="">-- Selecciona la segunda guarnición --</option>
+                    </select>
+                    <div id="side2-description" class="ml-4 text-sm text-gray-400"></div>
+                    <div id="side2-comment" class="hidden mt-2 italic p-2 bg-gray-700 border-l-2 border-amber-600 text-amber-500"></div>
+                </div>
+                
+                <div class="mb-6" id="extra-side-section">
+                    <h3 class="text-lg font-semibold mb-2">Guarnición Extra (Costo adicional)</h3>
+                    <select id="side3-select" class="w-full p-2 mb-2 rounded bg-gray-700 border border-gray-600 text-gray-200 focus:ring-amber-500 focus:border-amber-500">
+                        <option value="">-- ¿Quieres una guarnición extra? --</option>
+                    </select>
+                    <div id="side3-description" class="ml-4 text-sm text-gray-400"></div>
+                    <div id="side3-comment" class="hidden mt-2 italic p-2 bg-gray-700 border-l-2 border-amber-600 text-amber-500"></div>
+                </div>
+                
+                <button id="complete-order-btn" class="w-full p-2 bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500">Completar Pedido</button>
+            </div>
+            
+            <!-- Sección del recibo -->
+            <div id="receipt-section" style="display: none;">
+                <h2 class="text-xl font-semibold mb-4">Tu Pedido</h2>
+                <div id="receipt" class="border border-dashed border-gray-600 p-4 bg-gray-800 mb-4"></div>
+                <button id="new-order-btn" class="w-full p-2 bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500">Hacer Nuevo Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Estructura de datos del menú con opciones para desayuno, comida y cena
+        const menu = {
+          desayuno: {
+            principales: [
+              { nombre: "Tortitas", precio: 7.99, descripcion: "Tortitas con sirope y mantequilla" },
+              { nombre: "Huevos Benedict", precio: 9.99, descripcion: "Huevos con bacon sobre pan tostado" },
+              { nombre: "Tortilla de Verduras", precio: 8.99, descripcion: "Tortilla con verduras y queso" },
+              { nombre: "Tostadas con Huevo", precio: 6.99, descripcion: "Pan frito bañado en huevo" },
+              { nombre: "Burrito Desayuno", precio: 10.99, descripcion: "Burrito con huevos, chorizo y queso" }
+            ],
+            guarniciones: [
+              { nombre: "Patatas Ralladas", precio: 2.49, descripcion: "Patatas fritas ralladas" },
+              { nombre: "Bacon", precio: 3.49, descripcion: "Tiras de bacon" },
+              { nombre: "Fruta", precio: 3.49, descripcion: "Fruta variada" },
+              { nombre: "Tostadas", precio: 1.49, descripcion: "Pan tostado con mantequilla" },
+              { nombre: "Gachas", precio: 2.49, descripcion: "Gachas de avena" }
+            ]
+          },
+          comida: {
+            principales: [
+              { nombre: "Hamburguesa", precio: 11.99, descripcion: "Hamburguesa con lechuga y tomate" },
+              { nombre: "Wrap de Pollo", precio: 10.99, descripcion: "Pollo enrollado en tortita" },
+              { nombre: "Sándwich Mixto", precio: 12.99, descripcion: "Sándwich con carne y queso" },
+              { nombre: "Ensalada Mixta", precio: 9.99, descripcion: "Ensalada con pollo y huevo" },
+              { nombre: "Hamburguesa Vegetal", precio: 10.99, descripcion: "Hamburguesa sin carne" }
+            ],
+            guarniciones: [
+              { nombre: "Patatas Fritas", precio: 3.49, descripcion: "Patatas fritas normales" },
+              { nombre: "Aros de Cebolla", precio: 4.49, descripcion: "Cebollas rebozadas fritas" },
+              { nombre: "Ensalada Verde", precio: 3.49, descripcion: "Lechuga y tomate" },
+              { nombre: "Ensalada de Col", precio: 2.49, descripcion: "Col con mayonesa" },
+              { nombre: "Sopa", precio: 4.49, descripcion: "Sopa casera del día" }
+            ]
+          },
+          cena: {
+            principales: [
+              { nombre: "Hamburguesa", precio: 13.99, descripcion: "Hamburguesa con lechuga y tomate" },
+              { nombre: "Wrap de Pollo", precio: 12.99, descripcion: "Pollo enrollado en tortita" },
+              { nombre: "Sándwich Mixto", precio: 14.99, descripcion: "Sándwich con carne y queso" },
+              { nombre: "Ensalada Mixta", precio: 11.99, descripcion: "Ensalada con pollo y huevo" },
+              { nombre: "Hamburguesa Vegetal", precio: 12.99, descripcion: "Hamburguesa sin carne" }
+            ],
+            guarniciones: [
+              { nombre: "Patatas Fritas", precio: 3.49, descripcion: "Patatas fritas normales" },
+              { nombre: "Aros de Cebolla", precio: 4.49, descripcion: "Cebollas rebozadas fritas" },
+              { nombre: "Ensalada Verde", precio: 3.49, descripcion: "Lechuga y tomate" },
+              { nombre: "Ensalada de Col", precio: 2.49, descripcion: "Col con mayonesa" },
+              { nombre: "Sopa", precio: 4.49, descripcion: "Sopa casera del día" }
+            ]
+          }
+        };
+
+        // Opciones de personalización
+        const personalizaciones = {
+          hamburguesa: [
+            { nombre: "Carne Extra", precio: 2.50 },
+            { nombre: "Queso", precio: 0.80 },
+            { nombre: "Bacon", precio: 1.20 },
+            { nombre: "Aguacate", precio: 1.80 }
+          ],
+          huevos: [
+            { nombre: "Poco Hechos", precio: 0 },
+            { nombre: "Normal", precio: 0 },
+            { nombre: "Muy Hechos", precio: 0 },
+            { nombre: "Revueltos", precio: 0 }
+          ],
+          tostadas: [
+            { nombre: "Pan Blanco", precio: 0 },
+            { nombre: "Pan Integral", precio: 0 },
+            { nombre: "Pan Especial", precio: 0.50 },
+            { nombre: "Sin Gluten", precio: 1.20 }
+          ],
+          ensalada: [
+            { nombre: "Aceite y Sal", precio: 0 },
+            { nombre: "Aliño Normal", precio: 0 },
+            { nombre: "Vinagre", precio: 0 },
+            { nombre: "Sin Aliño", precio: 0 },
+            { nombre: "Aliño Extra", precio: 0.60 }
+          ]
+        };
+
+        // Comentarios de la camarera
+        const comentariosCamarera = {
+          general: [
+            "¡Buena elección!",
+            "¡Sale enseguida!",
+            "¡Te va a gustar!",
+            "¡Está muy rico!",
+            "¡Excelente!",
+            "¡Muy bueno!",
+            "¡Buena opción!",
+            "¡Genial!",
+            "¡Delicioso!",
+            "¡Perfecto!"
+          ],
+          desayuno: {
+            "Tortitas": ["Están muy ricas.", "Van bien con el sirope."],
+            "Huevos Benedict": ["Los huevos están muy buenos.", "Recién hechos."],
+            "Tortilla de Verduras": ["Lleva verduras frescas.", "Está buenísima."],
+            "Tostadas con Huevo": ["El pan está crujiente.", "Muy ricas."],
+            "Burrito Desayuno": ["Es grande y llenador.", "No pica mucho."]
+          },
+          comida: {
+            "Hamburguesa": ["La carne está jugosa.", "Es casera."],
+            "Wrap de Pollo": ["El pollo está muy tierno.", "Es ligero."],
+            "Sándwich Mixto": ["El pan está tostadito.", "El queso se derrite bien."],
+            "Ensalada Mixta": ["Las verduras están frescas.", "Es muy completa."],
+            "Hamburguesa Vegetal": ["Sabe muy bien.", "Parece carne de verdad."]
+          },
+          guarniciones: {
+            "Patatas Fritas": ["Están crujientes.", "Recién hechas."],
+            "Aros de Cebolla": ["Están muy buenos.", "Bien fritos."],
+            "Ensalada Verde": ["Está fresca.", "Los tomates son dulces."],
+            "Ensalada de Col": ["Hecha hoy.", "Casera."],
+            "Sopa": ["Está calentita.", "Receta de la casa."],
+            "Patatas Ralladas": ["Están crujientes.", "Muy ricas."],
+            "Bacon": ["Está crujiente.", "Rico rico."],
+            "Fruta": ["Está fresca.", "De temporada."],
+            "Tostadas": ["Con mantequilla.", "Bien tostadas."],
+            "Gachas": ["Están cremosas.", "Muy ricas."]
+          }
+        };
+
+        // Clase RestauranteBottega para la lógica de negocio
+        class RestauranteBottega {
+            constructor() {
+                this.horario = null;
+                this.platoPrincipal = null;
+                this.guarnicionesElegidas = [];
+                this.personalizaciones = [];
+                this.costoTotal = 0;
+            }
+
+            // Obtener comentario de la camarera
+            obtenerComentarioCamarera(item, categoria) {
+                let comentario;
+                const comentariosEspecificos = comentariosCamarera[this.horario] || comentariosCamarera.comida;
+                
+                if (categoria === 'principal' && comentariosEspecificos[item.nombre]) {
+                    // Obtener comentario específico del plato
+                    const comentariosPlato = comentariosEspecificos[item.nombre];
+                    comentario = comentariosPlato[Math.floor(Math.random() * comentariosPlato.length)];
+                } else if (categoria === 'guarnicion' && comentariosCamarera.guarniciones[item.nombre]) {
+                    // Obtener comentario específico de la guarnición
+                    const comentariosGuarnicion = comentariosCamarera.guarniciones[item.nombre];
+                    comentario = comentariosGuarnicion[Math.floor(Math.random() * comentariosGuarnicion.length)];
+                } else {
+                    // Obtener comentario general aleatorio
+                    comentario = comentariosCamarera.general[Math.floor(Math.random() * comentariosCamarera.general.length)];
+                }
+                
+                return comentario;
+            }
+
+            // Obtener tipo de personalización basado en el nombre del plato
+            obtenerTipoPersonalizacion(nombrePlato) {
+                if (nombrePlato.includes("Hamburguesa")) {
+                    return "hamburguesa";
+                } else if (nombrePlato.includes("Huevos") || nombrePlato.includes("Tortilla")) {
+                    return "huevos";
+                } else if (nombrePlato.includes("Tostadas")) {
+                    return "tostadas";
+                } else if (nombrePlato.includes("Ensalada")) {
+                    return "ensalada";
+                }
+                return null;
+            }
+
+            // Calcular costo total
+            calcularTotal() {
+                // Añadir costo del plato principal
+                this.costoTotal = this.platoPrincipal.precio;
+                
+                // Añadir costos de guarniciones (solo si se eligen más de 2)
+                if (this.guarnicionesElegidas.length > 2) {
+                    // Las dos primeras guarniciones están incluidas
+                    this.costoTotal += this.guarnicionesElegidas[2].precio;
+                }
+                
+                // Añadir costos de personalización
+                for (const personalizacion of this.personalizaciones) {
+                    this.costoTotal += personalizacion.precio;
+                }
+                
+                return this.costoTotal;
+            }
+
+            // Generar HTML del recibo
+            generarRecibo() {
+                let reciboHTML = `
+                    <h3 class="text-lg font-bold mb-4">RECIBO RESTAURANTE BOTTEGA</h3>
+                    <p class="mb-2"><span class="font-medium">Comida:</span> ${this.horario.charAt(0).toUpperCase() + this.horario.slice(1)}</p>
+                    
+                    <p class="mb-2"><span class="font-medium">Plato principal:</span> ${this.platoPrincipal.nombre} - ${this.platoPrincipal.precio.toFixed(2)}€</p>
+                `;
+                
+                if (this.personalizaciones.length > 0) {
+                    reciboHTML += `<p class="mb-2"><span class="font-medium">Personalizaciones:</span></p><ul class="list-disc pl-6 mb-2">`;
+                    for (const item of this.personalizaciones) {
+                        reciboHTML += `<li>${item.nombre} (+${item.precio.toFixed(2)}€)</li>`;
+                    }
+                    reciboHTML += `</ul>`;
+                }
+                
+                reciboHTML += `<p class="mb-2"><span class="font-medium">Guarniciones:</span></p><ul class="list-disc pl-6 mb-2">`;
+                this.guarnicionesElegidas.forEach((guarnicion, index) => {
+                    const precio = index < 2 ? "Incluida" : `${guarnicion.precio.toFixed(2)}€`;
+                    reciboHTML += `<li>${guarnicion.nombre} - ${precio}</li>`;
+                });
+                reciboHTML += `</ul>`;
+                
+                reciboHTML += `<p class="mt-4 text-lg font-bold">Total: ${this.costoTotal.toFixed(2)}€</p>`;
+                reciboHTML += `<p class="mt-4 text-amber-500">¡Gracias por comer en Restaurante Bottega!</p>`;
+                
+                return reciboHTML;
+            }
+        }
+
+        // Inicializar la aplicación cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            const restaurante = new RestauranteBottega();
+            
+            // Referencias a elementos del DOM
+            const mealTimeSelect = document.getElementById('meal-time');
+            const showMenuBtn = document.getElementById('show-menu-btn');
+            const menuSection = document.getElementById('menu-section');
+            const menuContent = document.getElementById('menu-content');
+            const entreeSelect = document.getElementById('entree-select');
+            const entreeDescription = document.getElementById('entree-description');
+            const entreeComment = document.getElementById('entree-comment');
+            const customizationSection = document.getElementById('customization-section');
+            const customizationSelect = document.getElementById('customization-select');
+            const addCustomizationBtn = document.getElementById('add-customization-btn');
+            const customizationItems = document.getElementById('customization-items');
+            const side1Select = document.getElementById('side1-select');
+            const side1Description = document.getElementById('side1-description');
+            const side1Comment = document.getElementById('side1-comment');
+            const side2Select = document.getElementById('side2-select');
+            const side2Description = document.getElementById('side2-description');
+            const side2Comment = document.getElementById('side2-comment');
+            const side3Select = document.getElementById('side3-select');
+            const side3Description = document.getElementById('side3-description');
+            const side3Comment = document.getElementById('side3-comment');
+            const completeOrderBtn = document.getElementById('complete-order-btn');
+            const receiptSection = document.getElementById('receipt-section');
+            const receiptDiv = document.getElementById('receipt');
+            const newOrderBtn = document.getElementById('new-order-btn');
+            const welcomeSection = document.getElementById('welcome-section');
+
+            // Mostrar el menú
+            showMenuBtn.addEventListener('click', function() {
+                const mealTime = mealTimeSelect.value;
+                if (!mealTime) {
+                    alert('Por favor, selecciona un horario de comida');
+                    return;
+                }
+                
+                restaurante.horario = mealTime;
+                populateMenu(mealTime);
+                welcomeSection.style.display = 'none';
+                menuSection.style.display = 'block';
+            });
+
+            // Poblar el menú con las opciones disponibles
+            function populateMenu(mealTime) {
+                // Limpiar selects
+                entreeSelect.innerHTML = '<option value="">-- Selecciona un plato principal --</option>';
+                side1Select.innerHTML = '<option value="">-- Selecciona la primera guarnición --</option>';
+                side2Select.innerHTML = '<option value="">-- Selecciona la segunda guarnición --</option>';
+                side3Select.innerHTML = '<option value="">-- ¿Quieres una guarnición extra? --</option>';
+                
+                // Añadir platos principales al select
+                menu[mealTime].principales.forEach((item, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${item.nombre} - ${item.precio.toFixed(2)}€`;
+                    entreeSelect.appendChild(option);
+                });
+                
+                // Añadir guarniciones a los selects
+                menu[mealTime].guarniciones.forEach((item, index) => {
+                    // Primera guarnición
+                    const option1 = document.createElement('option');
+                    option1.value = index;
+                    option1.textContent = `${item.nombre} - ${item.precio.toFixed(2)}€`;
+                    side1Select.appendChild(option1);
+                    
+                    // Segunda guarnición
+                    const option2 = document.createElement('option');
+                    option2.value = index;
+                    option2.textContent = `${item.nombre} - ${item.precio.toFixed(2)}€`;
+                    side2Select.appendChild(option2);
+                    
+                    // Guarnición extra
+                    const option3 = document.createElement('option');
+                    option3.value = index;
+                    option3.textContent = `${item.nombre} - ${item.precio.toFixed(2)}€`;
+                    side3Select.appendChild(option3);
+                });
+            }
+
+            // Evento cuando se selecciona un plato principal
+            entreeSelect.addEventListener('change', function() {
+                const selectedIndex = parseInt(this.value);
+                if (isNaN(selectedIndex)) {
+                    entreeDescription.textContent = '';
+                    entreeComment.classList.add('hidden');
+                    customizationSection.style.display = 'none';
+                    return;
+                }
+                
+                const selectedItem = menu[restaurante.horario].principales[selectedIndex];
+                restaurante.platoPrincipal = selectedItem;
+                
+                // Mostrar descripción
+                entreeDescription.textContent = selectedItem.descripcion;
+                
+                // Mostrar comentario de la camarera
+                const comment = restaurante.obtenerComentarioCamarera(selectedItem, 'principal');
+                entreeComment.textContent = `Camarera: "${comment}"`;
+                entreeComment.classList.remove('hidden');
+                
+                // Configurar opciones de personalización
+                const tipoPersonalizacion = restaurante.obtenerTipoPersonalizacion(selectedItem.nombre);
+                if (tipoPersonalizacion && personalizaciones[tipoPersonalizacion]) {
+                    customizationSection.style.display = 'block';
+                    
+                    // Limpiar y poblar select de personalización
+                    customizationSelect.innerHTML = '<option value="">-- Selecciona una personalización --</option>';
+                    personalizaciones[tipoPersonalizacion].forEach((option, index) => {
+                        const optionEl = document.createElement('option');
+                        optionEl.value = JSON.stringify({tipo: tipoPersonalizacion, index: index});
+                        const priceText = option.precio > 0 ? `(+${option.precio.toFixed(2)}€)` : '(sin cargo)';
+                        optionEl.textContent = `${option.nombre} ${priceText}`;
+                        customizationSelect.appendChild(optionEl);
+                    });
+                } else {
+                    customizationSection.style.display = 'none';
+                }
+            });
+
+            // Añadir personalización
+            addCustomizationBtn.addEventListener('click', function() {
+                const selectedValue = customizationSelect.value;
+                if (!selectedValue) {
+                    alert('Por favor, selecciona una opción de personalización');
+                    return;
+                }
+                
+                const { tipo, index } = JSON.parse(selectedValue);
+                const personalizacion = personalizaciones[tipo][index];
+                
+                // Añadir a la lista de personalizaciones
+                restaurante.personalizaciones.push(personalizacion);
+                
+                // Mostrar en la interfaz
+                const itemElement = document.createElement('div');
+                itemElement.className = 'mb-1 pl-2 border-l-2 border-amber-600';
+                itemElement.textContent = `${personalizacion.nombre} (+${personalizacion.precio.toFixed(2)}€)`;
+                customizationItems.appendChild(itemElement);
+            });
+
+            // Gestionar selección de guarniciones
+            function handleSideSelection(selectElement, descriptionElement, commentElement, sideIndex) {
+                selectElement.addEventListener('change', function() {
+                    const selectedIndex = parseInt(this.value);
+                    if (isNaN(selectedIndex)) {
+                        descriptionElement.textContent = '';
+                        commentElement.classList.add('hidden');
+                        return;
+                    }
+                    
+                    const selectedItem = menu[restaurante.horario].guarniciones[selectedIndex];
+                    
+                    // Si es la tercera guarnición y ya hay algo en esa posición, reemplazar
+                    if (sideIndex === 2 && restaurante.guarnicionesElegidas.length > 2) {
+                        restaurante.guarnicionesElegidas[2] = selectedItem;
+                    } 
+                    // Si es la tercera guarnición y no hay nada, añadir
+                    else if (sideIndex === 2) {
+                        restaurante.guarnicionesElegidas.push(selectedItem);
+                    } 
+                    // Para las primeras dos guarniciones
+                    else {
+                        if (restaurante.guarnicionesElegidas.length > sideIndex) {
+                            restaurante.guarnicionesElegidas[sideIndex] = selectedItem;
+                        } else {
+                            restaurante.guarnicionesElegidas.push(selectedItem);
+                        }
+                    }
+                    
+                    // Mostrar descripción
+                    descriptionElement.textContent = selectedItem.descripcion;
+                    
+                    // Mostrar comentario de la camarera
+                    const comment = restaurante.obtenerComentarioCamarera(selectedItem, 'guarnicion');
+                    commentElement.textContent = `Camarera: "${comment}"`;
+                    commentElement.classList.remove('hidden');
+                });
+            }
+
+            // Configurar manejo de eventos para las guarniciones
+            handleSideSelection(side1Select, side1Description, side1Comment, 0);
+            handleSideSelection(side2Select, side2Description, side2Comment, 1);
+            handleSideSelection(side3Select, side3Description, side3Comment, 2);
+
+            // Completar pedido
+            completeOrderBtn.addEventListener('click', function() {
+                // Validar que se hayan seleccionado todas las opciones requeridas
+                if (!restaurante.platoPrincipal) {
+                    alert('Por favor, selecciona un plato principal');
+                    return;
+                }
+                
+                if (restaurante.guarnicionesElegidas.length < 2) {
+                    alert('Por favor, selecciona tus dos guarniciones incluidas');
+                    return;
+                }
+                
+                // Calcular total y generar recibo
+                restaurante.calcularTotal();
+                receiptDiv.innerHTML = restaurante.generarRecibo();
+                
+                // Mostrar sección de recibo
+                menuSection.style.display = 'none';
+                receiptSection.style.display = 'block';
+            });
+
+            // Nuevo pedido
+            newOrderBtn.addEventListener('click', function() {
+                // Resetear el restaurante
+                restaurante.platoPrincipal = null;
+                restaurante.guarnicionesElegidas = [];
+                restaurante.personalizaciones = [];
+                restaurante.costoTotal = 0;
+                
+                // Limpiar interfaz
+                entreeDescription.textContent = '';
+                entreeComment.classList.add('hidden');
+                customizationSection.style.display = 'none';
+                customizationItems.innerHTML = '';
+                side1Description.textContent = '';
+                side1Comment.classList.add('hidden');
+                side2Description.textContent = '';
+                side2Comment.classList.add('hidden');
+                side3Description.textContent = '';
+                side3Comment.classList.add('hidden');
+                
+                // Volver al inicio
+                receiptSection.style.display = 'none';
+                welcomeSection.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
