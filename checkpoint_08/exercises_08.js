@@ -9,7 +9,7 @@ const colors = {
 
 // Exercise 1: Cree un bucle for en JS que imprima cada nombre en esta lista. miLista = “velma”, “exploradora”, “jane”, “john”, “harry”
 
-console.log(`${colors.yellow}--------- Ejercicio 1: Bucle for ---------${colors.reset}`);
+console.log(`\n${colors.yellow}--------- Ejercicio 1: Bucle for ---------${colors.reset}`);
 const miLista = ["velma", "exploradora", "jane", "john", "harry"];
 
 for (let i = 0; i < miLista.length; i++) {
