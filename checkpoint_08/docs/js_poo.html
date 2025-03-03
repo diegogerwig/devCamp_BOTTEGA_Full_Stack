@@ -669,6 +669,255 @@ console.log(cuenta.getSaldo()); // 3000
 
             <section class="mb-12">
                 <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Herencia en JavaScript</h2>
+                    
+                    <p class="mb-4">La herencia es un principio fundamental de la programación orientada a objetos que permite a una clase (llamada clase hija o subclase) adquirir las propiedades y métodos de otra clase (llamada clase padre o superclase). Esta característica facilita la reutilización de código y permite establecer relaciones jerárquicas entre objetos.</p>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-6 border border-yellow-700">
+                        <h3 class="text-lg font-semibold mb-2 text-yellow-300">¿Por qué usar herencia?</h3>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-300">
+                            <li><strong class="text-white">Reutilización de código:</strong> Evita duplicar código al heredar funcionalidad común</li>
+                            <li><strong class="text-white">Extensibilidad:</strong> Permite extender la funcionalidad existente sin modificar el código original</li>
+                            <li><strong class="text-white">Jerarquía lógica:</strong> Refleja relaciones naturales entre conceptos ("un gato es un animal")</li>
+                            <li><strong class="text-white">Polimorfismo:</strong> Posibilita que objetos de diferentes clases respondan al mismo método de forma distinta</li>
+                        </ul>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-2 text-yellow-300">Tipos de Herencia en JavaScript</h3>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-4">
+                        <h4 class="font-medium mb-2 text-yellow-200">1. Herencia simple</h4>
+                        <p class="mb-2">Una clase deriva de una única clase padre. Es el tipo de herencia soportado nativamente por JavaScript.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Clase padre
+            class Animal {
+                constructor(nombre) {
+                    this.nombre = nombre;
+                }
+                
+                comer() {
+                    return `${this.nombre} está comiendo`;
+                }
+            }
+
+            // Clase hija
+            class Perro extends Animal {
+                constructor(nombre, raza) {
+                    super(nombre); // Llama al constructor de la clase padre
+                    this.raza = raza;
+                }
+                
+                ladrar() {
+                    return `${this.nombre} está ladrando`;
+                }
+            }
+
+            const miPerro = new Perro("Max", "Labrador");
+            console.log(miPerro.comer()); // "Max está comiendo" (heredado)
+            console.log(miPerro.ladrar()); // "Max está ladrando" (propio)</code></pre>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mb-4">
+                        <h4 class="font-medium mb-2 text-yellow-200">2. Herencia multinivel</h4>
+                        <p class="mb-2">Una clase deriva de otra clase que a su vez deriva de otra, formando una cadena de herencia.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Clase abuelo
+            class Animal {
+                constructor(nombre) {
+                    this.nombre = nombre;
+                }
+                
+                respirar() {
+                    return `${this.nombre} está respirando`;
+                }
+            }
+
+            // Clase padre
+            class Mamifero extends Animal {
+                constructor(nombre, pelaje) {
+                    super(nombre);
+                    this.pelaje = pelaje;
+                }
+                
+                amamantar() {
+                    return `${this.nombre} puede amamantar a sus crías`;
+                }
+            }
+
+            // Clase hija
+            class Gato extends Mamifero {
+                constructor(nombre, pelaje, raza) {
+                    super(nombre, pelaje);
+                    this.raza = raza;
+                }
+                
+                maullar() {
+                    return `${this.nombre} está maullando`;
+                }
+            }
+
+            const miGato = new Gato("Luna", "corto", "Siamés");
+            console.log(miGato.respirar()); // De Animal
+            console.log(miGato.amamantar()); // De Mamifero
+            console.log(miGato.maullar()); // De Gato</code></pre>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold my-4 text-yellow-300">Conceptos clave en la herencia</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">La palabra clave <code>super</code></h4>
+                            <p class="mb-2">Sirve para llamar al constructor y a los métodos de la clase padre.</p>
+                            <ul class="list-disc pl-6 text-gray-300">
+                                <li><code>super()</code> llama al constructor de la clase padre</li>
+                                <li><code>super.metodo()</code> llama a un método específico de la clase padre</li>
+                            </ul>
+                            <pre class="bg-black text-green-400 p-3 mt-2 rounded overflow-x-auto"><code>class Vehiculo {
+                constructor(marca, modelo) {
+                    this.marca = marca;
+                    this.modelo = modelo;
+                }
+                
+                obtenerInfo() {
+                    return `${this.marca} ${this.modelo}`;
+                }
+            }
+
+            class Coche extends Vehiculo {
+                constructor(marca, modelo, puertas) {
+                    super(marca, modelo); // Llama al constructor de Vehiculo
+                    this.puertas = puertas;
+                }
+                
+                obtenerInfo() {
+                    // Llama al método obtenerInfo de Vehiculo
+                    return `${super.obtenerInfo()} - ${this.puertas} puertas`;
+                }
+            }</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Sobrescritura de métodos</h4>
+                            <p class="mb-2">Una clase hija puede redefinir (sobrescribir) métodos heredados de la clase padre para proporcionar una implementación específica.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class Figura {
+                calcularArea() {
+                    return "Método base - debe ser implementado por subclases";
+                }
+            }
+
+            class Circulo extends Figura {
+                constructor(radio) {
+                    super();
+                    this.radio = radio;
+                }
+                
+                // Sobrescribe el método calcularArea
+                calcularArea() {
+                    return Math.PI * this.radio * this.radio;
+                }
+            }
+
+            class Rectangulo extends Figura {
+                constructor(ancho, alto) {
+                    super();
+                    this.ancho = ancho;
+                    this.alto = alto;
+                }
+                
+                // Sobrescribe el método calcularArea
+                calcularArea() {
+                    return this.ancho * this.alto;
+                }
+            }
+
+            // Ambas clases implementan calcularArea de forma diferente
+            const circulo = new Circulo(5);
+            const rectangulo = new Rectangulo(4, 6);
+
+            console.log(circulo.calcularArea()); // 78.54...
+            console.log(rectangulo.calcularArea()); // 24</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-yellow-200">Comprobando la herencia</h4>
+                            <p class="mb-2">JavaScript proporciona métodos para verificar las relaciones de herencia entre objetos y clases.</p>
+                            <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>class Animal {}
+            class Perro extends Animal {}
+
+            const miPerro = new Perro();
+
+            // Verificar si un objeto es instancia de una clase
+            console.log(miPerro instanceof Perro); // true
+            console.log(miPerro instanceof Animal); // true
+            console.log(miPerro instanceof Object); // true
+
+            // Verificar la clase de un objeto
+            console.log(Object.getPrototypeOf(miPerro) === Perro.prototype); // true
+
+            // Verificar la jerarquía de herencia de una clase
+            console.log(Object.getPrototypeOf(Perro.prototype) === Animal.prototype); // true</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 border border-yellow-700">
+                        <h4 class="font-medium mb-2 text-yellow-200">Limitaciones y consideraciones</h4>
+                        <ul class="list-disc pl-6 text-gray-300">
+                            <li>JavaScript solo soporta herencia simple (una clase solo puede extender una clase)</li>
+                            <li>Las jerarquías de herencia muy profundas pueden hacer que el código sea difícil de mantener</li>
+                            <li>En muchos casos, la composición (usar objetos como propiedades) puede ser más flexible que la herencia</li>
+                            <li>El uso excesivo de herencia puede llevar a un acoplamiento alto entre clases</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6">
+                        <h4 class="font-medium mb-2 text-yellow-200">Patrón Mixins: Alternativa a la herencia múltiple</h4>
+                        <p class="mb-2">Aunque JavaScript no soporta herencia múltiple directamente, se pueden usar mixins para lograr un comportamiento similar.</p>
+                        <pre class="bg-black text-green-400 p-3 rounded overflow-x-auto"><code>// Definir mixins como objetos con métodos
+            const nadadorMixin = {
+                nadar() {
+                    return `${this.nombre} está nadando`;
+                },
+                sumergirse() {
+                    return `${this.nombre} se sumerge bajo el agua`;
+                }
+            };
+
+            const voladorMixin = {
+                volar() {
+                    return `${this.nombre} está volando`;
+                },
+                planear() {
+                    return `${this.nombre} planea en el aire`;
+                }
+            };
+
+            // Clase base
+            class Animal {
+                constructor(nombre) {
+                    this.nombre = nombre;
+                }
+            }
+
+            // Extender la clase con los mixins
+            class Pato extends Animal {
+                constructor(nombre) {
+                    super(nombre);
+                }
+            }
+
+            // Aplicar los mixins
+            Object.assign(Pato.prototype, nadadorMixin, voladorMixin);
+
+            // Usar la clase con capacidades mixtas
+            const pato = new Pato("Donald");
+            console.log(pato.nadar()); // "Donald está nadando"
+            console.log(pato.volar()); // "Donald está volando"</code></pre>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <section class="mb-12">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-yellow-500">Polimorfismo en JavaScript</h2>
                     <p class="mb-4">El polimorfismo permite que objetos de diferentes clases respondan al mismo método o propiedad de manera diferente. En JavaScript, debido a su naturaleza dinámica, el polimorfismo es inherente al lenguaje.</p>
                     
