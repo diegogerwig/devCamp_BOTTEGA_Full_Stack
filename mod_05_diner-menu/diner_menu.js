@@ -4,7 +4,7 @@
 // Cada menú debe tener 3 platos principales, 3 secundarios y 3 postres, con sus precios
 // Si el usuario escribe mal el nombre, volver a preguntar.
 // Admitir los nombres con mayúsculas, minúsculas, con o sin tilde
-// Mostar un comentario aleatorio para cada plato elegido
+// Mostar un comentario aleatorio para cada plato elegido, que sea obtenido de un listado global de comentarios
 // Mostar un resumen del pedido con los precios unitarios y el precio del conjunto del menú
 
 // Horarios de servicio
@@ -18,9 +18,9 @@ const horarios = {
 const menu = {
   desayuno: {
     principales: [
-      { nombre: "Tortitas", precio: 7.99 },
-      { nombre: "Huevos", precio: 9.99 },
-      { nombre: "Tostadas", precio: 10.99 }
+      { nombre: "Tortitas", precio: 4.99 },
+      { nombre: "Huevos", precio: 5.99 },
+      { nombre: "Tostadas", precio: 6.99 }
     ],
     secundarios: [
       { nombre: "Cereales", precio: 4.99 },
@@ -29,14 +29,14 @@ const menu = {
     ],
     postres: [
       { nombre: "Fruta", precio: 3.49 },
-      { nombre: "Muffin", precio: 2.99 },
+      { nombre: "Bizcocho", precio: 2.99 },
       { nombre: "Tarta", precio: 4.49 }
     ]
   },
   comida: {
     principales: [
-      { nombre: "Ensalada", precio: 11.99 },
-      { nombre: "Sopa", precio: 10.99 },
+      { nombre: "Ensalada", precio: 7.99 },
+      { nombre: "Sopa", precio: 8.99 },
       { nombre: "Gazpacho", precio: 9.99 }
     ],
     secundarios: [
@@ -45,26 +45,26 @@ const menu = {
       { nombre: "Pescado", precio: 8.99 }
     ],
     postres: [
-      { nombre: "Helado", precio: 4.99 },
-      { nombre: "Café", precio: 5.99 },
+      { nombre: "Helado", precio: 3.99 },
+      { nombre: "Café", precio: 4.99 },
       { nombre: "Flan", precio: 4.49 }
     ]
   },
   cena: {
     principales: [
-      { nombre: "Filete", precio: 16.99 },
-      { nombre: "Trucha", precio: 13.99 },
-      { nombre: "Salmon", precio: 15.99 }
+      { nombre: "Filete", precio: 8.99 },
+      { nombre: "Trucha", precio: 7.99 },
+      { nombre: "Salmón", precio: 9.99 }
     ],
     secundarios: [
-      { nombre: "Arroz", precio: 12.99 },
-      { nombre: "Lasaña", precio: 11.99 },
-      { nombre: "Guisantes", precio: 12.99 }
+      { nombre: "Arroz", precio: 7.99 },
+      { nombre: "Lasaña", precio: 6.99 },
+      { nombre: "Guisantes", precio: 5.99 }
     ],
     postres: [
-      { nombre: "Tiramisu", precio: 6.49 },
-      { nombre: "Natillas", precio: 5.99 },
-      { nombre: "Crema", precio: 5.49 }
+      { nombre: "Torrijas", precio: 5.49 },
+      { nombre: "Natillas", precio: 3.99 },
+      { nombre: "Trenza", precio: 4.49 }
     ]
   }
 };
@@ -200,7 +200,7 @@ function formatearRecibo(pedido) {
   
   recibo += `\nIMPORTE TOTAL: ${pedido.importeTotal.toFixed(2)}€\n\n`;
   recibo += "¡Gracias por comer en Restaurante Bottega!\n";
-  recibo += "===========================================\n\n";
+  recibo += "==========================================\n\n";
   recibo += "Presiona OK para finalizar.";
   
   return recibo;
