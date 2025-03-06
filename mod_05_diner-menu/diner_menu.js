@@ -20,10 +20,10 @@ const menu = {
     principales: [
       { nombre: "Tortitas", precio: 7.99 },
       { nombre: "Huevos", precio: 9.99 },
-      { nombre: "Burrito", precio: 10.99 }
+      { nombre: "Tostadas", precio: 10.99 }
     ],
     secundarios: [
-      { nombre: "Tostadas", precio: 4.99 },
+      { nombre: "Cereales", precio: 4.99 },
       { nombre: "Yogur", precio: 3.99 },
       { nombre: "Croissant", precio: 2.99 }
     ],
@@ -35,35 +35,35 @@ const menu = {
   },
   comida: {
     principales: [
-      { nombre: "Hamburguesa", precio: 11.99 },
-      { nombre: "Wrap", precio: 10.99 },
-      { nombre: "Sandwich", precio: 9.99 }
+      { nombre: "Ensalada", precio: 11.99 },
+      { nombre: "Sopa", precio: 10.99 },
+      { nombre: "Gazpacho", precio: 9.99 }
     ],
     secundarios: [
-      { nombre: "Ensalada", precio: 7.99 },
-      { nombre: "Sopa", precio: 6.99 },
-      { nombre: "Nachos", precio: 8.99 }
+      { nombre: "Pollo", precio: 7.99 },
+      { nombre: "Pasta", precio: 6.99 },
+      { nombre: "Pescado", precio: 8.99 }
     ],
     postres: [
       { nombre: "Helado", precio: 4.99 },
-      { nombre: "Brownie", precio: 5.99 },
+      { nombre: "Café", precio: 5.99 },
       { nombre: "Flan", precio: 4.49 }
     ]
   },
   cena: {
     principales: [
-      { nombre: "Bistec", precio: 16.99 },
-      { nombre: "Pasta", precio: 13.99 },
+      { nombre: "Filete", precio: 16.99 },
+      { nombre: "Trucha", precio: 13.99 },
       { nombre: "Salmon", precio: 15.99 }
     ],
     secundarios: [
-      { nombre: "Risotto", precio: 12.99 },
+      { nombre: "Arroz", precio: 12.99 },
       { nombre: "Lasaña", precio: 11.99 },
-      { nombre: "Curry", precio: 12.99 }
+      { nombre: "Guisantes", precio: 12.99 }
     ],
     postres: [
       { nombre: "Tiramisu", precio: 6.49 },
-      { nombre: "Cheesecake", precio: 5.99 },
+      { nombre: "Natillas", precio: 5.99 },
       { nombre: "Crema", precio: 5.49 }
     ]
   }
@@ -129,10 +129,6 @@ function determinarHorarioComida(resultadoHora) {
   }
 }
 
-
-
-
-
 // Función para normalizar texto (eliminar tildes y convertir a minúsculas)
 function normalizarTexto(texto) {
   return texto
@@ -175,10 +171,9 @@ function obtenerComentarioAleatorio() {
   return comentariosCamarera[indice];
 }
 
-
 // Función para formatear el recibo como una cadena formateada (versión compacta)
 function formatearRecibo(pedido) {
-  let recibo = "========== RECIBO RESTAURANTE BOTTEGA ==========\n\n";
+  let recibo = "======== RECIBO RESTAURANTE BOTTEGA ========\n\n";
   
   recibo += `Comida: ${pedido.horario.charAt(0).toUpperCase() + pedido.horario.slice(1)}\n`;
   recibo += `Hora: ${pedido.horaTexto}\n\n`;
@@ -246,8 +241,8 @@ function seleccionarPlato(tipoPlato, horarioComida, opcionesFormateadas) {
       return { cancelado: true };
     }
     
-    // Si el usuario escribe "ninguno", "0" o "nada", retornar null
-    if (seleccion.toLowerCase() === 'ninguno' || seleccion.toLowerCase() === 'nada' || seleccion === '0') {
+    // Si el usuario escribe "ninguno" o "0", retornar null
+    if (seleccion.toLowerCase() === 'ninguno' || seleccion === '0') {
       return { cancelado: false, plato: null };
     }
     
@@ -278,7 +273,6 @@ function seleccionarPlato(tipoPlato, horarioComida, opcionesFormateadas) {
   
   return { cancelado: false, plato: platoSeleccionado };
 }
-
 
 // Función principal para gestionar el pedido
 function gestionarPedido() {
