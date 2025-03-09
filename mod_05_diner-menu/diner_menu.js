@@ -7,14 +7,14 @@
 // Mostar un comentario aleatorio para cada plato elegido, que sea obtenido de un listado global de comentarios
 // Mostar un resumen del pedido con los precios unitarios y el precio del conjunto del menú
 
-// Horarios de servicio
+// Horarios 
 const horarios = {
   desayuno: { inicio: 7, fin: 11 }, // 7:00 - 11:59
   comida: { inicio: 12, fin: 16 },  // 12:00 - 16:59
   cena: { inicio: 17, fin: 23 }     // 17:00 - 23:59
 };
 
-// Estructura de datos del menú con opciones para desayuno, comida y cena
+// Opciones para desayuno, comida y cena
 const menu = {
   desayuno: {
     principales: [
@@ -69,8 +69,8 @@ const menu = {
   }
 };
 
-// Comentarios de la camarera
-const comentariosCamarera = [
+// Comentarios
+const comentarios = [
   "¡Buena elección!",
   "¡Sale enseguida!",
   "¡Te va a gustar!",
@@ -167,8 +167,8 @@ function formatearOpcionesPlatos(tipoPlato, horarioComida) {
 
 // Función para obtener un comentario aleatorio
 function obtenerComentarioAleatorio() {
-  const indice = Math.floor(Math.random() * comentariosCamarera.length);
-  return comentariosCamarera[indice];
+  const indice = Math.floor(Math.random() * comentarios.length);
+  return comentarios[indice];
 }
 
 // Función para formatear el recibo como una cadena formateada (versión compacta)
