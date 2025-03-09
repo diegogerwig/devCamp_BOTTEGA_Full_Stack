@@ -277,10 +277,10 @@ function gestionarPedido() {
   let resultadoHora;
   
   while (!horaValida) {
-    const horaInput = prompt("Por favor, ingresa la hora actual (formato hh:mm o solo hh):");
+    const horaInput = prompt("Por favor, escribe la hora actual (formato hh:mm o solo hh):");
     
     if (horaInput === null) {
-      prompt("Pedido cancelado.");
+      prompt("❌ Pedido cancelado.");
       return;
     }
     
@@ -289,7 +289,7 @@ function gestionarPedido() {
     if (resultadoHora !== null) {
       horaValida = true;
     } else {
-      alert("Formato de hora no válido. Por favor, ingresa la hora en formato hh:mm o solo hh.");
+      alert("❗ Formato de hora no válido. ❗\nPor favor, escribe la hora en formato hh:mm o solo hh.");
     }
   }
   
@@ -317,7 +317,7 @@ Cena: ${horarios.cena.inicio}:00 - ${horarios.cena.fin}:59`);
   const resultadoPrincipal = seleccionarPlato('principales', horarioComida, opcionesPrincipales);
   
   if (resultadoPrincipal.cancelado) {
-    prompt("Pedido cancelado.");
+    prompt("❌ Pedido cancelado.");
     return;
   }
   
@@ -328,7 +328,7 @@ Cena: ${horarios.cena.inicio}:00 - ${horarios.cena.fin}:59`);
   const resultadoSecundario = seleccionarPlato('secundarios', horarioComida, opcionesSecundarios);
   
   if (resultadoSecundario.cancelado) {
-    prompt("Pedido cancelado.");
+    prompt("❌ Pedido cancelado.");
     return;
   }
   
@@ -339,7 +339,7 @@ Cena: ${horarios.cena.inicio}:00 - ${horarios.cena.fin}:59`);
   const resultadoPostre = seleccionarPlato('postres', horarioComida, opcionesPostres);
   
   if (resultadoPostre.cancelado) {
-    prompt("Pedido cancelado.");
+    prompt("❌ Pedido cancelado.");
     return;
   }
   
