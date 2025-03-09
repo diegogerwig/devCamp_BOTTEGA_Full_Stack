@@ -96,7 +96,7 @@ function parsearHora(horaInput) {
     if (!isNaN(horas) && !isNaN(minutos) && horas >= 0 && horas <= 23 && minutos >= 0 && minutos <= 59) {
       resultado.hora = horas;
       resultado.minutos = minutos;
-      resultado.textoFormateado = `${horas}:${minutos.toString().padStart(2, '0')}`;
+      resultado.textoFormateado = `${horas}:${minutos.toString().padStart(2, '0')}`; // padStart para añadir un 0 si es necesario
     } else {
       return null; 
     }
@@ -150,13 +150,13 @@ function buscarPlatoPorNombre(nombreBuscado, tipoPlato, horarioComida) {
 
 // Función para mostrar opciones de platos por categoría
 function formatearOpcionesPlatos(tipoPlato, horarioComida) {
-  let opciones = `OPCIONES DE ${tipoPlato.toUpperCase()}:\n\n`;
+  let opciones = `🍽️ OPCIONES DE ${tipoPlato.toUpperCase()}:\n\n`;
   
   menu[horarioComida][tipoPlato].forEach((item, index) => {
     opciones += `${index + 1}. ${item.nombre} --> ${item.precio.toFixed(2)} €\n`;
   });
   
-  opciones += "\nPor favor, escribe el nombre del plato o su número (1-3).\n";
+  opciones += "\n👉 Por favor, escribe el nombre del plato o su número (1-3).\n";
   opciones += "También puedes escribir 'ninguno' o '0' para no elegir.";
   
   return opciones;
@@ -197,7 +197,7 @@ function formatearRecibo(pedido) {
   
   recibo += `\nIMPORTE TOTAL ==> ${pedido.importeTotal.toFixed(2)} €\n\n`;
   recibo += "¡Gracias por comer en Restaurante Bottega!\n";
-  recibo += "=======================================\n\n";
+  recibo += "====================================\n\n";
   recibo += "Presiona OK para finalizar.";
   
   return recibo;
@@ -277,7 +277,7 @@ function gestionarPedido() {
   let resultadoHora;
   
   while (!horaValida) {
-    const horaInput = prompt("Por favor, escribe la hora actual (formato hh:mm o solo hh):");
+    const horaInput = prompt("🕑 Por favor, escribe la hora actual \nFormato hh:mm o solo hh");
     
     if (horaInput === null) {
       prompt("❌ Pedido cancelado.");
@@ -297,7 +297,7 @@ function gestionarPedido() {
   const horarioComida = determinarHorarioComida(resultadoHora);
   
   if (horarioComida === "cerrado") {
-    alert(`Lo sentimos, el restaurante está cerrado en este momento.
+    alert(`🛑 Lo sentimos, el restaurante está cerrado en este momento.
 Horario de apertura:
 Desayuno: ${horarios.desayuno.inicio}:00 - ${horarios.desayuno.fin - 1}:59
 Comida: ${horarios.comida.inicio}:00 - ${horarios.comida.fin - 1}:59
@@ -310,7 +310,7 @@ Cena: ${horarios.cena.inicio}:00 - ${horarios.cena.fin}:59`);
   pedido.horaTexto = resultadoHora.textoFormateado;
   
   // 3. Mostrar bienvenida
-  alert(`¡Bienvenido al Restaurante Bottega!\nServicio de ${horarioComida.toUpperCase()}\nHora actual: ${resultadoHora.textoFormateado}`);
+  alert(`👋 ¡Bienvenido al Restaurante Bottega!\nServicio de ${horarioComida.toUpperCase()}\nHora actual: ${resultadoHora.textoFormateado}`);
   
   // 4. Seleccionar plato principal - Mostrar opciones específicas
   const opcionesPrincipales = formatearOpcionesPlatos('principales', horarioComida);
