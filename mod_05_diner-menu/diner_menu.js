@@ -153,7 +153,7 @@ function formatearOpcionesPlatos(tipoPlato, horarioComida) {
   let opciones = `OPCIONES DE ${tipoPlato.toUpperCase()}:\n\n`;
   
   menu[horarioComida][tipoPlato].forEach((item, index) => {
-    opciones += `${index + 1}. ${item.nombre} - ${item.precio.toFixed(2)}€\n`;
+    opciones += `${index + 1}. ${item.nombre} --> ${item.precio.toFixed(2)} €\n`;
   });
   
   opciones += "\nPor favor, escribe el nombre del plato o su número (1-3).\n";
@@ -178,26 +178,26 @@ function formatearRecibo(pedido) {
   recibo += "PLATOS SELECCIONADOS:\n";
   
   if (pedido.platoPrincipal) {
-    recibo += `Principal: ${pedido.platoPrincipal.nombre} - ${pedido.platoPrincipal.precio.toFixed(2)}€\n`;
+    recibo += `Principal: ${pedido.platoPrincipal.nombre} --> ${pedido.platoPrincipal.precio.toFixed(2)} €\n`;
   } else {
     recibo += "Principal: No seleccionado\n";
   }
   
   if (pedido.platoSecundario) {
-    recibo += `Secundario: ${pedido.platoSecundario.nombre} - ${pedido.platoSecundario.precio.toFixed(2)}€\n`;
+    recibo += `Secundario: ${pedido.platoSecundario.nombre} --> ${pedido.platoSecundario.precio.toFixed(2)} €\n`;
   } else {
     recibo += "Secundario: No seleccionado\n";
   }
   
   if (pedido.platoPostre) {
-    recibo += `Postre: ${pedido.platoPostre.nombre} - ${pedido.platoPostre.precio.toFixed(2)}€\n`;
+    recibo += `Postre: ${pedido.platoPostre.nombre} --> ${pedido.platoPostre.precio.toFixed(2)} €\n`;
   } else {
     recibo += "Postre: No seleccionado\n";
   }
   
-  recibo += `\nIMPORTE TOTAL: ${pedido.importeTotal.toFixed(2)}€\n\n`;
+  recibo += `\nIMPORTE TOTAL ==> ${pedido.importeTotal.toFixed(2)} €\n\n`;
   recibo += "¡Gracias por comer en Restaurante Bottega!\n";
-  recibo += "==========================================\n\n";
+  recibo += "=======================================\n\n";
   recibo += "Presiona OK para finalizar.";
   
   return recibo;
@@ -207,17 +207,14 @@ function formatearRecibo(pedido) {
 function calcularTotal(pedido) {
   let total = 0;
   
-  // Añadir importe del plato principal
   if (pedido.platoPrincipal) {
     total += pedido.platoPrincipal.precio;
   }
   
-  // Añadir importe del plato secundario
   if (pedido.platoSecundario) {
     total += pedido.platoSecundario.precio;
   }
   
-  // Añadir importe del postre
   if (pedido.platoPostre) {
     total += pedido.platoPostre.precio;
   }
@@ -233,35 +230,28 @@ function seleccionarPlato(tipoPlato, horarioComida, opcionesFormateadas) {
   while (!seleccionValida) {
     const seleccion = prompt(opcionesFormateadas);
     
-    // Verificar si se canceló el prompt
     if (seleccion === null) {
       return { cancelado: true };
     }
     
-    // Si el usuario escribe "ninguno" o "0", retornar null
     if (seleccion.toLowerCase() === 'ninguno' || seleccion === '0') {
       return { cancelado: false, plato: null };
     }
     
-    // Convertir a número si es posible
     const numSeleccion = parseInt(seleccion);
     
-    // Verificar si es un número válido (1-3)
     if (!isNaN(numSeleccion) && numSeleccion >= 1 && numSeleccion <= 3) {
       platoSeleccionado = menu[horarioComida][tipoPlato][numSeleccion - 1];
       seleccionValida = true;
       
-      // Mostrar comentario aleatorio
-      alert(`Has seleccionado: ${platoSeleccionado.nombre} - ${platoSeleccionado.precio.toFixed(2)}€\n\nComentario: "${obtenerComentarioAleatorio()}"`);
+      alert(`Has seleccionado: ${platoSeleccionado.nombre} --> ${platoSeleccionado.precio.toFixed(2)} €\n\nComentario: "${obtenerComentarioAleatorio()}"`);
     } else {
-      // Intentar buscar por nombre
       platoSeleccionado = buscarPlatoPorNombre(seleccion, tipoPlato, horarioComida);
       
       if (platoSeleccionado) {
         seleccionValida = true;
         
-        // Mostrar comentario aleatorio
-        alert(`Has seleccionado: ${platoSeleccionado.nombre} - ${platoSeleccionado.precio.toFixed(2)}€\n\nComentario: "${obtenerComentarioAleatorio()}"`);
+        alert(`Has seleccionado: ${platoSeleccionado.nombre} --> ${platoSeleccionado.precio.toFixed(2)}€\n\nComentario: "${obtenerComentarioAleatorio()}"`);
       } else {
         alert(`Selección no válida. Por favor, elige un número entre 1 y 3, escribe el nombre del plato, o escribe 'ninguno' o '0'.`);
       }
@@ -273,7 +263,6 @@ function seleccionarPlato(tipoPlato, horarioComida, opcionesFormateadas) {
 
 // Función principal para gestionar el pedido
 function gestionarPedido() {
-  // Variable para almacenar el estado del pedido
   let pedido = {
     horario: null,
     horaTexto: "",
@@ -290,7 +279,6 @@ function gestionarPedido() {
   while (!horaValida) {
     const horaInput = prompt("Por favor, ingresa la hora actual (formato hh:mm o solo hh):");
     
-    // Verificar si se canceló el prompt
     if (horaInput === null) {
       prompt("Pedido cancelado.");
       return;
@@ -361,7 +349,6 @@ Cena: ${horarios.cena.inicio}:00 - ${horarios.cena.fin}:59`);
   pedido.importeTotal = calcularTotal(pedido);
   const reciboFormateado = formatearRecibo(pedido);
   
-  // 8. Mostrar el recibo final en un prompt
   prompt(reciboFormateado);
   
 }
