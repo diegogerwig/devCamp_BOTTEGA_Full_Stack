@@ -253,7 +253,7 @@ function seleccionarPlato(tipoPlato, horarioComida, opcionesFormateadas) {
         
         alert(`Has seleccionado: ${platoSeleccionado.nombre} --> ${platoSeleccionado.precio.toFixed(2)}€\n\nComentario: "${obtenerComentarioAleatorio()}"`);
       } else {
-        alert(`Selección no válida. Por favor, elige un número entre 1 y 3, escribe el nombre del plato, o escribe 'ninguno' o '0'.`);
+        alert(`❗Selección no válida. ❗\nPor favor, elige un número entre 1 y 3, escribe el nombre del plato, o escribe 'ninguno' o '0'.`);
       }
     }
   }
