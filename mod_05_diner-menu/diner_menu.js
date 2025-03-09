@@ -83,7 +83,7 @@ const comentarios = [
   "¡Perfecto!"
 ];
 
-// Función para parsear la hora ingresada
+// Función para parsear la hora
 function parsearHora(horaInput) {
   let resultado = {
     hora: null,
@@ -91,7 +91,6 @@ function parsearHora(horaInput) {
     textoFormateado: ""
   };
   
-  // Verifica si la entrada contiene ":"
   if (horaInput.includes(':')) {
     const [horas, minutos] = horaInput.split(':').map(Number);
     if (!isNaN(horas) && !isNaN(minutos) && horas >= 0 && horas <= 23 && minutos >= 0 && minutos <= 59) {
@@ -99,13 +98,12 @@ function parsearHora(horaInput) {
       resultado.minutos = minutos;
       resultado.textoFormateado = `${horas}:${minutos.toString().padStart(2, '0')}`;
     } else {
-      return null; // Formato inválido
+      return null; 
     }
   } else {
-    // Si solo se ingresó la hora
     const hora = parseInt(horaInput);
     if (isNaN(hora) || hora < 0 || hora > 23) {
-      return null; // Formato inválido
+      return null; 
     }
     resultado.hora = hora;
     resultado.textoFormateado = `${hora}:00`;
@@ -142,7 +140,6 @@ function normalizarTexto(texto) {
 function buscarPlatoPorNombre(nombreBuscado, tipoPlato, horarioComida) {
   const nombreNormalizado = normalizarTexto(nombreBuscado);
   
-  // Buscar en la categoría de platos correspondiente
   const platos = menu[horarioComida][tipoPlato];
   const platoEncontrado = platos.find(plato => 
     normalizarTexto(plato.nombre) === nombreNormalizado
@@ -171,7 +168,7 @@ function obtenerComentarioAleatorio() {
   return comentarios[indice];
 }
 
-// Función para formatear el recibo como una cadena formateada (versión compacta)
+// Función para formatear el recibo como una cadena formateada
 function formatearRecibo(pedido) {
   let recibo = "======== RECIBO RESTAURANTE BOTTEGA ========\n\n";
   
