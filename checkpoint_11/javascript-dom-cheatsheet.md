@@ -256,6 +256,72 @@ elemento.style.color = ''; // Eliminar propiedad color
 
 ## Eventos del DOM
 
+### Tipos de Eventos
+
+#### Eventos del Mouse
+* `click`: Se dispara cuando se hace clic en un elemento
+* `dblclick`: Se dispara cuando se hace doble clic
+* `mousedown`: Se dispara cuando se presiona un botón del mouse
+* `mouseup`: Se dispara cuando se suelta un botón del mouse
+* `mousemove`: Se dispara cuando el cursor se mueve sobre un elemento
+* `mouseover`: Se dispara cuando el cursor entra en un elemento
+* `mouseout`: Se dispara cuando el cursor sale de un elemento
+* `mouseenter`: Similar a mouseover, pero no se propaga a los elementos hijos
+* `mouseleave`: Similar a mouseout, pero no se propaga a los elementos hijos
+* `contextmenu`: Se dispara al hacer clic con el botón derecho
+
+#### Eventos del Teclado
+* `keydown`: Se dispara cuando se presiona una tecla
+* `keyup`: Se dispara cuando se suelta una tecla
+* `keypress`: Se dispara cuando se presiona una tecla que produce un carácter (obsoleto)
+
+#### Eventos de Formulario
+* `submit`: Se dispara cuando se envía un formulario
+* `reset`: Se dispara cuando se restablece un formulario
+* `change`: Se dispara cuando cambia el valor de un elemento de formulario
+* `input`: Se dispara cuando cambia el valor de un elemento de entrada
+* `focus`: Se dispara cuando un elemento recibe el foco
+* `blur`: Se dispara cuando un elemento pierde el foco
+* `select`: Se dispara cuando se selecciona texto en un campo
+* `invalid`: Se dispara cuando un elemento no pasa la validación
+
+#### Eventos de Documento/Ventana
+* `load`: Se dispara cuando la página termina de cargar
+* `DOMContentLoaded`: Se dispara cuando el DOM está completamente cargado
+* `unload`: Se dispara cuando el usuario sale de la página
+* `beforeunload`: Se dispara antes de que el usuario salga de la página
+* `resize`: Se dispara cuando se cambia el tamaño de la ventana
+* `scroll`: Se dispara cuando se desplaza la página o un elemento
+
+#### Eventos de Arrastrar (Drag & Drop)
+* `dragstart`: Se dispara al comenzar a arrastrar un elemento
+* `drag`: Se dispara mientras se arrastra un elemento
+* `dragend`: Se dispara cuando se termina de arrastrar
+* `dragenter`: Se dispara cuando un elemento arrastrado entra en un objetivo de soltar
+* `dragover`: Se dispara cuando un elemento arrastrado está sobre un objetivo de soltar
+* `dragleave`: Se dispara cuando un elemento arrastrado sale de un objetivo de soltar
+* `drop`: Se dispara cuando se suelta un elemento en un objetivo válido
+
+#### Eventos Multimedia
+* `play`: Se dispara cuando un medio comienza o reinicia la reproducción
+* `pause`: Se dispara cuando un medio se pausa
+* `ended`: Se dispara cuando un medio llega al final
+* `volumechange`: Se dispara cuando cambia el volumen
+* `timeupdate`: Se dispara cuando cambia la posición de reproducción
+
+#### Eventos Táctiles
+* `touchstart`: Se dispara cuando un dedo toca la pantalla
+* `touchmove`: Se dispara cuando un dedo se mueve sobre la pantalla
+* `touchend`: Se dispara cuando un dedo se levanta de la pantalla
+* `touchcancel`: Se dispara cuando se cancela un toque
+
+#### Eventos de Animación y Transición
+* `animationstart`: Se dispara cuando comienza una animación CSS
+* `animationend`: Se dispara cuando termina una animación CSS
+* `animationiteration`: Se dispara cuando una animación CSS se repite
+* `transitionstart`: Se dispara cuando comienza una transición CSS
+* `transitionend`: Se dispara cuando termina una transición CSS
+
 ### Gestión de Eventos
 
 ```javascript
