@@ -2,16 +2,66 @@
 
 ## Conceptos Básicos del DOM
 
-### Descripción General del DOM
+El DOM (Document Object Model) en JavaScript es una representación en forma de árbol de un documento HTML o XML. Permite a los scripts interactuar con la estructura, el contenido y el estilo de la página web de manera dinámica.
+
+📌 Conceptos clave del DOM en JavaScript:
+
+### Estructura en Árbol 🌳
+Cada elemento HTML (como `<div>`, `<p>`, `<h1>`, etc.) es un nodo en el árbol del DOM.
+
+### Manipulación Dinámica ⚡
+JavaScript puede:
+
+- Modificar el contenido: `document.getElementById("titulo").innerText = "Nuevo título";`
+- Cambiar estilos: `document.body.style.backgroundColor = "lightgray";`
+- Agregar o eliminar elementos: `document.createElement("div")`, `element.remove()`
+
+### Eventos y Respuesta del Usuario 🖱️
+Puedes manejar eventos como clics, teclas y cambios en formularios usando `addEventListener`.
+
+### Acceso a Elementos 🔍
+
+- `document.getElementById("miElemento")`
+- `document.querySelector(".miClase")`
+- `document.getElementsByTagName("p")`
+
+🛠 Ejemplo Práctico:
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM en JS</title>
+</head>
+<body>
+    <h1 id="titulo">Hola, mundo</h1>
+    <button onclick="cambiarTexto()">Haz clic</button>
+
+    <script>
+        function cambiarTexto() {
+            document.getElementById("titulo").innerText = "Texto cambiado";
+        }
+    </script>
+</body>
+</html>
+```
+
+🔹 Cuando el usuario hace clic en el botón, el texto del `<h1>` cambia.
+
+🔥 Resumen:
+- El DOM permite manipular la página web con JavaScript.
+- Es una estructura en árbol donde cada nodo representa un elemento.
+- Se pueden modificar textos, estilos, agregar o quitar elementos y manejar eventos.
+
+## Descripción General del DOM
 - **DOM**: Document Object Model - representación en memoria de la estructura del documento HTML
 - Estructura jerárquica en forma de árbol donde cada nodo representa una parte del documento
 - Proporciona una interfaz de programación para modificar dinámicamente el contenido, estructura y estilo
 - Independiente del lenguaje de programación (aunque comúnmente manipulado con JavaScript)
 - Conecta las páginas web con scripts o lenguajes de programación
 
-### Estructura y Componentes del DOM
+## Estructura y Componentes del DOM
 
-#### Tipos de Nodos
+### Tipos de Nodos
 
 1. **Document**: Nodo raíz que representa el documento HTML completo (`document`)
 2. **Element**: Nodos que representan etiquetas HTML (`<div>`, `<p>`, `<span>`, etc.)
@@ -20,7 +70,7 @@
 5. **Comment**: Representa comentarios HTML (`<!-- comentario -->`)
 6. **DocumentFragment**: Nodo liviano que puede contener múltiples nodos sin ser parte del DOM activo
 
-#### Relaciones entre Nodos
+### Relaciones entre Nodos
 
 - **Padres**: Nodos que contienen otros nodos
 - **Hijos**: Nodos contenidos dentro de otros nodos
@@ -28,7 +78,7 @@
 - **Descendientes**: Todos los nodos contenidos en un nodo dado (hijos, nietos, etc.)
 - **Ancestros**: Todos los nodos que contienen un nodo dado (padres, abuelos, etc.)
 
-### Window vs Document
+## Window vs Document
 
 | `window` | `document` |
 |----------|------------|
