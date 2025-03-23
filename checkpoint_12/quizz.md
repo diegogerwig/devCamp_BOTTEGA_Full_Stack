@@ -66,3 +66,23 @@ This class gives the users the ability to reply to a tweet? : reply
 
 A join table gives the ability to say every time a tweet has a hashtag. : TRUE
 
+
+## Activity Diagrams
+
+Generating an individual question set, confirming, and asking a question are various actions states. : TRUE
+
+Every time you get to a spot where the data changes or where you're making an alteration, it could be an action flow. : FALSE
+
+Anytime you see a filled in arrow tip it means? : action flow
+
+The 45* square represents that you can make a decision in any point in the application. : FALSE
+
+The more branches or guards that you have in your application will make it more complex. : TRUE
+
+The final state will store all the results in the system database. : TRUE
+
+The swim lanes consist of the following? : All of the above
+
+If the student doesn't answer a question it will allow them to finish. : FALSE
+
+The system will do one of the following. : store the results
