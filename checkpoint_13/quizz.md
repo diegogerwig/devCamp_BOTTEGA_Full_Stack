@@ -35,3 +35,15 @@ A load balancer cannot take in a request from the internet and map to other serv
 
 Each of these nodes are very similar in regards to its structure because it has a set of artifacts and components inside. : TRUE
 
+
+## Package Diagrams
+
+Package diagrams represent the structure of your software at a very high level.: TRUE
+
+To build a ruby gem, you would use what kind of diagram?: package
+
+Your package diagram will not allow you to take different components inside of your system.: FALSE
+
+Package diagrams carry a number of abstract elements.: TRUE
+
+Package diagrams are simply ways of wrapping up some components from other diagrams and what they represent.: TRUE
