@@ -47,3 +47,23 @@ Your package diagram will not allow you to take different components inside of y
 Package diagrams carry a number of abstract elements.: TRUE
 
 Package diagrams are simply ways of wrapping up some components from other diagrams and what they represent.: TRUE
+
+
+## Interaction Sequence Diagrams
+
+Sequence diagrams are good to use when you are building large projects.: TRUE
+
+Lifelines make it easier for us to see each of the stages and give a place for the messages to be sent.: TRUE
+
+A message is not a method that you can use to send and recieve input.: FALSE
+
+Activation or Execution Occurrence is the sending or recieving of a message.: TRUE
+
+Sequence diagrams will not let you isolate all of the different communication occurences.: FALSE
+
+How many elements make up a sequence diagram?: 4
+
+Sequence diagram allows you to drill down so that you can pick and choose the elements and how they should communicate.: TRUE
+
+Sequence diagrams allow you to visualize all of the messages that are being passed between the components of your system.: TRUE
+
