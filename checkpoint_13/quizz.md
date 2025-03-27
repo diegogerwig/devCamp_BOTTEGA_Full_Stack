@@ -67,3 +67,21 @@ Sequence diagram allows you to drill down so that you can pick and choose the el
 
 Sequence diagrams allow you to visualize all of the messages that are being passed between the components of your system.: TRUE
 
+
+## State Machine Diagrams
+
+State Machines are one of the earliest types of machines in computer science. : FALSE
+
+State machines are very powerful and one of the foundational ideas that helped put us where we are today in terms of tech. : TRUE
+
+A state machine cares more about the different actions that can change a user's state. : TRUE
+
+The constraint was called a "guard" in other diagrams that we have worked in. : TRUE
+
+Our states have a user and a user that has been converted. : TRUE
+
+Transition is how you stop at a state and head to the constant. : FALSE
+
+Try to keep your state diagrams as simple as possible. : TRUE
+
+In order to read these diagrams you should be some sort of engineer. : FALSE
