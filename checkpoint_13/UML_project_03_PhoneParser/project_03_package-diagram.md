@@ -1,0 +1,37 @@
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Parser
+    participant DigitLengthValidator
+    participant CountryCodeValidator
+    
+    Client->>Parser: parse(phone_number, options)
+    
+    Parser->>Parser: strip_formatting(phone_number)
+    Note over Parser: Removes all non-digit characters
+    
+    alt Has explicit country code (+1, etc)
+        Parser->>CountryCodeValidator: valid_country_code?(extracted_code)
+        
+        alt Valid country code
+            CountryCodeValidator-->>Parser: true
+        else Invalid country code
+            CountryCodeValidator-->>Parser: false
+            Parser-->>Client: raise CountryCodeError
+        end
+        
+    else No explicit country code
+        Parser->>Parser: Use default country code (1 or provided)
+    end
+    
+    Parser->>DigitLengthValidator: validate_phone_length(digits)
+    
+    alt Valid phone length
+        DigitLengthValidator-->>Parser: true
+    else Invalid phone length
+        DigitLengthValidator-->>Parser: false
+        Parser-->>Client: raise PhoneLengthError
+    end
+    
+    Parser-->>Client: return formatted_phone_number
+```
