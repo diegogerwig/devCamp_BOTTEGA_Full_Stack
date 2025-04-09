@@ -23,6 +23,7 @@
 - **Dependencias**: Relaciones donde un cambio en un elemento puede afectar a otro
 - **Características y propiedades**: Atributos y operaciones de los elementos modelados
 
+
 ## 2. TIPOS DE DIAGRAMAS UML
 
 ### Diagramas estructurales
