@@ -2,19 +2,21 @@ import logo from './logo.svg';
 import './App.css';
 
 import React from 'react';
-import { useState } from 'react';
+import moment from 'moment';
 import First from './components/first';
 
 export default function App() {
+  const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          EditXCV <code>src/App.js</code> and save to reload.
+          Prueba de la clase de React 👋
         </p>
         <p>
-          Prueba de la clase de React 👋
+          Current Date and Time: {currentDateTime}
         </p>
         <First />
         <a

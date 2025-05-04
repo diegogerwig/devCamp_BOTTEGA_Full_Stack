@@ -29,7 +29,7 @@ export default function Second() {
 
   return (
 	<div className="second">
-	  <h3>Hola Mundo SECOND</h3>
+	  <h5 style={{ color: 'red' }}>Hola Mundo SECOND</h5>
 	  <p>Contador: {count}</p>
 	  <button onClick={handleClick}>Incrementar</button>
 	  <input ref={inputRef} type="text" value={name} onChange={(e) => setName(e.target.value)} />
