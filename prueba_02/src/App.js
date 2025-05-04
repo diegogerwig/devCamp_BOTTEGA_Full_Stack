@@ -13,8 +13,9 @@ export default function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Prueba de la clase de React 👋
+          Prueba React 👋
         </p>
+        <button onClick={botonPulsar} style={{marginLeft: '100px'}}>Pulsar</button>
         <p>
           Current Date and Time: {currentDateTime}
         </p>
@@ -30,4 +31,8 @@ export default function App() {
       </header>
     </div>
   );
+}
+
+const botonPulsar = () => {
+  alert('Botón pulsado');
 }
