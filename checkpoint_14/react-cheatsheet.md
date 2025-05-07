@@ -1,5 +1,6 @@
 # CHEATSHEET DE REACT
 
+
 ## 🚀 CONFIGURACIÓN INICIAL
 
 ### Instalación y Configuración del Entorno
