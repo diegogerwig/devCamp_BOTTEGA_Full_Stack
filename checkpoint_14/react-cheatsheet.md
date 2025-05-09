@@ -2,6 +2,9 @@
 
 ## 🚀 CONFIGURACIÓN INICIAL
 
+
+
+
 ### Instalación y Configuración del Entorno
 
 #### Instalación en Mac
