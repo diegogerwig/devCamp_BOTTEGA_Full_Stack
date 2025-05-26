@@ -148,7 +148,35 @@ npm uninstall nombre-paquete
 npm update
 ```
 
-## 💻 COMPONENTES REACT
+# 💻 COMPONENTES REACT
+
+## ¿Qué es un Componente?
+
+Un componente en React es una **pieza de código reutilizable** que encapsula la lógica y la interfaz de usuario de una parte específica de tu aplicación. Piensa en los componentes como bloques de construcción LEGO: cada uno tiene una función específica y puedes combinarlos para crear aplicaciones complejas.
+
+Los componentes React siguen el principio de **"divide y vencerás"**, permitiendo descomponer interfaces complejas en piezas más pequeñas y manejables.
+
+## 🎯 Utilidades y Ventajas
+
+### Reutilización de Código
+- Escribe una vez, usa en múltiples lugares
+- Reduce la duplicación de código
+- Facilita el mantenimiento
+
+### Modularidad
+- Cada componente tiene una responsabilidad específica
+- Fácil de testear individualmente
+- Código más organizado y legible
+
+### Composición
+- Combina componentes simples para crear interfaces complejas
+- Jerarquía clara de componentes padre-hijo
+- Flujo de datos predecible
+
+### Mantenibilidad
+- Cambios aislados en componentes específicos
+- Debugging más sencillo
+- Actualizaciones independientes
 
 ### Tipos de Componentes
 
