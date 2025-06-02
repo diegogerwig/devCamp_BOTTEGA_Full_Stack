@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CheckPoint 15 - Guía de Estudio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(45deg, #764ba2, #667eea);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h4 {
+            color: #764ba2;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #ffeaa7, #fdcb6e);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #e17055;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #4a5568;
+        }
+
+        .step {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 5px solid #28a745;
+        }
+
+        .step-number {
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(116, 185, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: scale(1.05);
+        }
+
+        .examples-container {
+            display: grid;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .example {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid #17a2b8;
+        }
+
+        .example h4 {
+            color: #17a2b8;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .scss-variables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .variable-type {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(162, 155, 254, 0.3);
+        }
+
+        .variable-type h4 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 CheckPoint 15</h1>
+            <p>Guía completa de estudio - Axios, React DevTools, Event Listeners y Variables SCSS</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('axios')">🌐 Axios</button>
+            <button class="nav-tab" onclick="showSection('devtools')">🔧 React DevTools</button>
+            <button class="nav-tab" onclick="showSection('events')">👆 Event Listeners</button>
+            <button class="nav-tab" onclick="showSection('scss')">🎨 Variables SCSS</button>
+        </div>
+
+        <!-- AXIOS SECTION -->
+        <div id="axios" class="section active">
+            <div class="section-header">
+                <h2>🌐 AXIOS</h2>
+                <p>Cliente HTTP basado en promesas para JavaScript</p>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">📋</span>¿Qué es Axios?</h3>
+                <p>Axios es una popular librería de JavaScript utilizada para realizar solicitudes HTTP desde el navegador o desde un entorno Node.js. Muchos proyectos en la web necesitan interactuar con una API REST en algún momento de su desarrollo, y axios nos brinda una interfaz sencilla y potente para interactuar con APIs y servicios web.</p>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">⭐</span>Características Principales</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <h4>🚀 Cliente HTTP basado en promesas</h4>
+                        <p>Utiliza promesas de JavaScript para operaciones asincrónicas más limpias</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🔄 Compatibilidad</h4>
+                        <p>Funciona tanto en navegador como en Node.js</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🔧 Transformación automática</h4>
+                        <p>Convierte automáticamente datos de respuesta en formato JSON</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🛡️ Interceptores</h4>
+                        <p>Permite interceptar y modificar solicitudes y respuestas</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">💡</span>Beneficios de Uso</h3>
+                <div class="highlight">
+                    <strong>✅ Sintaxis simple:</strong> API más intuitiva que Fetch<br>
+                    <strong>🔍 Manejo de errores mejorado:</strong> Gestión robusta y consistente<br>
+                    <strong>⏹️ Cancelación de solicitudes:</strong> Optimiza rendimiento<br>
+                    <strong>⚙️ Configuración global:</strong> Opciones por defecto<br>
+                    <strong>🔄 Transformación de datos:</strong> Manipulación fácil de datos
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🛠️</span>Instalación y Uso Básico</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Instalación:</strong>
+                    <div class="code-block">npm install axios</div>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Importación:</strong>
+                    <div class="code-block">import axios from 'axios';</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">📝</span>Ejemplo Práctico - Petición GET</h3>
+                <div class="code-block">const [data, setData] = useState(null);
+
+useEffect(() => {
+  axios.get('https://api.example.com/data')
+    .then(response => {
+      setData(response.data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}, []);</div>
+
+                <h4>Desglose paso a paso:</h4>
+                <div class="examples-container">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <code>useState(null)</code> - Crea estado para almacenar datos
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <code>useEffect</code> - Ejecuta efecto al montar componente
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <code>axios.get()</code> - Realiza petición GET
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <code>.then()</code> - Maneja respuesta exitosa
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <code>.catch()</code> - Captura y maneja errores
+                    </div>
+                    <div class="step">
+                        <span class="step-number">6</span>
+                        <code>[]</code> - Array vacío ejecuta efecto solo una vez
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REACT DEVTOOLS SECTION -->
+        <div id="devtools" class="section">
+            <div class="section-header">
+                <h2>🔧 React DevTools</h2>
+                <p>Herramientas de depuración para aplicaciones React</p>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🔍</span>¿Qué son las React DevTools?</h3>
+                <p>Las React DevTools son una extensión de navegador que permite inspeccionar la jerarquía de componentes de React en las herramientas de desarrollador del navegador. Proporcionan widgets de inspección para ayudar en el desarrollo y depuración de aplicaciones React.</p>
+                <div class="highlight">
+                    <strong>💡 Dato importante:</strong> La depuración es una parte muy importante del desarrollo de software, permite detectar errores tempranamente y ser más eficiente.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🚀</span>Funcionalidades Principales</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <h4>🔍 Inspección de Componentes</h4>
+                        <p>Ver estructura jerárquica, props y estado de componentes</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>⚡ Edición en Tiempo Real</h4>
+                        <p>Modificar props y estado directamente desde la herramienta</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>📊 Análisis de Rendimiento</h4>
+                        <p>Profiler para registrar y analizar performance</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🐛 Depuración Avanzada</h4>
+                        <p>Encontrar problemas y ver flujo de datos entre componentes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">💪</span>Beneficios del Uso</h3>
+                <div class="examples-container">
+                    <div class="example">
+                        <h4>🎯 Inspección de Componentes</h4>
+                        <p>• Ver estructura jerárquica de componentes React<br>
+                        • Mostrar props y estado de cada componente<br>
+                        • Seleccionar y resaltar componentes en la página</p>
+                    </div>
+                    <div class="example">
+                        <h4>⚡ Edición en Tiempo Real</h4>
+                        <p>• Modificar props y estado directamente<br>
+                        • Ver cambios reflejados inmediatamente<br>
+                        • Probar diferentes valores sin modificar código</p>
+                    </div>
+                    <div class="example">
+                        <h4>🚀 Desarrollo Más Rápido</h4>
+                        <p>• Acelerar proceso de desarrollo<br>
+                        • Ubicar rápidamente componentes<br>
+                        • Entender funcionamiento de la aplicación</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EVENT LISTENERS SECTION -->
+        <div id="events" class="section">
+            <div class="section-header">
+                <h2>👆 Event Listeners</h2>
+                <p>Manejo de eventos en React para interfaces interactivas</p>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">👂</span>¿Qué son los Event Listeners?</h3>
+                <p>Un event listener es una función que se encarga de escuchar y responder a eventos específicos que ocurren en elementos del DOM o en objetos de JavaScript. En React, permiten que las aplicaciones respondan a las interacciones del usuario, haciendo que la interfaz sea dinámica e interactiva.</p>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">⭐</span>Beneficios en React</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <h4>🎮 Interactividad Mejorada</h4>
+                        <p>Crear interfaces altamente interactivas que responden en tiempo real</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>📝 Sintaxis Simplificada</h4>
+                        <p>Propiedades especiales en JSX para agregar listeners fácilmente</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>⚡ Rendimiento Optimizado</h4>
+                        <p>Sistema de eventos que mejora performance y compatibilidad</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🎯 Manejo Centralizado</h4>
+                        <p>Gestión centralizada que facilita mantenimiento del código</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">📚</span>Ejemplos Prácticos</h3>
+                
+                <div class="example">
+                    <h4>Ejemplo 1: Manejo de clics en botón</h4>
+                    <div class="code-block">function Button() {
+  const handleClick = () => {
+    console.log('Botón clickeado');
+  };
+
+  return &lt;button onClick={handleClick}&gt;Haz clic&lt;/button&gt;;
+}</div>
+                    <p><strong>📝 Explicación:</strong> El event listener <code>handleClick</code> se ejecuta cuando se hace clic en el botón.</p>
+                </div>
+
+                <div class="example">
+                    <h4>Ejemplo 2: Manejo de cambios en input</h4>
+                    <div class="code-block">function InputField() {
+  const [value, setValue] = useState('');
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  return &lt;input type="text" value={value} onChange={handleChange} /&gt;;
+}</div>
+                    <p><strong>📝 Explicación:</strong> <code>handleChange</code> se activa cada vez que el usuario escribe, actualizando el estado.</p>
+                </div>
+
+                <div class="example">
+                    <h4>Ejemplo 3: Eventos de teclado</h4>
+                    <div class="code-block">function KeyboardListener() {
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        console.log('Tecla Escape presionada');
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  return &lt;div&gt;Presiona la tecla Escape&lt;/div&gt;;
+}</div>
+                    <p><strong>📝 Explicación:</strong> Muestra cómo agregar listeners para eventos de teclado usando <code>useEffect</code>, con limpieza para evitar fugas de memoria.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCSS VARIABLES SECTION -->
+        <div id="scss" class="section">
+            <div class="section-header">
+                <h2>🎨 Variables en SCSS</h2>
+                <p>Potencia tu CSS con variables reutilizables y mantenibles</p>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🔧</span>¿Qué son las Variables SCSS?</h3>
+                <p>Las variables en SCSS (Sass) son una característica fundamental que permite almacenar valores reutilizables como colores, fuentes, tamaños y cualquier valor CSS. Se definen usando el símbolo <code>$</code> y proporcionan una forma eficiente de mantener la consistencia y facilitar el mantenimiento del código CSS.</p>
+                <div class="highlight">
+                    <strong>💡 Ventaja clave:</strong> Cambia un valor en un lugar y se actualiza automáticamente en toda tu aplicación.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">📝</span>Sintaxis Básica</h3>
+                <div class="code-block">// Definición de variables
+$primary-color: #3498db;
+$secondary-color: #e74c3c;
+$font-size-base: 16px;
+$font-family-main: 'Helvetica Neue', Arial, sans-serif;
+
+// Uso de variables
+.header {
+  color: $primary-color;
+  font-size: $font-size-base;
+  font-family: $font-family-main;
+}
+
+.button {
+  background-color: $secondary-color;
+  padding: 10px 20px;
+}</div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🎯</span>Tipos de Variables</h3>
+                <div class="scss-variables-grid">
+                    <div class="variable-type">
+                        <h4>🎨 Colores</h4>
+                        <div class="code-block" style="font-size: 12px;">$blue: #007bff;
+$red: #dc3545;
+$green: #28a745;</div>
+                    </div>
+                    <div class="variable-type">
+                        <h4>📏 Tamaños</h4>
+                        <div class="code-block" style="font-size: 12px;">$margin-sm: 8px;
+$margin-md: 16px;
+$margin-lg: 24px;</div>
+                    </div>
+                    <div class="variable-type">
+                        <h4>🔤 Tipografía</h4>
+                        <div class="code-block" style="font-size: 12px;">$font-small: 12px;
+$font-medium: 16px;
+$font-large: 24px;</div>
+                    </div>
+                    <div class="variable-type">
+                        <h4>📱 Breakpoints</h4>
+                        <div class="code-block" style="font-size: 12px;">$mobile: 768px;
+$tablet: 1024px;
+$desktop: 1200px;</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">⭐</span>Beneficios de las Variables SCSS</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <h4>🔄 Reutilización</h4>
+                        <p>Define una vez, usa en múltiples lugares</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🛠️ Mantenimiento</h4>
+                        <p>Cambios centralizados en toda la aplicación</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>📚 Legibilidad</h4>
+                        <p>Nombres descriptivos hacen el código más claro</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🎨 Consistencia</h4>
+                        <p>Mantiene uniformidad visual en todo el proyecto</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🏗️</span>Organización de Variables</h3>
+                <div class="example">
+                    <h4>📁 Estructura recomendada</h4>
+                    <div class="code-block">// _variables.scss
+// =====================
+// COLORES
+// =====================
+$color-primary: #3498db;
+$color-secondary: #2ecc71;
+$color-accent: #e74c3c;
+$color-neutral-light: #ecf0f1;
+$color-neutral-dark: #2c3e50;
+
+// =====================
+// TIPOGRAFÍA
+// =====================
+$font-family-primary: 'Roboto', sans-serif;
+$font-family-secondary: 'Open Sans', sans-serif;
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 16px;
+$font-size-lg: 20px;
+$font-size-xl: 24px;
+
+// =====================
+// ESPACIADO
+// =====================
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// =====================
+// BREAKPOINTS
+// =====================
+$breakpoint-mobile: 576px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 992px;
+$breakpoint-wide: 1200px;</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🎯</span>Ejemplos Avanzados</h3>
+                
+                <div class="example">
+                    <h4>🌈 Sistema de Colores Completo</h4>
+                    <div class="code-block">// Paleta de colores base
+$blue-base: #007bff;
+$blue-light: lighten($blue-base, 20%);
+$blue-dark: darken($blue-base, 20%);
+
+// Estados de componentes
+$color-success: #28a745;
+$color-warning: #ffc107;
+$color-danger: #dc3545;
+$color-info: #17a2b8;
+
+// Uso en componentes
+.alert {
+  padding: $spacing-md;
+  border-radius: 4px;
+  
+  &.alert-success {
+    background-color: lighten($color-success, 40%);
+    color: darken($color-success, 20%);
+    border: 1px solid $color-success;
+  }
+  
+  &.alert-danger {
+    background-color: lighten($color-danger, 40%);
+    color: darken($color-danger, 20%);
+    border: 1px solid $color-danger;
+  }
+}</div>
+                </div>
+
+                <div class="example">
+                    <h4>📱 Variables para Responsive Design</h4>
+                    <div class="code-block">// Variables de breakpoints
+$mobile: 576px;
+$tablet: 768px;
+$desktop: 1024px;
+
+// Mixins usando variables
+@mixin mobile {
+  @media (max-width: $mobile) { @content; }
+}
+
+@mixin tablet {
+  @media (max-width: $tablet) { @content; }
+}
+
+@mixin desktop {
+  @media (min-width: $desktop) { @content; }
+}
+
+// Uso en componentes
+.container {
+  max-width: $desktop;
+  margin: 0 auto;
+  padding: $spacing-lg;
+  
+  @include tablet {
+    padding: $spacing-md;
+  }
+  
+  @include mobile {
+    padding: $spacing-sm;
+  }
+}</div>
+                </div>
+
+                <div class="example">
+                    <h4>🎨 Variables con Cálculos</h4>
+                    <div class="code-block">// Variables base
+$base-font-size: 16px;
+$golden-ratio: 1.618;
+
+// Variables calculadas
+$h1-size: $base-font-size * $golden-ratio * $golden-ratio;
+$h2-size: $base-font-size * $golden-ratio;
+$small-text: $base-font-size * 0.875;
+
+// Uso en tipografía
+h1 { font-size: $h1-size; }
+h2 { font-size: $h2-size; }
+small { font-size: $small-text; }
+
+// Variables con operaciones
+$container-width: 1200px;
+$sidebar-width: 300px;
+$content-width: $container-width - $sidebar-width - ($spacing-lg * 2);
+
+.content {
+  width: $content-width;
+  margin-left: $sidebar-width + $spacing-lg;
+}</div>
+                </div>
+
+                <div class="example">
+                    <h4>🔧 Variables con Maps (Mapas)</h4>
+                    <div class="code-block">// Mapa de colores
+$colors: (
+  primary: #3498db,
+  secondary: #2ecc71,
+  accent: #e74c3c,
+  neutral: #95a5a6,
+  dark: #2c3e50
+);
+
+// Mapa de espaciados
+$spacings: (
+  xs: 4px,
+  sm: 8px,
+  md: 16px,
+  lg: 24px,
+  xl: 32px,
+  xxl: 48px
+);
+
+// Función para acceder a los valores
+@function color($key) {
+  @return map-get($colors, $key);
+}
+
+@function spacing($key) {
+  @return map-get($spacings, $key);
+}
+
+// Uso práctico
+.button {
+  background-color: color(primary);
+  padding: spacing(md) spacing(lg);
+  color: white;
+  
+  &:hover {
+    background-color: darken(color(primary), 10%);
+  }
+}
+
+.card {
+  padding: spacing(lg);
+  margin-bottom: spacing(md);
+  border: 1px solid lighten(color(neutral), 20%);
+}</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🏆</span>Mejores Prácticas</h3>
+                <div class="examples-container">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <strong>Nombres Descriptivos:</strong> Usa nombres que describan el propósito, no la apariencia
+                        <div class="code-block">// ❌ Mal
+$red: #e74c3c;
+$blue: #3498db;
+
+// ✅ Bien
+$color-danger: #e74c3c;
+$color-primary: #3498db;</div>
+                    </div>
+                    
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <strong>Organización por Categorías:</strong> Agrupa variables relacionadas
+                        <div class="code-block">// Colores juntos
+$color-primary: #3498db;
+$color-secondary: #2ecc71;
+
+// Tipografía junta
+$font-size-base: 16px;
+$font-family-primary: 'Roboto';</div>
+                    </div>
+                    
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <strong>Variables por Defecto:</strong> Usa `!default` para variables que pueden ser sobrescritas
+                        <div class="code-block">$primary-color: #3498db !default;
+$base-font-size: 16px !default;</div>
+                    </div>
+                    
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <strong>Scope Local:</strong> Define variables locales cuando sea necesario
+                        <div class="code-block">.component {
+  $local-padding: 20px; // Solo para este componente
+  padding: $local-padding;
+  margin: $local-padding / 2;
+}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🎯</span>Casos de Uso Comunes</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <h4>🎨 Sistemas de Diseño</h4>
+                        <p>Mantener consistencia visual en componentes UI</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🌓 Temas Dark/Light</h4>
+                        <p>Cambiar fácilmente entre diferentes esquemas de color</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>📱 Responsive Design</h4>
+                        <p>Definir breakpoints y espaciados consistentes</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🏢 Branding Corporativo</h4>
+                        <p>Aplicar colores y fuentes de marca de forma uniforme</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">⚡</span>Compilación y Uso</h3>
+                <div class="highlight">
+                    <strong>📝 Importante:</strong> Las variables SCSS se procesan en tiempo de compilación, no en tiempo de ejecución como las CSS Custom Properties (variables CSS nativas).
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Instalación de Sass:</strong>
+                    <div class="code-block">npm install -g sass
+# o para proyectos específicos
+npm install sass --save-dev</div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Compilación:</strong>
+                    <div class="code-block">sass input.scss output.css
+# o modo watch para desarrollo
+sass --watch input.scss:output.css</div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>En proyectos React/Vue:</strong>
+                    <div class="code-block">// La mayoría de bundlers modernos incluyen soporte para SCSS
+import './styles.scss';</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remover clase active de todos los tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostrar la sección seleccionada
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Activar el tab correspondiente
+            event.target.classList.add('active');
+            
+            // Scroll al inicio de la sección
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Agregar efectos de hover y animaciones adicionales
+        document.addEventListener('DOMContentLoaded', function() {
+            // Efecto de escritura para los títulos
+            const headers = document.querySelectorAll('.section-header h2');
+            headers.forEach(header => {
+                header.style.opacity = '0';
+                header.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    header.style.transition = 'all 0.6s ease';
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateY(0)';
+                }, 200);
+            });
+
+            // Efecto de aparición progresiva para las tarjetas
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * (index + 1));
+            });
+
+            // Efecto parallax sutil en el header
+            const header = document.querySelector('.header');
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+                header.style.transform = `translateY(${rate}px)`;
+            });
+
+            // Resaltar código cuando se hace hover
+            const codeBlocks = document.querySelectorAll('.code-block');
+            codeBlocks.forEach(block => {
+                block.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
+                });
+                
+                block.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Copiar código al hacer clic
+            codeBlocks.forEach(block => {
+                block.addEventListener('click', function() {
+                    const text = this.innerText;
+                    navigator.clipboard.writeText(text).then(() => {
+                        // Mostrar feedback visual
+                        const originalBg = this.style.backgroundColor;
+                        this.style.backgroundColor = '#2ecc71';
+                        this.style.transition = 'background-color 0.3s ease';
+                        
+                        setTimeout(() => {
+                            this.style.backgroundColor = originalBg;
+                        }, 500);
+                        
+                        // Mostrar tooltip
+                        const tooltip = document.createElement('div');
+                        tooltip.textContent = '¡Código copiado!';
+                        tooltip.style.cssText = `
+                            position: fixed;
+                            top: 20px;
+                            right: 20px;
+                            background: #2ecc71;
+                            color: white;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            z-index: 1000;
+                            animation: fadeInOut 2s ease;
+                        `;
+                        
+                        document.body.appendChild(tooltip);
+                        
+                        setTimeout(() => {
+                            document.body.removeChild(tooltip);
+                        }, 2000);
+                    }).catch(() => {
+                        console.log('No se pudo copiar el código');
+                    });
+                });
+            });
+        });
+
+        // Añadir estilos para la animación del tooltip
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateX(100px); }
+                20% { opacity: 1; transform: translateX(0); }
+                80% { opacity: 1; transform: translateX(0); }
+                100% { opacity: 0; transform: translateX(100px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
