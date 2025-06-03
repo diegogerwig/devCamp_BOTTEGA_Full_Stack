@@ -891,7 +891,7 @@ $base-font-size: 16px !default;</pre>
                     <p class="text-lg text-purple-700 dark:text-purple-300">Gestionando el acceso de usuarios en tus aplicaciones React</p>
                 </div>
 
-                <div class="space-y-8">
+                <div class="space-y-8 max-w-6xl mx-auto">
                     <!-- What is Authentication -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
                         <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
@@ -1064,17 +1064,17 @@ function ProtectedRoute() {
                     <p class="text-lg text-teal-700 dark:text-teal-300">Manejando la entrada de datos del usuario de forma eficiente</p>
                 </div>
 
-                <div class="space-y-8">
+                <div class="space-y-8 max-w-6xl mx-auto">
                     <!-- Controlled Components -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
                         <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
                             <i class="fas fa-cogs mr-3 text-teal-600 dark:text-teal-400"></i>Componentes Controlados
                         </h3>
                         <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                            En HTML, los elementos de formulario como `<input>`, `<textarea>` y `<select>` mantienen su propio estado interno. En React, el enfoque más común es usar **componentes controlados**, donde el estado del formulario es manejado por el componente React usando `useState`.
+                            En HTML, los elementos de formulario como &lt;input&gt;, &lt;textarea&gt; y &lt;select&gt; mantienen su propio estado interno. En React, el enfoque más común es usar <strong>componentes controlados</strong>, donde el estado del formulario es manejado por el componente React usando useState.
                         </p>
                         <p class="text-gray-600 dark:text-gray-300 leading-relaxed mt-3">
-                            El valor del input se vincula al estado del componente (`value={this.state.value}`) y cualquier cambio se maneja a través de una función (`onChange={this.handleChange}`) que actualiza ese estado. Esto hace que el estado de React sea la "única fuente de la verdad".
+                            El valor del input se vincula al estado del componente (value={this.state.value}) y cualquier cambio se maneja a través de una función (onChange={this.handleChange}) que actualiza ese estado. Esto hace que el estado de React sea la "única fuente de la verdad".
                         </p>
                         <pre class="bg-gray-900 text-gray-300 p-4 rounded-lg text-sm mt-4 cursor-pointer hover:bg-gray-800 transition-colors overflow-x-auto" onclick="copyToClipboard(this)">function NameForm() {
   const [name, setName] = useState('');
@@ -1109,13 +1109,13 @@ function ProtectedRoute() {
                             <!-- Textarea -->
                             <div class="bg-teal-50 dark:bg-teal-900 p-4 rounded-lg border-l-4 border-teal-500">
                                 <h4 class="font-semibold text-teal-800 dark:text-teal-200 mb-2">Textarea</h4>
-                                <p class="text-teal-700 dark:text-teal-300 text-sm mb-2">En React, `<textarea>` usa el atributo `value` en lugar de hijos para establecer su contenido, similar a un `<input>`.</p>
+                                <p class="text-teal-700 dark:text-teal-300 text-sm mb-2">En React, &lt;textarea&gt; usa el atributo value en lugar de hijos para establecer su contenido, similar a un &lt;input&gt;.</p>
                                 <pre class="bg-gray-900 text-gray-300 p-2 rounded text-xs cursor-pointer hover:bg-gray-800 transition-colors" onclick="copyToClipboard(this)"><textarea value={this.state.description} onChange={this.handleDescriptionChange} /></pre>
                             </div>
                             <!-- Select -->
                             <div class="bg-cyan-50 dark:bg-cyan-900 p-4 rounded-lg border-l-4 border-cyan-500">
                                 <h4 class="font-semibold text-cyan-800 dark:text-cyan-200 mb-2">Select</h4>
-                                <p class="text-cyan-700 dark:text-cyan-300 text-sm mb-2">El valor seleccionado en un `<select>` se controla mediante el atributo `value` en la etiqueta `select`. React se encarga de la opción seleccionada.</p>
+                                <p class="text-cyan-700 dark:text-cyan-300 text-sm mb-2">El valor seleccionado en un &lt;select&gt; se controla mediante el atributo value en la etiqueta select. React se encarga de la opción seleccionada.</p>
                                 <pre class="bg-gray-900 text-gray-300 p-2 rounded text-xs cursor-pointer hover:bg-gray-800 transition-colors" onclick="copyToClipboard(this)"><select value={this.state.selectedValue} onChange={this.handleSelectChange}>
   <option value="option1">Option 1</option>
   <option value="option2">Option 2</option>
