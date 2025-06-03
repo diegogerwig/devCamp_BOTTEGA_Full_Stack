@@ -61,6 +61,12 @@
             <button class="nav-tab bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg" data-section="events">
                 <i class="fas fa-hand-pointer mr-2"></i>Event Listeners
             </button>
+            <button class="nav-tab bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg" data-section="auth">
+                <i class="fas fa-lock mr-2"></i>Autenticación
+            </button>
+            <button class="nav-tab bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg" data-section="forms">
+                <i class="fas fa-edit mr-2"></i>Formularios
+            </button>
         </nav>
 
         <!-- AXIOS SECTION -->
@@ -857,6 +863,14 @@ $base-font-size: 16px !default;</pre>
                             e.preventDefault();
                             showSection('events');
                             break;
+                        case '5':
+                            e.preventDefault();
+                            showSection('auth');
+                            break;
+                        case '6':
+                            e.preventDefault();
+                            showSection('forms');
+                            break;
                     }
                 }
             });
@@ -866,3 +880,281 @@ $base-font-size: 16px !default;</pre>
     </script>
 </body>
 </html>
+
+
+            <!-- AUTHENTICATION SECTION -->
+            <section id="auth" class="section hidden">
+                <div class="text-center bg-purple-100 dark:bg-purple-900 p-6 rounded-xl mb-8 border border-purple-200 dark:border-purple-800">
+                    <h2 class="text-3xl font-bold text-purple-800 dark:text-purple-200 mb-2">
+                        <i class="fas fa-lock mr-3"></i>Autenticación en React
+                    </h2>
+                    <p class="text-lg text-purple-700 dark:text-purple-300">Gestionando el acceso de usuarios en tus aplicaciones React</p>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- What is Authentication -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
+                            <i class="fas fa-key mr-3 text-purple-600 dark:text-purple-400"></i>¿Qué es la Autenticación?
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                            La autenticación es el proceso de verificar la identidad de un usuario. En aplicaciones web, esto generalmente implica que un usuario proporcione credenciales (como nombre de usuario y contraseña) que el sistema valida. Una vez autenticado, el usuario puede acceder a rutas protegidas o funcionalidades específicas.
+                        </p>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mt-3">
+                            En React, la autenticación generalmente se maneja en el lado del cliente interactuando con una API de backend. El frontend envía las credenciales, el backend las verifica y, si son correctas, devuelve una señal (a menudo un token) que el frontend almacena y utiliza para solicitudes posteriores.
+                        </p>
+                    </div>
+
+                    <!-- Key Concepts -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
+                            <i class="fas fa-lightbulb mr-3 text-purple-600 dark:text-purple-400"></i>Conceptos Clave
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
+                                <h4 class="font-bold mb-2 text-purple-800 dark:text-purple-200 flex items-center">
+                                    <i class="fas fa-server mr-2"></i>Tokens (JWT)
+                                </h4>
+                                <p class="text-purple-700 dark:text-purple-300 text-sm">Los JSON Web Tokens (JWT) son un estándar común para crear tokens de acceso que permiten la autenticación segura entre cliente y servidor.</p>
+                            </div>
+                            <div class="bg-indigo-50 dark:bg-indigo-900 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800">
+                                <h4 class="font-bold mb-2 text-indigo-800 dark:text-indigo-200 flex items-center">
+                                    <i class="fas fa-database mr-2"></i>Almacenamiento del Estado
+                                </h4>
+                                <p class="text-indigo-700 dark:text-indigo-300 text-sm">El estado de autenticación (si el usuario está logueado y quién es) debe almacenarse. Opciones comunes: Context API, Redux, Zustand, Local Storage, Cookies.</p>
+                            </div>
+                            <div class="bg-teal-50 dark:bg-teal-900 p-4 rounded-lg border border-teal-200 dark:border-teal-800">
+                                <h4 class="font-bold mb-2 text-teal-800 dark:text-teal-200 flex items-center">
+                                    <i class="fas fa-route mr-2"></i>Rutas Protegidas
+                                </h4>
+                                <p class="text-teal-700 dark:text-teal-300 text-sm">Componentes que verifican si el usuario está autenticado antes de renderizar una página o componente específico.</p>
+                            </div>
+                            <div class="bg-orange-50 dark:bg-orange-900 p-4 rounded-lg border border-orange-200 dark:border-orange-800">
+                                <h4 class="font-bold mb-2 text-orange-800 dark:text-orange-200 flex items-center">
+                                    <i class="fas fa-cookie-bite mr-2"></i>Persistencia
+                                </h4>
+                                <p class="text-orange-700 dark:text-orange-300 text-sm">Para mantener al usuario logueado después de refrescar la página, se usan Cookies o Local Storage para almacenar el token o la información del usuario.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Example Flow -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
+                            <i class="fas fa-code mr-3 text-purple-600 dark:text-purple-400"></i>Flujo Básico de Autenticación
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border-l-4 border-blue-500">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3">1</span>
+                                    <h4 class="font-semibold text-gray-800 dark:text-gray-200">Formulario de Login</h4>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">El usuario ingresa sus credenciales en un formulario.</p>
+                                <pre class="bg-gray-900 text-gray-300 p-3 rounded-lg text-sm mt-2 cursor-pointer hover:bg-gray-800 transition-colors" onclick="copyToClipboard(this)">// Componente LoginForm.jsx
+function LoginForm({ onLoginSuccess }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Usar Axios (ya visto) para llamar a la API
+      const response = await axios.post('/api/login', { username, password });
+      // Guardar token/info del usuario (ej. en Local Storage)
+      localStorage.setItem('authToken', response.data.token);
+      onLoginSuccess(response.data.user);
+    } catch (error) {
+      console.error('Login failed:', error);
+      // Mostrar error al usuario
+    }
+  };
+  // ... JSX del formulario con inputs y botón submit
+}</pre>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border-l-4 border-green-500">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3">2</span>
+                                    <h4 class="font-semibold text-gray-800 dark:text-gray-200">Gestión del Estado Global</h4>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">Usar Context API (o similar) para proveer el estado de autenticación a toda la aplicación.</p>
+                                <pre class="bg-gray-900 text-gray-300 p-3 rounded-lg text-sm mt-2 cursor-pointer hover:bg-gray-800 transition-colors" onclick="copyToClipboard(this)">// AuthContext.js
+const AuthContext = createContext();
+
+export function AuthProvider({ children }) {
+  const [currentUser, setCurrentUser] = useState(null);
+  // Lógica para cargar usuario desde Local Storage al inicio
+  // ...
+  const login = (user) => setCurrentUser(user);
+  const logout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('authToken');
+  };
+
+  return (
+    <AuthContext.Provider value={{ currentUser, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export const useAuth = () => useContext(AuthContext);</pre>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border-l-4 border-yellow-500">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-yellow-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3">3</span>
+                                    <h4 class="font-semibold text-gray-800 dark:text-gray-200">Rutas Protegidas</h4>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">Crear un componente que redirija al login si el usuario no está autenticado.</p>
+                                <pre class="bg-gray-900 text-gray-300 p-3 rounded-lg text-sm mt-2 cursor-pointer hover:bg-gray-800 transition-colors" onclick="copyToClipboard(this)">// ProtectedRoute.jsx
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+
+function ProtectedRoute() {
+  const { currentUser } = useAuth();
+  return currentUser ? <Outlet /> : <Navigate to="/login" />;
+}
+
+// Uso en App.js (con React Router)
+<Routes>
+  <Route path="/login" element={<LoginPage />} />
+  <Route element={<ProtectedRoute />}>
+    <Route path="/profile" element={<ProfilePage />} />
+    {/* Otras rutas protegidas */}
+  </Route>
+</Routes></pre>
+                            </div>
+                             <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border-l-4 border-red-500">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3">4</span>
+                                    <h4 class="font-semibold text-gray-800 dark:text-gray-200">Logout</h4>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">Un botón que llame a la función `logout` del contexto para limpiar el estado y el token.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Persistence -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
+                            <i class="fas fa-save mr-3 text-purple-600 dark:text-purple-400"></i>Persistencia de la Sesión
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                            Para evitar que el usuario tenga que iniciar sesión cada vez que refresca la página, la información de autenticación (como el token JWT o datos básicos del usuario) debe persistir. Las opciones más comunes son:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 mt-4 space-y-2">
+                            <li><strong>Local Storage:</strong> Almacenamiento persistente en el navegador. Fácil de usar, pero vulnerable a ataques XSS si no se maneja con cuidado. El token debe enviarse manualmente en las cabeceras de las peticiones (Ej: `Authorization: Bearer <token>`).</li>
+                            <li><strong>Cookies (HttpOnly, Secure):</strong> Más seguras contra XSS ya que no son accesibles por JavaScript del lado del cliente. El navegador las envía automáticamente con cada solicitud al dominio correspondiente. Requiere configuración en el backend para establecerlas correctamente (flags `HttpOnly`, `Secure`, `SameSite`).</li>
+                        </ul>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mt-3">
+                            La elección depende de los requisitos de seguridad. Las cookies HttpOnly suelen ser la opción preferida para almacenar tokens de sesión sensibles.
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                            <i class="fas fa-info-circle mr-1"></i> Inspirado en la guía de <a href="https://foalts.org/es/docs/tutorials/real-world-example-with-react/10-auth-with-react/" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">FoalTS</a>.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FORMS SECTION -->
+            <section id="forms" class="section hidden">
+                <div class="text-center bg-teal-100 dark:bg-teal-900 p-6 rounded-xl mb-8 border border-teal-200 dark:border-teal-800">
+                    <h2 class="text-3xl font-bold text-teal-800 dark:text-teal-200 mb-2">
+                        <i class="fas fa-edit mr-3"></i>Formularios en React
+                    </h2>
+                    <p class="text-lg text-teal-700 dark:text-teal-300">Manejando la entrada de datos del usuario de forma eficiente</p>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- Controlled Components -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
+                            <i class="fas fa-cogs mr-3 text-teal-600 dark:text-teal-400"></i>Componentes Controlados
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                            En HTML, los elementos de formulario como `<input>`, `<textarea>` y `<select>` mantienen su propio estado interno. En React, el enfoque más común es usar **componentes controlados**, donde el estado del formulario es manejado por el componente React usando `useState`.
+                        </p>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mt-3">
+                            El valor del input se vincula al estado del componente (`value={this.state.value}`) y cualquier cambio se maneja a través de una función (`onChange={this.handleChange}`) que actualiza ese estado. Esto hace que el estado de React sea la "única fuente de la verdad".
+                        </p>
+                        <pre class="bg-gray-900 text-gray-300 p-4 rounded-lg text-sm mt-4 cursor-pointer hover:bg-gray-800 transition-colors overflow-x-auto" onclick="copyToClipboard(this)">function NameForm() {
+  const [name, setName] = useState('');
+
+  const handleChange = (event) => {
+    setName(event.target.value); // Actualiza el estado en cada cambio
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Previene el envío por defecto del navegador
+    alert('A name was submitted: ' + name);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input type="text" value={name} onChange={handleChange} /> {/* Vinculado al estado */}
+      </label>
+      <input type="submit" value="Submit" />
+    </form>
+  );
+}</pre>
+                    </div>
+
+                    <!-- Handling Different Inputs -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
+                            <i class="fas fa-keyboard mr-3 text-teal-600 dark:text-teal-400"></i>Manejo de Diferentes Inputs
+                        </h3>
+                        <div class="space-y-6">
+                            <!-- Textarea -->
+                            <div class="bg-teal-50 dark:bg-teal-900 p-4 rounded-lg border-l-4 border-teal-500">
+                                <h4 class="font-semibold text-teal-800 dark:text-teal-200 mb-2">Textarea</h4>
+                                <p class="text-teal-700 dark:text-teal-300 text-sm mb-2">En React, `<textarea>` usa el atributo `value` en lugar de hijos para establecer su contenido, similar a un `<input>`.</p>
+                                <pre class="bg-gray-900 text-gray-300 p-2 rounded text-xs cursor-pointer hover:bg-gray-800 transition-colors" onclick="copyToClipboard(this)"><textarea value={this.state.description} onChange={this.handleDescriptionChange} /></pre>
+                            </div>
+                            <!-- Select -->
+                            <div class="bg-cyan-50 dark:bg-cyan-900 p-4 rounded-lg border-l-4 border-cyan-500">
+                                <h4 class="font-semibold text-cyan-800 dark:text-cyan-200 mb-2">Select</h4>
+                                <p class="text-cyan-700 dark:text-cyan-300 text-sm mb-2">El valor seleccionado en un `<select>` se controla mediante el atributo `value` en la etiqueta `select`. React se encarga de la opción seleccionada.</p>
+                                <pre class="bg-gray-900 text-gray-300 p-2 rounded text-xs cursor-pointer hover:bg-gray-800 transition-colors" onclick="copyToClipboard(this)"><select value={this.state.selectedValue} onChange={this.handleSelectChange}>
+  <option value="option1">Option 1</option>
+  <option value="option2">Option 2</option>
+</select></pre>
+                            </div>
+                             <!-- Multiple Inputs -->
+                            <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg border-l-4 border-blue-500">
+                                <h4 class="font-semibold text-blue-800 dark:text-blue-200 mb-2">Múltiples Inputs</h4>
+                                <p class="text-blue-700 dark:text-blue-300 text-sm mb-2">Puedes manejar múltiples inputs controlados añadiendo un atributo `name` a cada elemento y dejando que la función controladora decida qué hacer basándose en `event.target.name`.</p>
+                                <pre class="bg-gray-900 text-gray-300 p-2 rounded text-xs cursor-pointer hover:bg-gray-800 transition-colors" onclick="copyToClipboard(this)">handleInputChange(event) {
+  const target = event.target;
+  const value = target.type === 'checkbox' ? target.checked : target.value;
+  const name = target.name;
+
+  this.setState({
+    [name]: value
+  });
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Libraries -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
+                            <i class="fas fa-book-reader mr-3 text-teal-600 dark:text-teal-400"></i>Alternativas y Librerías
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                            Aunque los componentes controlados son el enfoque estándar, manejar formularios complejos (con validación, estado de envío, etc.) puede volverse verboso. Existen librerías populares que simplifican enormemente este proceso:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 mt-4 space-y-2">
+                            <li><strong>React Hook Form:</strong> Enfoque basado en Hooks, optimizado para rendimiento y mínimo re-renderizado.</li>
+                            <li><strong>Formik:</strong> Una solución completa para manejo de formularios, validación y estado.</li>
+                        </ul>
+                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                            <i class="fas fa-info-circle mr-1"></i> Basado en la documentación de <a href="https://es.legacy.reactjs.org/docs/forms.html" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">React (Legacy)</a>.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+
