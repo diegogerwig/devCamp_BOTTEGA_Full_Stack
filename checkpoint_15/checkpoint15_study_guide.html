@@ -249,7 +249,11 @@ useEffect(() => {
                                             • <strong>Array vacío []:</strong> El efecto solo se ejecuta una vez<br>
                                             • <strong>Con variables [count]:</strong> Se ejecuta cuando 'count' cambia<br>
                                             • <strong>Sin array:</strong> Se ejecuta en cada render (puede causar loops infinitos)<br>
-                                            • <strong>Resultado:</strong> La petición HTTP se hace solo al montar el componente
+                                            • <strong>Resultado:</strong> La petición HTTP se hace solo al montar el componente.<br>
+                                            Este array se llama array de dependencias. Cuando está vacío ([]), le indica a React que el efecto (en este caso, la llamada axios.get(...)) solo debe ejecutarse una vez, justo después de que el componente se monte por primera vez en la interfaz.<br>
+                                            Si el array no estuviera vacío...<br>
+                                            - Si pusieras, por ejemplo, [userId], entonces el efecto se volvería a ejecutar cada vez que userId cambie.<br>
+                                            - Si no pusieras ningún array, el efecto se ejecutaría en cada renderizado, lo cual normalmente no es deseado para llamadas HTTP, ya que estarías haciendo muchas peticiones innecesarias.
                                         </p>
                                     </div>
                                 </div>
