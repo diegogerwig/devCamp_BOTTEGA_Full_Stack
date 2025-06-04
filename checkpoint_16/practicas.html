@@ -1,0 +1,1430 @@
+                <!-- Testing -->
+                <div id="testing" class="tab-content">
+                    <div class="bg-dark-card rounded-xl border border-dark-border p-8">
+                        <h2 class="text-3xl font-bold text-react-blue mb-6">Testing en React</h2>
+                        
+                        <div class="space-y-8">
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Configuración de Testing</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>// package.json dependencies
+{
+  "devDependencies": {
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/jest-dom": "^5.16.0",
+    "@testing-library/user-event": "^14.0.0",
+    "jest": "^28.0.0",
+    "jest-environment-jsdom": "^28.0.0"
+  }
+}
+
+// setupTests.js
+import '@testing-library/jest-dom';
+
+// Mocks globales
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
+
+// Mock para localStorage
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+};
+global.localStorage = localStorageMock;</code></pre>
+                                </div>
+                <div class="text-gray-400 text-sm">
+                    <a href="avanzados.html" class="text-react-blue hover:underline">← Avanzados</a> |
+                    <a href="index.html" class="text-react-blue hover:underline">Volver al Inicio</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        function showTab(targetTab) {
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                content.style.display = 'none';
+            });
+            
+            tabButtons.forEach(button => {
+                button.classList.remove('active', 'bg-react-blue', 'bg-opacity-20', 'text-react-blue');
+                button.classList.add('text-gray-300');
+                button.querySelector('span').classList.remove('bg-react-blue');
+                button.querySelector('span').classList.add('bg-gray-400');
+            });
+            
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.style.display = 'block';
+                setTimeout(() => {
+                    targetContent.classList.add('active');
+                }, 10);
+            }
+            
+            const activeButton = document.querySelector(`[data-tab="${targetTab}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active', 'bg-react-blue', 'bg-opacity-20', 'text-react-blue');
+                activeButton.classList.remove('text-gray-300');
+                activeButton.querySelector('span').classList.add('bg-react-blue');
+                activeButton.querySelector('span').classList.remove('bg-gray-400');
+            }
+        }
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+                showTab(tab);
+            });
+        });
+        
+        // Initialize first tab or tab from URL hash
+        const hash = window.location.hash.substring(1);
+        const initialTab = hash || 'patrones';
+        showTab(initialTab);
+        
+        // Update URL hash when tab changes
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+                window.location.hash = tab;
+            });
+        });
+        
+        // Simple syntax highlighting
+        document.querySelectorAll('pre code').forEach((block) => {
+            let html = block.innerHTML;
+            
+            // Highlight keywords
+            html = html.replace(/\b(function|const|let|var|if|else|for|while|return|import|export|from|class|extends|async|await|try|catch|finally|throw|new|describe|test|it|expect|beforeEach|afterEach|jest|mock)\b/g, '<span style="color: #ff79c6;">$1</span>');
+            
+            // Highlight strings
+            html = html.replace(/(["'])((?:\\.|(?!\1)[^\\])*?)\1/g, '<span style="color: #f1fa8c;">$1$2$1</span>');
+            
+            // Highlight comments
+            html = html.replace(/(\/\/.*$|\/\*[\s\S]*?\*\/)/gm, '<span style="color: #6272a4;">$1</span>');
+            
+            // Highlight JSX tags
+            html = html.replace(/&lt;(\/?[a-zA-Z][a-zA-Z0-9]*)/g, '<span style="color: #50fa7b;">&lt;$1</span>');
+            
+            // Highlight numbers
+            html = html.replace(/\b(\d+)\b/g, '<span style="color: #bd93f9;">$1</span>');
+            
+            block.innerHTML = html;
+        });
+        
+        // Scroll to top when changing tabs
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Testing de Componentes</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { LoginForm } from './LoginForm';
+
+describe('LoginForm', () => {
+  const mockOnSubmit = jest.fn();
+  
+  beforeEach(() => {
+    mockOnSubmit.mockClear();
+  });
+
+  test('renderiza correctamente', () => {
+    render(&lt;LoginForm onSubmit={mockOnSubmit} /&gt;);
+    
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/contraseña/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /iniciar sesión/i })).toBeInTheDocument();
+  });
+
+  test('muestra errores de validación', async () => {
+    const user = userEvent.setup();
+    render(&lt;LoginForm onSubmit={mockOnSubmit} /&gt;);
+    
+    const submitButton = screen.getByRole('button', { name: /iniciar sesión/i });
+    
+    await user.click(submitButton);
+    
+    expect(screen.getByText(/el email es requerido/i)).toBeInTheDocument();
+    expect(screen.getByText(/la contraseña es requerida/i)).toBeInTheDocument();
+    expect(mockOnSubmit).not.toHaveBeenCalled();
+  });
+
+  test('envía el formulario con datos válidos', async () => {
+    const user = userEvent.setup();
+    render(&lt;LoginForm onSubmit={mockOnSubmit} /&gt;);
+    
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/contraseña/i);
+    const submitButton = screen.getByRole('button', { name: /iniciar sesión/i });
+    
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
+    
+    expect(mockOnSubmit).toHaveBeenCalledWith({
+      email: 'test@example.com',
+      password: 'password123'
+    });
+  });
+
+  test('muestra loading state durante envío', async () => {
+    const user = userEvent.setup();
+    const slowSubmit = jest.fn(() => new Promise(resolve => setTimeout(resolve, 100)));
+    
+    render(&lt;LoginForm onSubmit={slowSubmit} /&gt;);
+    
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/contraseña/i);
+    const submitButton = screen.getByRole('button', { name: /iniciar sesión/i });
+    
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
+    
+    expect(screen.getByText(/iniciando.../i)).toBeInTheDocument();
+    expect(submitButton).toBeDisabled();
+    
+    await waitFor(() => {
+      expect(screen.queryByText(/iniciando.../i)).not.toBeInTheDocument();
+    });
+  });
+});</code></pre>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Testing de Custom Hooks</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>import { renderHook, act } from '@testing-library/react';
+import { useAuth } from './useAuth';
+
+// Mock del AuthContext
+const mockAuthContext = {
+  user: null,
+  login: jest.fn(),
+  logout: jest.fn(),
+  loading: false
+};
+
+// Wrapper para provider
+const wrapper = ({ children }) => (
+  &lt;AuthContext.Provider value={mockAuthContext}&gt;
+    {children}
+  &lt;/AuthContext.Provider&gt;
+);
+
+describe('useAuth', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('retorna valores iniciales correctos', () => {
+    const { result } = renderHook(() => useAuth(), { wrapper });
+    
+    expect(result.current.user).toBeNull();
+    expect(result.current.loading).toBe(false);
+    expect(typeof result.current.login).toBe('function');
+    expect(typeof result.current.logout).toBe('function');
+  });
+
+  test('llama a login correctamente', async () => {
+    const { result } = renderHook(() => useAuth(), { wrapper });
+    
+    const credentials = { email: 'test@example.com', password: 'password' };
+    
+    await act(async () => {
+      await result.current.login(credentials);
+    });
+    
+    expect(mockAuthContext.login).toHaveBeenCalledWith(credentials);
+  });
+});
+
+// Testing de hook con estado
+import { useLocalStorage } from './useLocalStorage';
+
+describe('useLocalStorage', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    jest.clearAllMocks();
+  });
+
+  test('inicializa con valor por defecto', () => {
+    const { result } = renderHook(() => useLocalStorage('test-key', 'default-value'));
+    
+    expect(result.current[0]).toBe('default-value');
+  });
+
+  test('carga valor existente de localStorage', () => {
+    localStorage.setItem('test-key', JSON.stringify('stored-value'));
+    
+    const { result } = renderHook(() => useLocalStorage('test-key', 'default-value'));
+    
+    expect(result.current[0]).toBe('stored-value');
+  });
+
+  test('actualiza localStorage cuando cambia el valor', () => {
+    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
+    
+    act(() => {
+      result.current[1]('new-value');
+    });
+    
+    expect(result.current[0]).toBe('new-value');
+    expect(localStorage.setItem).toHaveBeenCalledWith('test-key', '"new-value"');
+  });
+});</code></pre>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Testing de Route Guards</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthGuard } from './AuthGuard';
+import { useAuth } from '../hooks/useAuth';
+
+// Mock del hook useAuth
+jest.mock('../hooks/useAuth');
+
+const MockComponent = () => &lt;div&gt;Contenido Protegido&lt;/div&gt;;
+
+const renderWithRouter = (component) => {
+  return render(
+    &lt;BrowserRouter&gt;
+      {component}
+    &lt;/BrowserRouter&gt;
+  );
+};
+
+describe('AuthGuard', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('muestra loading cuando está cargando', () => {
+    useAuth.mockReturnValue({
+      user: null,
+      loading: true
+    });
+    
+    renderWithRouter(
+      &lt;AuthGuard&gt;
+        &lt;MockComponent /&gt;
+      &lt;/AuthGuard&gt;
+    );
+    
+    expect(screen.getByText(/verificando autenticación/i)).toBeInTheDocument();
+    expect(screen.queryByText('Contenido Protegido')).not.toBeInTheDocument();
+  });
+
+  test('redirige a login cuando no está autenticado', () => {
+    useAuth.mockReturnValue({
+      user: null,
+      loading: false
+    });
+    
+    renderWithRouter(
+      &lt;AuthGuard&gt;
+        &lt;MockComponent /&gt;
+      &lt;/AuthGuard&gt;
+    );
+    
+    expect(screen.queryByText('Contenido Protegido')).not.toBeInTheDocument();
+    // Verificar redirección es más complejo, requiere mock de useNavigate
+  });
+
+  test('muestra contenido cuando está autenticado', () => {
+    useAuth.mockReturnValue({
+      user: { id: 1, name: 'Usuario Test' },
+      loading: false
+    });
+    
+    renderWithRouter(
+      &lt;AuthGuard&gt;
+        &lt;MockComponent /&gt;
+      &lt;/AuthGuard&gt;
+    );
+    
+    expect(screen.getByText('Contenido Protegido')).toBeInTheDocument();
+  });
+});
+
+// Testing de RoleGuard
+describe('RoleGuard', () => {
+  test('permite acceso con rol correcto', () => {
+    useAuth.mockReturnValue({
+      user: { id: 1, role: 'admin' },
+      loading: false
+    });
+    
+    renderWithRouter(
+      &lt;RoleGuard requiredRole="admin"&gt;
+        &lt;MockComponent /&gt;
+      &lt;/RoleGuard&gt;
+    );
+    
+    expect(screen.getByText('Contenido Protegido')).toBeInTheDocument();
+  });
+
+  test('redirige con rol incorrecto', () => {
+    useAuth.mockReturnValue({
+      user: { id: 1, role: 'user' },
+      loading: false
+    });
+    
+    renderWithRouter(
+      &lt;RoleGuard requiredRole="admin"&gt;
+        &lt;MockComponent /&gt;
+      &lt;/RoleGuard&gt;
+    );
+    
+    expect(screen.queryByText('Contenido Protegido')).not.toBeInTheDocument();
+  });
+});</code></pre>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Testing de APIs</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>import { render, screen, waitFor } from '@testing-library/react';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+import { UserProfile } from './UserProfile';
+
+// Configurar MSW (Mock Service Worker)
+const server = setupServer(
+  rest.get('/api/users/1', (req, res, ctx) => {
+    return res(
+      ctx.json({
+        id: 1,
+        name: 'Juan Pérez',
+        email: 'juan@example.com'
+      })
+    );
+  }),
+  
+  rest.put('/api/users/1', (req, res, ctx) => {
+    return res(
+      ctx.json({
+        id: 1,
+        name: 'Juan Pérez Actualizado',
+        email: 'juan.nuevo@example.com'
+      })
+    );
+  })
+);
+
+// Configurar MSW
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+describe('UserProfile con API', () => {
+  test('carga y muestra datos del usuario', async () => {
+    render(&lt;UserProfile userId={1} /&gt;);
+    
+    expect(screen.getByText(/cargando/i)).toBeInTheDocument();
+    
+    await waitFor(() => {
+      expect(screen.getByText('Juan Pérez')).toBeInTheDocument();
+      expect(screen.getByText('juan@example.com')).toBeInTheDocument();
+    });
+    
+    expect(screen.queryByText(/cargando/i)).not.toBeInTheDocument();
+  });
+
+  test('maneja errores de API', async () => {
+    // Override para simular error
+    server.use(
+      rest.get('/api/users/1', (req, res, ctx) => {
+        return res(ctx.status(500), ctx.json({ message: 'Error del servidor' }));
+      })
+    );
+    
+    render(&lt;UserProfile userId={1} /&gt;);
+    
+    await waitFor(() => {
+      expect(screen.getByText(/error/i)).toBeInTheDocument();
+    });
+  });
+
+  test('actualiza datos correctamente', async () => {
+    const user = userEvent.setup();
+    render(&lt;UserProfile userId={1} /&gt;);
+    
+    // Esperar a que carguen los datos
+    await waitFor(() => {
+      expect(screen.getByText('Juan Pérez')).toBeInTheDocument();
+    });
+    
+    // Simular edición
+    const editButton = screen.getByRole('button', { name: /editar/i });
+    await user.click(editButton);
+    
+    const nameInput = screen.getByDisplayValue('Juan Pérez');
+    await user.clear(nameInput);
+    await user.type(nameInput, 'Juan Pérez Actualizado');
+    
+    const saveButton = screen.getByRole('button', { name: /guardar/i });
+    await user.click(saveButton);
+    
+    await waitFor(() => {
+      expect(screen.getByText('Juan Pérez Actualizado')).toBeInTheDocument();
+    });
+  });
+});</code></pre>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance -->
+                <div id="performance" class="tab-content">
+                    <div class="bg-dark-card rounded-xl border border-dark-border p-8">
+                        <h2 class="text-3xl font-bold text-react-blue mb-6">Guías de Performance</h2>
+                        
+                        <div class="space-y-8">
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Mejores Prácticas de Rendimiento</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div class="bg-green-900 bg-opacity-30 border border-green-600 rounded-lg p-4">
+                                            <h4 class="text-green-200 font-semibold mb-3">✅ Hacer</h4>
+                                            <ul class="text-green-100 space-y-2 text-sm">
+                                                <li>• Usar React.memo para componentes que reciben las mismas props frecuentemente</li>
+                                                <li>• Memorizar funciones costosas con useMemo</li>
+                                                <li>• Usar useCallback para funciones pasadas como props</li>
+                                                <li>• Dividir el estado en múltiples useState</li>
+                                                <li>• Implementar lazy loading para rutas</li>
+                                                <li>• Usar key props únicas y estables</li>
+                                                <li>• Optimizar imágenes y assets</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="bg-red-900 bg-opacity-30 border border-red-600 rounded-lg p-4">
+                                            <h4 class="text-red-200 font-semibold mb-3">❌ Evitar</h4>
+                                            <ul class="text-red-100 space-y-2 text-sm">
+                                                <li>• Crear objetos/arrays en el render sin necesidad</li>
+                                                <li>• Abusar de useMemo/useCallback innecesariamente</li>
+                                                <li>• Mutar estado directamente</li>
+                                                <li>• Props drilling excesivo</li>
+                                                <li>• Componentes muy grandes</li>
+                                                <li>• Re-renderizados innecesarios</li>
+                                                <li>• Llamadas a API en cada render</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Bundle Optimization</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>// vite.config.js - Optimización de bundle
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Separar vendor libraries
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['@mui/material', '@emotion/react'],
+        }
+      }
+    },
+    // Análisis de bundle
+    analyzeBundle: true
+  },
+  // Optimizaciones de desarrollo
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+  }
+});
+
+// Lazy loading estratégico
+const HomePage = lazy(() => import('./pages/HomePage'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+
+// Preload crítico
+const AdminPanel = lazy(() => 
+  import('./pages/AdminPanel').then(module => {
+    // Precargar dependencias críticas
+    import('./components/AdminChart');
+    return { default: module.AdminPanel };
+  })
+);
+
+// Tree shaking correcto
+// ❌ Importa toda la librería
+import _ from 'lodash';
+
+// ✅ Importa solo lo necesario
+import { debounce, throttle } from 'lodash';
+// o mejor aún
+import debounce from 'lodash/debounce';
+
+// Code splitting por feature
+const FeatureA = lazy(() => 
+  import(/* webpackChunkName: "feature-a" */ './features/FeatureA')
+);
+
+const FeatureB = lazy(() => 
+  import(/* webpackChunkName: "feature-b" */ './features/FeatureB')
+);</code></pre>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Profiling y Debugging</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>// React DevTools Profiler
+import { Profiler } from 'react';
+
+function onRenderCallback(id, phase, actualDuration, baseDuration, startTime, commitTime) {
+  console.log('Profiler:', {
+    id,
+    phase,
+    actualDuration,
+    baseDuration,
+    startTime,
+    commitTime
+  });
+}
+
+function App() {
+  return (
+    &lt;Profiler id="App" onRender={onRenderCallback}&gt;
+      &lt;Router&gt;
+        &lt;Routes&gt;
+          {/* Rutas */}
+        &lt;/Routes&gt;
+      &lt;/Router&gt;
+    &lt;/Profiler&gt;
+  );
+}
+
+// Hook para medir performance
+function usePerformance(name) {
+  useEffect(() => {
+    const start = performance.now();
+    
+    return () => {
+      const end = performance.now();
+      console.log(`${name} tomó ${end - start} milisegundos`);
+    };
+  }, [name]);
+}
+
+// Componente para debug de renders
+function WhyDidYouRender(WrappedComponent) {
+  return function DebuggingComponent(props) {
+    const prevProps = useRef();
+    
+    useEffect(() => {
+      if (prevProps.current) {
+        const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+          if (prevProps.current[k] !== v) {
+            ps[k] = [prevProps.current[k], v];
+          }
+          return ps;
+        }, {});
+        
+        if (Object.keys(changedProps).length > 0) {
+          console.log('[Why-Did-You-Render]', WrappedComponent.name, changedProps);
+        }
+      }
+      
+      prevProps.current = props;
+    });
+    
+    return &lt;WrappedComponent {...props} /&gt;;
+  };
+}
+
+// Medición de métricas web vitales
+function measureWebVitals() {
+  if ('web-vitals' in window) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(console.log);
+      getFID(console.log);
+      getFCP(console.log);
+      getLCP(console.log);
+      getTTFB(console.log);
+    });
+  }
+}</code></pre>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Route Guards - Consideraciones de Performance</h3>
+                                <div class="bg-blue-900 bg-opacity-30 border border-blue-600 rounded-lg p-4 mb-4">
+                                    <h4 class="text-blue-200 font-semibold mb-3">🚀 Optimizaciones Específicas</h4>
+                                    <ul class="text-blue-100 space-y-2 text-sm">
+                                        <li>• <strong>Cache de autenticación:</strong> Evita verificaciones repetidas</li>
+                                        <li>• <strong>Lazy loading de guards:</strong> Carga guards solo cuando se necesiten</li>
+                                        <li>• <strong>Preload de rutas autorizadas:</strong> Precarga rutas que el usuario puede acceder</li>
+                                        <li>• <strong>Debounce de verificaciones:</strong> Limita llamadas a APIs de auth</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>// Route Guard optimizado
+const OptimizedAuthGuard = React.memo(function AuthGuard({ children }) {
+  const { user, loading } = useAuth();
+  
+  // Memorizar el componente de loading
+  const loadingComponent = useMemo(() => (
+    &lt;div className="flex justify-center items-center h-screen"&gt;
+      &lt;Spinner /&gt;
+    &lt;/div&gt;
+  ), []);
+  
+  if (loading) return loadingComponent;
+  
+  return user ? children : &lt;Navigate to="/login" replace /&gt;;
+});
+
+// Hook de auth con cache optimizado
+function useOptimizedAuth() {
+  const [state, setState] = useState(() => {
+    // Cache inicial desde localStorage
+    const cached = localStorage.getItem('auth-cache');
+    if (cached) {
+      const { user, timestamp } = JSON.parse(cached);
+      // Cache válido por 5 minutos
+      if (Date.now() - timestamp < 5 * 60 * 1000) {
+        return { user, loading: false };
+      }
+    }
+    return { user: null, loading: true };
+  });
+  
+  const verifyAuth = useCallback(
+    debounce(async () => {
+      try {
+        const user = await authService.verify();
+        setState({ user, loading: false });
+        
+        // Actualizar cache
+        localStorage.setItem('auth-cache', JSON.stringify({
+          user,
+          timestamp: Date.now()
+        }));
+      } catch {
+        setState({ user: null, loading: false });
+        localStorage.removeItem('auth-cache');
+      }
+    }, 300),
+    []
+  );
+  
+  useEffect(() => {
+    if (state.loading) {
+      verifyAuth();
+    }
+  }, [state.loading, verifyAuth]);
+  
+  return state;
+}</code></pre>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark-card border-t border-dark-border mt-16">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <div class="w-8 h-8 bg-react-blue rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-react-dark" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 10.11c1.03 0 1.87.84 1.87 1.89s-.84 1.85-1.87 1.85-1.87-.82-1.87-1.85.84-1.89 1.87-1.89M7.37 20c.63.38 2.01-.2 3.6-1.7-.52-.59-1.03-1.23-1.51-1.9a22.7 22.7 0 0 1-2.4-.36c-.51 2.14-.32 3.61.31 3.96m.71-5.74l-.29-.51c-.11.29-.22.58-.29.86.27.06.57.11.88.16l-.3-.51m6.54-.76l.81-1.5-.81-1.5c-.87-.02-1.75-.03-2.62-.03-.87 0-1.75.01-2.62.03l-.81 1.5.81 1.5c.87.02 1.75.03 2.62.03.87 0 1.75-.01 2.62-.03M12 6.78c-.19.22-.39.45-.59.72h1.18c-.2-.27-.4-.5-.59-.72m0 10.44c.19-.22.39-.45.59-.72H11.41c.2.27.4.5.59.72M16.62 4c-.62-.38-2 .2-3.59 1.7.52.59 1.03 1.23 1.51 1.9.82.08 1.63.2 2.4.36.51-2.14.32-3.61-.32-3.96m-.7 5.74l.29.51c.11-.29.22-.58.29-.86-.27-.06-.57-.11-.88-.16l.3.51m1.45-7.05c1.47.84 1.63 3.05 1.01 5.63 2.54.75 4.37 1.99 4.37 3.68s-1.83 2.93-4.37 3.68c.62 2.58.46 4.79-1.01 5.63-1.46.84-3.45-.12-5.37-1.95-1.92 1.83-3.91 2.79-5.37 1.95-1.47-.84-1.63-3.05-1.01-5.63-2.54-.75-4.37-1.99-4.37-3.68s1.83-2.93 4.37-3.68c-.62-2.58-.46-4.79 1.01-5.63 1.46-.84 3.45.12 5.37 1.95 1.92-1.83 3.91-2.79 5.37-1.95M17.08 12c.34.75.64 1.5.89 2.26 2.1-.63 3.28-1.53 3.28-2.26S20.07 10.37 17.97 9.74c-.25.76-.55 1.51-.89 2.26M6.92 12c-.34-.75-.64-1.5-.89-2.26-2.1.63-3.28 1.53-3.28 2.26s1.18 1.63 3.28 2.26c.25-.76.55-1.51.89-2.26"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-gray-300 font-semibold">React Study Guide - Prácticas</p>
+                        <p class="text-gray-500 text-sm">Patrones y mejores prácticas</p>
+                    </div>
+                </div><!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buenas Prácticas - React Study Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#0a0a0a',
+                        'dark-card': '#1a1a1a',
+                        'dark-border': '#2a2a2a',
+                        'react-blue': '#61dafb',
+                        'react-dark': '#20232a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 4px; }
+        
+        .tab-content { opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
+        .tab-content.active { opacity: 1; transform: translateY(0); }
+        .code-block { background: #0d1117; border: 1px solid #30363d; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+    </style>
+</head>
+<body class="bg-dark-bg text-gray-100 font-sans">
+    <!-- Header -->
+    <header class="bg-dark-card border-b border-dark-border sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-react-blue rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-react-dark" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 10.11c1.03 0 1.87.84 1.87 1.89s-.84 1.85-1.87 1.85-1.87-.82-1.87-1.85.84-1.89 1.87-1.89M7.37 20c.63.38 2.01-.2 3.6-1.7-.52-.59-1.03-1.23-1.51-1.9a22.7 22.7 0 0 1-2.4-.36c-.51 2.14-.32 3.61.31 3.96m.71-5.74l-.29-.51c-.11.29-.22.58-.29.86.27.06.57.11.88.16l-.3-.51m6.54-.76l.81-1.5-.81-1.5c-.87-.02-1.75-.03-2.62-.03-.87 0-1.75.01-2.62.03l-.81 1.5.81 1.5c.87.02 1.75.03 2.62.03.87 0 1.75-.01 2.62-.03M12 6.78c-.19.22-.39.45-.59.72h1.18c-.2-.27-.4-.5-.59-.72m0 10.44c.19-.22.39-.45.59-.72H11.41c.2.27.4.5.59.72M16.62 4c-.62-.38-2 .2-3.59 1.7.52.59 1.03 1.23 1.51 1.9.82.08 1.63.2 2.4.36.51-2.14.32-3.61-.32-3.96m-.7 5.74l.29.51c.11-.29.22-.58.29-.86-.27-.06-.57-.11-.88-.16l.3.51m1.45-7.05c1.47.84 1.63 3.05 1.01 5.63 2.54.75 4.37 1.99 4.37 3.68s-1.83 2.93-4.37 3.68c.62 2.58.46 4.79-1.01 5.63-1.46.84-3.45-.12-5.37-1.95-1.92 1.83-3.91 2.79-5.37 1.95-1.47-.84-1.63-3.05-1.01-5.63-2.54-.75-4.37-1.99-4.37-3.68s1.83-2.93 4.37-3.68c-.62-2.58-.46-4.79 1.01-5.63 1.46-.84 3.45.12 5.37 1.95 1.92-1.83 3.91-2.79 5.37-1.95M17.08 12c.34.75.64 1.5.89 2.26 2.1-.63 3.28-1.53 3.28-2.26S20.07 10.37 17.97 9.74c-.25.76-.55 1.51-.89 2.26M6.92 12c-.34-.75-.64-1.5-.89-2.26-2.1.63-3.28 1.53-3.28 2.26s1.18 1.63 3.28 2.26c.25-.76.55-1.51.89-2.26"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-react-blue">Buenas Prácticas</h1>
+                        <p class="text-gray-400 text-sm">Patrones y mejores prácticas</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-400">
+                        <a href="index.html" class="text-react-blue hover:underline">← Inicio</a> |
+                        <a href="basicos.html" class="text-react-blue hover:underline">Básicos</a> |
+                        <a href="avanzados.html" class="text-react-blue hover:underline">Avanzados</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-6 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar Navigation -->
+            <aside class="lg:w-80 flex-shrink-0">
+                <div class="bg-dark-card rounded-xl border border-dark-border p-6 sticky top-24">
+                    <h2 class="text-lg font-semibold text-react-blue mb-4">Buenas Prácticas</h2>
+                    <nav class="space-y-2">
+                        <button class="tab-button w-full text-left px-4 py-3 rounded-lg hover:bg-dark-border transition-colors active bg-react-blue bg-opacity-20 text-react-blue" data-tab="patrones">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-2 h-2 bg-react-blue rounded-full"></span>
+                                <span>Patrones</span>
+                            </div>
+                        </button>
+                        <button class="tab-button w-full text-left px-4 py-3 rounded-lg hover:bg-dark-border transition-colors" data-tab="estructura">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+                                <span>Estructura</span>
+                            </div>
+                        </button>
+                        <button class="tab-button w-full text-left px-4 py-3 rounded-lg hover:bg-dark-border transition-colors" data-tab="testing">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+                                <span>Testing</span>
+                            </div>
+                        </button>
+                        <button class="tab-button w-full text-left px-4 py-3 rounded-lg hover:bg-dark-border transition-colors" data-tab="performance">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+                                <span>Performance</span>
+                            </div>
+                        </button>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="flex-1">
+                <!-- Patrones -->
+                <div id="patrones" class="tab-content active animate-fade-in">
+                    <div class="bg-dark-card rounded-xl border border-dark-border p-8">
+                        <h2 class="text-3xl font-bold text-react-blue mb-6">Patrones de Diseño</h2>
+                        
+                        <div class="space-y-8">
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Composición de Componentes</h3>
+                                <div class="bg-dark-bg rounded-lg p-4 border border-dark-border mb-4">
+                                    <p class="text-gray-300">Favor composición sobre herencia. Usa children y props para crear componentes flexibles.</p>
+                                </div>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>// Layout flexible con composición
+function Layout({ children, sidebar, header }) {
+  return (
+    &lt;div className="min-h-screen flex flex-col"&gt;
+      {header && &lt;header className="bg-white shadow"&gt;{header}&lt;/header&gt;}
+      
+      &lt;div className="flex flex-1"&gt;
+        {sidebar && (
+          &lt;aside className="w-64 bg-gray-50"&gt;{sidebar}&lt;/aside&gt;
+        )}
+        &lt;main className="flex-1 p-6"&gt;{children}&lt;/main&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Modal compuesto
+function Modal({ children, isOpen, onClose }) {
+  if (!isOpen) return null;
+  
+  return (
+    &lt;div className="fixed inset-0 z-50"&gt;
+      &lt;div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose} /&gt;
+      &lt;div className="fixed inset-0 flex items-center justify-center p-4"&gt;
+        &lt;div className="bg-white rounded-lg shadow-xl max-w-md w-full"&gt;
+          {children}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Subcomponentes del Modal
+Modal.Header = function ModalHeader({ children, onClose }) {
+  return (
+    &lt;div className="flex justify-between items-center p-6 border-b"&gt;
+      &lt;h2 className="text-xl font-semibold"&gt;{children}&lt;/h2&gt;
+      {onClose && (
+        &lt;button onClick={onClose} className="text-gray-400 hover:text-gray-600"&gt;
+          ✕
+        &lt;/button&gt;
+      )}
+    &lt;/div&gt;
+  );
+};
+
+Modal.Body = function ModalBody({ children }) {
+  return &lt;div className="p-6"&gt;{children}&lt;/div&gt;;
+};
+
+Modal.Footer = function ModalFooter({ children }) {
+  return (
+    &lt;div className="flex justify-end space-x-2 p-6 border-t bg-gray-50"&gt;
+      {children}
+    &lt;/div&gt;
+  );
+};
+
+// Uso del Modal compuesto
+function UserDeleteModal({ isOpen, onClose, onConfirm, userName }) {
+  return (
+    &lt;Modal isOpen={isOpen} onClose={onClose}&gt;
+      &lt;Modal.Header onClose={onClose}&gt;
+        Eliminar Usuario
+      &lt;/Modal.Header&gt;
+      
+      &lt;Modal.Body&gt;
+        ¿Estás seguro que deseas eliminar al usuario &lt;strong&gt;{userName}&lt;/strong&gt;?
+        Esta acción no se puede deshacer.
+      &lt;/Modal.Body&gt;
+      
+      &lt;Modal.Footer&gt;
+        &lt;button onClick={onClose} className="btn-secondary"&gt;
+          Cancelar
+        &lt;/button&gt;
+        &lt;button onClick={onConfirm} className="btn-danger"&gt;
+          Eliminar
+        &lt;/button&gt;
+      &lt;/Modal.Footer&gt;
+    &lt;/Modal&gt;
+  );
+}</code></pre>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Higher-Order Components (HOC)</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>// HOC para loading states
+function withLoading(WrappedComponent) {
+  return function LoadingComponent({ isLoading, loadingMessage, ...props }) {
+    if (isLoading) {
+      return (
+        &lt;div className="flex justify-center items-center p-8"&gt;
+          &lt;div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"&gt;&lt;/div&gt;
+          &lt;span className="ml-2"&gt;{loadingMessage || 'Cargando...'}&lt;/span&gt;
+        &lt;/div&gt;
+      );
+    }
+    
+    return &lt;WrappedComponent {...props} /&gt;;
+  };
+}
+
+// HOC para error boundaries
+function withErrorBoundary(WrappedComponent, fallbackComponent) {
+  return class extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { hasError: false, error: null };
+    }
+    
+    static getDerivedStateFromError(error) {
+      return { hasError: true, error };
+    }
+    
+    componentDidCatch(error, errorInfo) {
+      console.error('Error capturado por HOC:', error, errorInfo);
+    }
+    
+    render() {
+      if (this.state.hasError) {
+        const FallbackComponent = fallbackComponent || DefaultErrorFallback;
+        return &lt;FallbackComponent error={this.state.error} /&gt;;
+      }
+      
+      return &lt;WrappedComponent {...this.props} /&gt;;
+    }
+  };
+}
+
+// Combinar múltiples HOCs
+const enhance = compose(
+  withErrorBoundary,
+  withLoading,
+  connect(mapStateToProps) // Si usas Redux
+);
+
+const EnhancedUserList = enhance(UserList);</code></pre>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Render Props Pattern</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>// DataFetcher con render props
+function DataFetcher({ url, children, renderLoading, renderError }) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err);
+        setLoading(false);
+      });
+  }, [url]);
+  
+  if (loading) {
+    return renderLoading ? renderLoading() : &lt;div&gt;Cargando...&lt;/div&gt;;
+  }
+  
+  if (error) {
+    return renderError ? renderError(error) : &lt;div&gt;Error: {error.message}&lt;/div&gt;;
+  }
+  
+  return children({ data, refetch: () => window.location.reload() });
+}
+
+// Toggle component con render props
+function Toggle({ initial = false, children }) {
+  const [isOn, setIsOn] = useState(initial);
+  
+  const toggle = () => setIsOn(!isOn);
+  const turnOn = () => setIsOn(true);
+  const turnOff = () => setIsOn(false);
+  
+  return children({
+    isOn,
+    toggle,
+    turnOn,
+    turnOff
+  });
+}
+
+// Uso de render props
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;DataFetcher 
+        url="/api/users"
+        renderLoading={() => &lt;CustomSpinner /&gt;}
+        renderError={(error) => &lt;CustomError error={error} /&gt;}
+      &gt;
+        {({ data, refetch }) => (
+          &lt;div&gt;
+            &lt;button onClick={refetch}&gt;Actualizar&lt;/button&gt;
+            &lt;UserList users={data} /&gt;
+          &lt;/div&gt;
+        )}
+      &lt;/DataFetcher&gt;
+      
+      &lt;Toggle initial={false}&gt;
+        {({ isOn, toggle }) => (
+          &lt;div&gt;
+            &lt;button onClick={toggle}&gt;
+              {isOn ? 'Encendido' : 'Apagado'}
+            &lt;/button&gt;
+            {isOn && &lt;div&gt;¡Está encendido!&lt;/div&gt;}
+          &lt;/div&gt;
+        )}
+      &lt;/Toggle&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Custom Hooks Pattern</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>// Hook para local storage
+function useLocalStorage(key, initialValue) {
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      return initialValue;
+    }
+  });
+  
+  const setValue = (value) => {
+    try {
+      setStoredValue(value);
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error('Error guardando en localStorage:', error);
+    }
+  };
+  
+  return [storedValue, setValue];
+}
+
+// Hook para toggle
+function useToggle(initialValue = false) {
+  const [value, setValue] = useState(initialValue);
+  
+  const toggle = useCallback(() => setValue(v => !v), []);
+  const setTrue = useCallback(() => setValue(true), []);
+  const setFalse = useCallback(() => setValue(false), []);
+  
+  return { value, toggle, setTrue, setFalse };
+}
+
+// Hook para operaciones async
+function useAsync(asyncFunction, immediate = true) {
+  const [status, setStatus] = useState('idle');
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  
+  const execute = useCallback(() => {
+    setStatus('pending');
+    setData(null);
+    setError(null);
+    
+    return asyncFunction()
+      .then(response => {
+        setData(response);
+        setStatus('success');
+        return response;
+      })
+      .catch(error => {
+        setError(error);
+        setStatus('error');
+        throw error;
+      });
+  }, [asyncFunction]);
+  
+  useEffect(() => {
+    if (immediate) {
+      execute();
+    }
+  }, [execute, immediate]);
+  
+  return {
+    execute,
+    status,
+    data,
+    error,
+    isLoading: status === 'pending',
+    isError: status === 'error',
+    isSuccess: status === 'success'
+  };
+}
+
+// Uso de custom hooks
+function UserProfile() {
+  const [theme, setTheme] = useLocalStorage('theme', 'light');
+  const { value: isEditing, toggle: toggleEditing } = useToggle();
+  
+  const {
+    data: user,
+    isLoading,
+    isError,
+    execute: refetchUser
+  } = useAsync(() => fetch('/api/user').then(res => res.json()));
+  
+  if (isLoading) return &lt;div&gt;Cargando perfil...&lt;/div&gt;;
+  if (isError) return &lt;div&gt;Error cargando perfil&lt;/div&gt;;
+  
+  return (
+    &lt;div className={`profile ${theme}`}&gt;
+      &lt;button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}&gt;
+        Cambiar tema
+      &lt;/button&gt;
+      
+      &lt;button onClick={toggleEditing}&gt;
+        {isEditing ? 'Cancelar' : 'Editar'}
+      &lt;/button&gt;
+      
+      {isEditing ? (
+        &lt;EditUserForm user={user} onSave={refetchUser} /&gt;
+      ) : (
+        &lt;UserDetails user={user} /&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estructura -->
+                <div id="estructura" class="tab-content">
+                    <div class="bg-dark-card rounded-xl border border-dark-border p-8">
+                        <h2 class="text-3xl font-bold text-react-blue mb-6">Estructura de Proyecto</h2>
+                        
+                        <div class="space-y-8">
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Estructura Recomendada</h3>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>src/
+├── components/              # Componentes reutilizables
+│   ├── ui/                 # Componentes básicos de UI
+│   │   ├── Button/
+│   │   │   ├── Button.jsx
+│   │   │   ├── Button.test.js
+│   │   │   ├── Button.stories.js
+│   │   │   └── index.js
+│   │   ├── Input/
+│   │   ├── Modal/
+│   │   └── index.js        # Barrel exports
+│   ├── layout/             # Componentes de layout
+│   │   ├── Header/
+│   │   ├── Sidebar/
+│   │   ├── Footer/
+│   │   └── Layout/
+│   └── guards/             # Route Guards
+│       ├── AuthGuard.jsx
+│       ├── RoleGuard.jsx
+│       └── index.js
+├── pages/                  # Páginas/Vistas principales
+│   ├── HomePage/
+│   │   ├── HomePage.jsx
+│   │   ├── HomePage.test.js
+│   │   ├── components/     # Componentes específicos de la página
+│   │   │   ├── HeroSection.jsx
+│   │   │   └── FeatureList.jsx
+│   │   └── index.js
+│   ├── LoginPage/
+│   ├── Dashboard/
+│   │   ├── Dashboard.jsx
+│   │   ├── components/
+│   │   │   ├── StatsCard.jsx
+│   │   │   ├── RecentActivity.jsx
+│   │   │   └── QuickActions.jsx
+│   │   └── hooks/          # Hooks específicos del dashboard
+│   │       └── useDashboardData.js
+│   └── NotFound/
+├── hooks/                  # Custom hooks globales
+│   ├── useAuth.js
+│   ├── useApi.js
+│   ├── useLocalStorage.js
+│   └── index.js
+├── context/                # Contextos de React
+│   ├── AuthContext/
+│   │   ├── AuthContext.js
+│   │   ├── AuthProvider.js
+│   │   ├── useAuth.js
+│   │   └── index.js
+│   ├── ThemeContext/
+│   └── index.js
+├── services/               # Servicios para API y lógica de negocio
+│   ├── api/
+│   │   ├── apiClient.js    # Cliente base de API
+│   │   ├── authService.js
+│   │   ├── userService.js
+│   │   └── index.js
+│   ├── storage/
+│   │   ├── localStorage.js
+│   │   └── sessionStorage.js
+│   └── validation/
+│       ├── userValidation.js
+│       └── formValidation.js
+├── utils/                  # Utilidades y helpers
+│   ├── constants.js
+│   ├── helpers.js
+│   ├── formatters.js
+│   ├── validators.js
+│   └── index.js
+├── types/                  # TypeScript types (si usas TS)
+│   ├── user.types.js
+│   ├── api.types.js
+│   └── index.js
+├── styles/                 # Estilos globales
+│   ├── globals.css
+│   ├── variables.css
+│   ├── components.css
+│   └── utilities.css
+├── assets/                 # Recursos estáticos
+│   ├── images/
+│   ├── icons/
+│   ├── fonts/
+│   └── data/              # JSON estático
+├── config/                 # Configuraciones
+│   ├── environment.js
+│   ├── routes.js
+│   └── constants.js
+├── App.jsx                 # Componente principal
+├── main.jsx               # Punto de entrada
+└── setupTests.js          # Configuración de tests</code></pre>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Convenciones de Nomenclatura</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                                            <h4 class="text-react-blue font-semibold mb-2">Componentes</h4>
+                                            <ul class="text-gray-300 space-y-1 text-sm">
+                                                <li>• PascalCase: <code class="text-green-400">UserProfile</code></li>
+                                                <li>• Nombres descriptivos</li>
+                                                <li>• Evitar abreviaciones</li>
+                                                <li>• Prefijos para tipos: <code class="text-green-400">Modal</code>, <code class="text-green-400">Button</code></li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                                            <h4 class="text-react-blue font-semibold mb-2">Funciones y Variables</h4>
+                                            <ul class="text-gray-300 space-y-1 text-sm">
+                                                <li>• camelCase: <code class="text-green-400">handleSubmit</code></li>
+                                                <li>• Verbos para funciones: <code class="text-green-400">handleClick</code></li>
+                                                <li>• Sustantivos para variables: <code class="text-green-400">userData</code></li>
+                                                <li>• Booleanos con is/has: <code class="text-green-400">isLoading</code></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                                            <h4 class="text-react-blue font-semibold mb-2">Archivos y Carpetas</h4>
+                                            <ul class="text-gray-300 space-y-1 text-sm">
+                                                <li>• Componentes: <code class="text-green-400">UserProfile.jsx</code></li>
+                                                <li>• Hooks: <code class="text-green-400">useAuth.js</code></li>
+                                                <li>• Servicios: <code class="text-green-400">userService.js</code></li>
+                                                <li>• Carpetas: <code class="text-green-400">kebab-case</code> o <code class="text-green-400">camelCase</code></li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                                            <h4 class="text-react-blue font-semibold mb-2">Constantes</h4>
+                                            <ul class="text-gray-300 space-y-1 text-sm">
+                                                <li>• UPPER_CASE: <code class="text-green-400">API_URL</code></li>
+                                                <li>• Agrupadas en archivos: <code class="text-green-400">constants.js</code></li>
+                                                <li>• Prefijos por módulo: <code class="text-green-400">AUTH_TOKEN_KEY</code></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="text-xl font-semibold text-gray-200 mb-4">Barrel Exports</h3>
+                                <div class="bg-dark-bg rounded-lg p-4 border border-dark-border mb-4">
+                                    <p class="text-gray-300">Usa archivos index.js para simplificar las importaciones y crear APIs limpias.</p>
+                                </div>
+                                <div class="code-block rounded-lg p-4">
+                                    <pre class="text-sm text-gray-300 overflow-x-auto"><code>// components/ui/index.js
+export { default as Button } from './Button';
+export { default as Input } from './Input';
+export { default as Modal } from './Modal';
+export { default as Spinner } from './Spinner';
+
+// hooks/index.js
+export { default as useAuth } from './useAuth';
+export { default as useApi } from './useApi';
+export { default as useLocalStorage } from './useLocalStorage';
+
+// services/index.js
+export * as authService from './api/authService';
+export * as userService from './api/userService';
+export * as apiClient from './api/apiClient';
+
+// Uso simplificado
+import { Button, Modal, Input } from '@/components/ui';
+import { useAuth, useApi } from '@/hooks';
+import { authService, userService } from '@/services';</code></pre>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testing -->-2.4-.36c-.51 2.14-.32 3.61.31 3.96m.71-5.74l-.29-.51c-.11.29-.22.58-.29.86.27.06.57.11.88.16l-.3-.51m6.54-.76l.81-1.5-.81-1.5c-.87-.02-1.75-.03-2.62-.03-.87 0-1.75.01-2.62.03l-.81 1.5.81 1.5c.87.02 1.75.03 2.62.03.87 0 1.75-.01 2.62-.03M12 6.78c-.19.22-.39.45-.59.72h1.18c-.2-.27-.4-.5-.59-.72m0 10.44c.19-.22.39-.45.59-.72H11.41c.2.27.4.5.59.72M16.62 4c-.62-.38-2 .2-3.59 1.7.52.59 1.03 1.23 1.51 1.9.82.08 1.63.2 2.4.36.51-2.14.32-3.61-.32-3.96m-.7 5.74l.29.51c.11-.29.22-.58.29-.86-.27-.06-.57-.11-.88-.16l.3.51m1.45-7.
