@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Checkpoint - Bottega University</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'bottega': '#1e40af',
+                        'bottega-light': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #581c87 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    
+    <!-- Header -->
+    <header class="gradient-bg py-12 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="container mx-auto relative z-10">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold mb-4 text-white">
+                    🚀 React Checkpoint
+                </h1>
+                <h2 class="text-2xl font-semibold text-blue-200 mb-6">
+                    Bottega University - Guía de Estudio Completa
+                </h2>
+                <p class="text-lg text-blue-100 max-w-3xl mx-auto">
+                    ¡Éxito en tu checkpoint! Esta guía cubre todos los temas esenciales para tu examen de React en Bottega. 
+                    Enfócate en la comprensión conceptual y los patrones prácticos que te convertirán en un <strong>Full Stack Developer</strong> exitoso.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Índice Interactivo -->
+    <nav class="bg-gray-800 py-8 px-4 sticky top-0 z-50 border-b border-gray-700">
+        <div class="container mx-auto">
+            <h3 class="text-2xl font-bold mb-6 text-center text-blue-400">📋 ÍNDICE INTERACTIVO</h3>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Conceptos Fundamentales -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-semibold text-green-400 mb-3">📍 Conceptos Fundamentales</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#render-props" class="text-blue-300 hover:text-blue-100 transition-colors">🎭 Render Props</a></li>
+                        <li><a href="#estado-padre-hijo" class="text-blue-300 hover:text-blue-100 transition-colors">⬆️ Estado Padre-Hijo</a></li>
+                        <li><a href="#class-functional" class="text-blue-300 hover:text-blue-100 transition-colors">🔄 Class → Functional</a></li>
+                        <li><a href="#show-hide-links" class="text-blue-300 hover:text-blue-100 transition-colors">👁️ Show/Hide Links</a></li>
+                    </ul>
+                </div>
+
+                <!-- Autenticación & Seguridad -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-semibold text-yellow-400 mb-3">🔐 Autenticación & Seguridad</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#auto-login" class="text-blue-300 hover:text-blue-100 transition-colors">🔍 Auto-login Check</a></li>
+                        <li><a href="#route-guards" class="text-blue-300 hover:text-blue-100 transition-colors">🛡️ Route Guards</a></li>
+                        <li><a href="#logout-handler" class="text-blue-300 hover:text-blue-100 transition-colors">🚪 Logout Handler</a></li>
+                        <li><a href="#hoc-logout" class="text-blue-300 hover:text-blue-100 transition-colors">🔧 HOC Logout</a></li>
+                    </ul>
+                </div>
+
+                <!-- Portfolio Manager -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-semibold text-purple-400 mb-3">💼 Portfolio Manager</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#portfolio-secure" class="text-blue-300 hover:text-blue-100 transition-colors">🏗️ Componente Seguro</a></li>
+                        <li><a href="#grid-layout" class="text-blue-300 hover:text-blue-100 transition-colors">📱 Grid Layout</a></li>
+                        <li><a href="#sidebar-component" class="text-blue-300 hover:text-blue-100 transition-colors">📂 Sidebar Component</a></li>
+                        <li><a href="#portfolio-form" class="text-blue-300 hover:text-blue-100 transition-colors">📝 Portfolio Form</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mt-4">
+                <!-- Formularios Avanzados -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-semibold text-red-400 mb-3">📋 Formularios Avanzados</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#formdata-objects" class="text-blue-300 hover:text-blue-100 transition-colors">📦 FormData Objects</a></li>
+                        <li><a href="#crear-portfolio" class="text-blue-300 hover:text-blue-100 transition-colors">✨ Crear Portfolio Items</a></li>
+                    </ul>
+                </div>
+
+                <!-- Debugging & Optimización -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-semibold text-orange-400 mb-3">⚠️ Debugging & Optimización</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#key-props" class="text-blue-300 hover:text-blue-100 transition-colors">🔑 Key Props Fix</a></li>
+                        <li><a href="#patrones-pro" class="text-blue-300 hover:text-blue-100 transition-colors">🚀 Performance Tips</a></li>
+                    </ul>
+                </div>
+
+                <!-- Patrones Pro -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-semibold text-cyan-400 mb-3">🎯 Patrones Pro</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#mejores-practicas" class="text-blue-300 hover:text-blue-100 transition-colors">💡 Mejores Prácticas</a></li>
+                        <li><a href="#tips-bottega" class="text-blue-300 hover:text-blue-100 transition-colors">🎓 Tips Bottega</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- 1. Render Props -->
+        <section id="render-props" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-green-400">🎭 1. Render Props</h2>
+                <div class="mb-4 p-4 bg-blue-900 rounded-lg border-l-4 border-blue-400">
+                    <p class="text-blue-200">🎯 <strong>Patrón para compartir lógica entre componentes usando una función como prop</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-green-300">🌟 Conceptos Clave:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">🔄 Reutilización de lógica</strong> sin duplicar código entre componentes</li>
+                    <li><strong class="text-blue-400">🎨 Separación de responsabilidades</strong>: lógica vs presentación</li>
+                    <li><strong class="text-blue-400">📦 Composición flexible</strong> - el componente decide qué renderizar</li>
+                    <li><strong class="text-blue-400">🆚 Alternativa a HOCs</strong> para compartir funcionalidad</li>
+                    <li><strong class="text-blue-400">⚡ Patrón poderoso</strong> para mouse tracking, data fetching, form handling</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-green-300">💡 Cuándo usar:</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-green-900 p-4 rounded-lg">
+                        <p class="text-green-200">✅ Múltiples componentes necesitan la misma lógica de estado</p>
+                    </div>
+                    <div class="bg-green-900 p-4 rounded-lg">
+                        <p class="text-green-200">✅ Quieres flexibilidad en cómo se renderiza la UI</p>
+                    </div>
+                    <div class="bg-green-900 p-4 rounded-lg">
+                        <p class="text-green-200">✅ Necesitas pasar datos dinámicos a diferentes layouts</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Estado Padre-Hijo -->
+        <section id="estado-padre-hijo" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-purple-400">⬆️ 2. Actualizar Estado del Padre desde Componente Hijo</h2>
+                <div class="mb-4 p-4 bg-purple-900 rounded-lg border-l-4 border-purple-400">
+                    <p class="text-purple-200">🎯 <strong>Comunicación ascendente mediante funciones callback</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-purple-300">🌟 Conceptos Fundamentales:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">📊 Flujo de datos unidireccional</strong>: datos ⬇️, eventos ⬆️</li>
+                    <li><strong class="text-blue-400">🔧 Callback functions</strong> como props para comunicación</li>
+                    <li><strong class="text-blue-400">⚡ useCallback</strong> para optimizar performance y evitar re-renders</li>
+                    <li><strong class="text-blue-400">📝 Patrón esencial</strong> para formularios e interacciones</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-purple-300">💡 Casos de uso típicos:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-purple-900 p-4 rounded-lg">
+                        <p class="text-purple-200">✅ Formularios que actualizan estado del padre</p>
+                        <p class="text-purple-200">✅ Botones que cambian vista o modo de la aplicación</p>
+                    </div>
+                    <div class="bg-purple-900 p-4 rounded-lg">
+                        <p class="text-purple-200">✅ Componentes de input que sincronizan datos</p>
+                        <p class="text-purple-200">✅ Modales que comunican acciones al componente principal</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Auto-login Check -->
+        <section id="auto-login" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-yellow-400">🔍 3. Verificación Automática de Usuario Logueado</h2>
+                <div class="mb-4 p-4 bg-yellow-900 rounded-lg border-l-4 border-yellow-400">
+                    <p class="text-yellow-200">🎯 <strong>Sistema que verifica el estado de autenticación al iniciar la app</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-yellow-300">🌟 Arquitectura Recomendada:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">🎯 Context API</strong> para estado global de autenticación</li>
+                    <li><strong class="text-blue-400">🔄 useEffect</strong> en AuthProvider para verificación inicial</li>
+                    <li><strong class="text-blue-400">💾 localStorage/sessionStorage</strong> para persistir tokens</li>
+                    <li><strong class="text-blue-400">⏳ Estados de loading</strong> mientras se verifica</li>
+                    <li><strong class="text-blue-400">🧹 Limpieza automática</strong> de tokens expirados</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-yellow-300">💡 Flujo típico:</h3>
+                <div class="bg-yellow-900 p-6 rounded-lg">
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">🚀</span>
+                            <span class="text-yellow-200"><strong>App inicia</strong> → Verificar token almacenado</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">✅</span>
+                            <span class="text-yellow-200"><strong>Token válido</strong> → Cargar datos de usuario</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">❌</span>
+                            <span class="text-yellow-200"><strong>Token inválido</strong> → Limpiar storage + redirigir</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">🎯</span>
+                            <span class="text-yellow-200"><strong>Hook personalizado</strong> (useAuth) para acceso fácil</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Class to Functional -->
+        <section id="class-functional" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-cyan-400">🔄 4. Conversión de Class Component a Functional Component</h2>
+                <div class="mb-4 p-4 bg-cyan-900 rounded-lg border-l-4 border-cyan-400">
+                    <p class="text-cyan-200">🎯 <strong>Modernizar componentes usando React Hooks</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-cyan-300">🌟 Tabla de Equivalencias:</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full bg-gray-700 rounded-lg">
+                        <thead>
+                            <tr class="bg-gray-600">
+                                <th class="p-3 text-left text-cyan-300">Class Component</th>
+                                <th class="p-3 text-center text-cyan-300">🔄</th>
+                                <th class="p-3 text-left text-cyan-300">Functional Component</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-300">
+                            <tr class="border-t border-gray-600">
+                                <td class="p-3"><code class="bg-gray-800 px-2 py-1 rounded">this.state</code></td>
+                                <td class="p-3 text-center">➡️</td>
+                                <td class="p-3"><code class="bg-gray-800 px-2 py-1 rounded">useState</code></td>
+                            </tr>
+                            <tr class="border-t border-gray-600">
+                                <td class="p-3"><code class="bg-gray-800 px-2 py-1 rounded">componentDidMount</code></td>
+                                <td class="p-3 text-center">➡️</td>
+                                <td class="p-3"><code class="bg-gray-800 px-2 py-1 rounded">useEffect([])</code></td>
+                            </tr>
+                            <tr class="border-t border-gray-600">
+                                <td class="p-3"><code class="bg-gray-800 px-2 py-1 rounded">componentDidUpdate</code></td>
+                                <td class="p-3 text-center">➡️</td>
+                                <td class="p-3"><code class="bg-gray-800 px-2 py-1 rounded">useEffect([deps])</code></td>
+                            </tr>
+                            <tr class="border-t border-gray-600">
+                                <td class="p-3"><code class="bg-gray-800 px-2 py-1 rounded">componentWillUnmount</code></td>
+                                <td class="p-3 text-center">➡️</td>
+                                <td class="p-3"><code class="bg-gray-800 px-2 py-1 rounded">useEffect cleanup</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4 text-cyan-300">💡 Ventajas de Functional Components:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-cyan-900 p-4 rounded-lg">
+                        <p class="text-cyan-200">✅ <strong>Código más conciso</strong> y legible</p>
+                        <p class="text-cyan-200">✅ <strong>Mejor performance</strong> con hooks</p>
+                    </div>
+                    <div class="bg-cyan-900 p-4 rounded-lg">
+                        <p class="text-cyan-200">✅ <strong>Testing más sencillo</strong></p>
+                        <p class="text-cyan-200">✅ <strong>Composición natural</strong> de funcionalidades</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Show/Hide Links -->
+        <section id="show-hide-links" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-green-400">👁️ 5. Mostrar/Ocultar Enlaces según Estado de Login</h2>
+                <div class="mb-4 p-4 bg-green-900 rounded-lg border-l-4 border-green-400">
+                    <p class="text-green-200">🎯 <strong>Renderizado condicional basado en autenticación</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-green-300">🌟 Patrones de Implementación:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">🔀 Operador ternario</strong> <code class="bg-gray-700 px-2 py-1 rounded">user ? &lt;AuthLinks /&gt; : &lt;PublicLinks /&gt;</code></li>
+                    <li><strong class="text-blue-400">⚡ Operador &&</strong> para renderizado condicional simple</li>
+                    <li><strong class="text-blue-400">🎭 Context consumption</strong> para acceder al estado de usuario</li>
+                    <li><strong class="text-blue-400">🔄 Roles y permisos</strong> para diferentes niveles de acceso</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-green-300">💡 Consideraciones importantes:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-green-900 p-4 rounded-lg">
+                        <p class="text-green-200">✅ <strong>Estados de loading</strong> para evitar parpadeos</p>
+                        <p class="text-green-200">✅ <strong>Consistencia</strong> en toda la navegación</p>
+                    </div>
+                    <div class="bg-green-900 p-4 rounded-lg">
+                        <p class="text-green-200">✅ <strong>Fallbacks</strong> para usuarios no autenticados</p>
+                        <p class="text-green-200">✅ <strong>Performance</strong> con componentes memoizados</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Route Guards -->
+        <section id="route-guards" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-red-400">🛡️ 6. Route Guard (Guardia de Rutas)</h2>
+                <div class="mb-4 p-4 bg-red-900 rounded-lg border-l-4 border-red-400">
+                    <p class="text-red-200">🎯 <strong>Protección de rutas basada en autenticación y autorización</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-red-300">🌟 Tipos de Guards:</h3>
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-red-900 p-4 rounded-lg">
+                        <p class="text-red-200"><strong>🔐 Authentication Guard</strong>: ¿Está logueado?</p>
+                        <p class="text-red-200"><strong>👮 Authorization Guard</strong>: ¿Tiene permisos?</p>
+                    </div>
+                    <div class="bg-red-900 p-4 rounded-lg">
+                        <p class="text-red-200"><strong>📱 Role-based Guard</strong>: ¿Rol específico?</p>
+                        <p class="text-red-200"><strong>🔄 Redirect Guard</strong>: Redirigir según estado</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4 text-red-300">💡 Implementación típica:</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3 bg-red-900 p-3 rounded">
+                        <span class="text-xl">✅</span>
+                        <span class="text-red-200"><strong>Wrapper component</strong> que envuelve rutas protegidas</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-red-900 p-3 rounded">
+                        <span class="text-xl">✅</span>
+                        <span class="text-red-200"><strong>Loading states</strong> durante verificación</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-red-900 p-3 rounded">
+                        <span class="text-xl">✅</span>
+                        <span class="text-red-200"><strong>Redirect automático</strong> a login si no autorizado</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-red-900 p-3 rounded">
+                        <span class="text-xl">✅</span>
+                        <span class="text-red-200"><strong>Integración</strong> con React Router</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Logout Handler -->
+        <section id="logout-handler" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-orange-400">🚪 7. Logout Handler en App Component</h2>
+                <div class="mb-4 p-4 bg-orange-900 rounded-lg border-l-4 border-orange-400">
+                    <p class="text-orange-200">🎯 <strong>Función centralizada para manejar cierre de sesión</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-orange-300">🌟 Responsabilidades del Logout:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">🧹 Limpiar tokens</strong> de localStorage/sessionStorage</li>
+                    <li><strong class="text-blue-400">🔄 Resetear estado global</strong> de usuario</li>
+                    <li><strong class="text-blue-400">📡 API call</strong> para invalidar sesión en servidor</li>
+                    <li><strong class="text-blue-400">🎯 Redirección</strong> a página pública</li>
+                    <li><strong class="text-blue-400">⚠️ Manejo de errores</strong> durante el proceso</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-orange-300">💡 Mejores prácticas:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-orange-900 p-4 rounded-lg">
+                        <p class="text-orange-200">✅ <strong>useCallback</strong> para optimización</p>
+                        <p class="text-orange-200">✅ <strong>Error handling</strong> graceful</p>
+                    </div>
+                    <div class="bg-orange-900 p-4 rounded-lg">
+                        <p class="text-orange-200">✅ <strong>Loading states</strong> durante logout</p>
+                        <p class="text-orange-200">✅ <strong>Confirmación</strong> antes de logout (opcional)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. HOC Logout -->
+        <section id="hoc-logout" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-indigo-400">🔧 8. Higher Order Component (HOC) para Logout</h2>
+                <div class="mb-4 p-4 bg-indigo-900 rounded-lg border-l-4 border-indigo-400">
+                    <p class="text-indigo-200">🎯 <strong>Patrón para añadir funcionalidad de logout a múltiples componentes</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-indigo-300">🌟 Conceptos del HOC Pattern:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">🏭 Factory function</strong> que toma componente y retorna uno enhanced</li>
+                    <li><strong class="text-blue-400">🔄 Reutilización de lógica</strong> entre múltiples componentes</li>
+                    <li><strong class="text-blue-400">🎭 Separation of concerns</strong>: lógica vs UI</li>
+                    <li><strong class="text-blue-400">⚡ Props injection</strong> automática de funcionalidad</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-indigo-300">💡 Cuándo usar HOCs:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-indigo-900 p-4 rounded-lg">
+                        <p class="text-indigo-200">✅ <strong>Múltiples componentes</strong> necesitan la misma funcionalidad</p>
+                        <p class="text-indigo-200">✅ <strong>Cross-cutting concerns</strong> como autenticación</p>
+                    </div>
+                    <div class="bg-indigo-900 p-4 rounded-lg">
+                        <p class="text-indigo-200">✅ <strong>Legacy code</strong> que aún no usa hooks</p>
+                        <p class="text-indigo-200">✅ <strong>Composición</strong> de funcionalidades complejas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Portfolio Manager Seguro -->
+        <section id="portfolio-secure" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-pink-400">🏗️ 9. Portfolio Manager - Componente de Clase Seguro</h2>
+                <div class="mb-4 p-4 bg-pink-900 rounded-lg border-l-4 border-pink-400">
+                    <p class="text-pink-200">🎯 <strong>Componente robusto con manejo de seguridad y errores</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-pink-300">🌟 Características de Seguridad:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">🔐 Verificación de autenticación</strong> antes de API calls</li>
+                    <li><strong class="text-blue-400">🛡️ Validación de datos</strong> antes de procesamiento</li>
+                    <li><strong class="text-blue-400">⚠️ Error boundaries</strong> para capturar errores</li>
+                    <li><strong class="text-blue-400">🔄 Estados de loading/error/success</strong> bien definidos</li>
+                    <li><strong class="text-blue-400">🧹 Cleanup</strong> apropiado al desmontar</li>
+                </ul>
+
+                <div class="bg-pink-900 p-6 rounded-lg mb-6">
+                    <h4 class="text-lg font-semibold text-pink-300 mb-3">💡 Patrón de estados:</h4>
+                    <div class="text-center text-pink-200 text-xl">
+                        🔄 Loading → ✅ Success | ❌ Error
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4 text-pink-300">🚀 Consideraciones para Bottega:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-pink-900 p-4 rounded-lg">
+                        <p class="text-pink-200">📊 <strong>Manejo de portfolios</strong> múltiples</p>
+                        <p class="text-pink-200">🎯 <strong>CRUD operations</strong> completas</p>
+                    </div>
+                    <div class="bg-pink-900 p-4 rounded-lg">
+                        <p class="text-pink-200">📱 <strong>Responsive design</strong> para diferentes dispositivos</p>
+                        <p class="text-pink-200">⚡ <strong>Performance</strong> con listas grandes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Grid Layout -->
+        <section id="grid-layout" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-emerald-400">📱 10. Grid Layout para Portfolio Manager</h2>
+                <div class="mb-4 p-4 bg-emerald-900 rounded-lg border-l-4 border-emerald-400">
+                    <p class="text-emerald-200">🎯 <strong>Sistema de layout responsivo para mostrar portfolios</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-emerald-300">🌟 Técnicas de Layout:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">🎯 CSS Grid</strong> con <code class="bg-gray-700 px-2 py-1 rounded">auto-fill</code> y <code class="bg-gray-700 px-2 py-1 rounded">minmax()</code></li>
+                    <li><strong class="text-blue-400">📱 Responsive breakpoints</strong> automáticos</li>
+                    <li><strong class="text-blue-400">✨ Hover effects</strong> para mejor UX</li>
+                    <li><strong class="text-blue-400">🔄 Loading skeletons</strong> mientras cargan datos</li>
+                    <li><strong class="text-blue-400">♿ Accessibility</strong> considerations</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-emerald-300">💡 Optimizaciones importantes:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-emerald-900 p-4 rounded-lg">
+                        <p class="text-emerald-200">✅ <strong>Lazy loading</strong> para muchos elementos</p>
+                        <p class="text-emerald-200">✅ <strong>Virtualization</strong> para listas grandes</p>
+                    </div>
+                    <div class="bg-emerald-900 p-4 rounded-lg">
+                        <p class="text-emerald-200">✅ <strong>Image optimization</strong> con placeholders</p>
+                        <p class="text-emerald-200">✅ <strong>Smooth animations</strong> en hover/click</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. Sidebar Component -->
+        <section id="sidebar-component" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-teal-400">📂 11. Portfolio Sidebar List Component</h2>
+                <div class="mb-4 p-4 bg-teal-900 rounded-lg border-l-4 border-teal-400">
+                    <p class="text-teal-200">🎯 <strong>Navegación lateral interactiva con estado seleccionado</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-teal-300">🌟 Funcionalidades Clave:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">📋 Lista scrolleable</strong> de portfolios</li>
+                    <li><strong class="text-blue-400">🎯 Estado activo</strong> visual del elemento seleccionado</li>
+                    <li><strong class="text-blue-400">🖼️ Thumbnails</strong> e información básica</li>
+                    <li><strong class="text-blue-400">🔄 Callback communication</strong> con componente padre</li>
+                    <li><strong class="text-blue-400">📱 Responsive collapse</strong> en móviles</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-teal-300">💡 Optimizaciones UX:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-teal-900 p-4 rounded-lg">
+                        <p class="text-teal-200">✅ <strong>Hover states</strong> claros</p>
+                        <p class="text-teal-200">✅ <strong>Keyboard navigation</strong> support</p>
+                    </div>
+                    <div class="bg-teal-900 p-4 rounded-lg">
+                        <p class="text-teal-200">✅ <strong>Loading states</strong> individuales</p>
+                        <p class="text-teal-200">✅ <strong>Empty states</strong> cuando no hay portfolios</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. Portfolio Form -->
+        <section id="portfolio-form" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-violet-400">📝 12. Portfolio Form y Integración con Componente Padre</h2>
+                <div class="mb-4 p-4 bg-violet-900 rounded-lg border-l-4 border-violet-400">
+                    <p class="text-violet-200">🎯 <strong>Formulario reutilizable para crear/editar portfolios</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-violet-300">🌟 Características del Form:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">🎯 Controlled components</strong> con estado local</li>
+                    <li><strong class="text-blue-400">🔄 Modo creación/edición</strong> con props iniciales</li>
+                    <li><strong class="text-blue-400">✅ Validación client-side</strong> antes del envío</li>
+                    <li><strong class="text-blue-400">📁 File upload</strong> para imágenes</li>
+                    <li><strong class="text-blue-400">💾 Auto-save</strong> drafts (avanzado)</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-violet-300">💡 Comunicación con Parent:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-violet-900 p-4 rounded-lg">
+                        <p class="text-violet-200">✅ <strong>Callback props</strong> para submit/cancel</p>
+                        <p class="text-violet-200">✅ <strong>Error state</strong> propagation</p>
+                    </div>
+                    <div class="bg-violet-900 p-4 rounded-lg">
+                        <p class="text-violet-200">✅ <strong>Loading feedback</strong> durante operations</p>
+                        <p class="text-violet-200">✅ <strong>Success confirmation</strong> y form reset</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 13. FormData Objects -->
+        <section id="formdata-objects" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-amber-400">📦 13. FormData Objects en JavaScript</h2>
+                <div class="mb-4 p-4 bg-amber-900 rounded-lg border-l-4 border-amber-400">
+                    <p class="text-amber-200">🎯 <strong>Manejo nativo de datos de formulario, especialmente archivos</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-amber-300">🌟 Casos de uso esenciales:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-blue-400">📁 File uploads</strong> junto con otros datos</li>
+                    <li><strong class="text-blue-400">🔄 Dynamic form building</strong> programático</li>
+                    <li><strong class="text-blue-400">🌐 Multipart/form-data</strong> encoding automático</li>
+                    <li><strong class="text-blue-400">🔧 API integration</strong> con backends tradicionales</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-amber-300">💡 Métodos importantes:</h3>
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-amber-900 p-4 rounded-lg">
+                        <p class="text-amber-200">✅ <code class="bg-gray-800 px-2 py-1 rounded">formData.append(key, value)</code> - Añadir campos</p>
+                        <p class="text-amber-200">✅ <code class="bg-gray-800 px-2 py-1 rounded">formData.set(key, value)</code> - Sobrescribir valor</p>
+                    </div>
+                    <div class="bg-amber-900 p-4 rounded-lg">
+                        <p class="text-amber-200">✅ <code class="bg-gray-800 px-2 py-1 rounded">formData.get(key)</code> - Obtener valor</p>
+                        <p class="text-amber-200">✅ <code class="bg-gray-800 px-2 py-1 rounded">formData.entries()</code> - Iterar sobre datos</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4 text-amber-300">🚀 Para Bottega Projects:</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-amber-900 p-4 rounded-lg">
+                        <p class="text-amber-200">📸 <strong>Portfolio images</strong> upload</p>
+                    </div>
+                    <div class="bg-amber-900 p-4 rounded-lg">
+                        <p class="text-amber-200">📄 <strong>Multiple file</strong> handling</p>
+                    </div>
+                    <div class="bg-amber-900 p-4 rounded-lg">
+                        <p class="text-amber-200">🔄 <strong>Progressive enhancement</strong> over regular forms</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 14. Key Props Fix -->
+        <section id="key-props" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-rose-400">🔑 14. Solucionar Warnings de Key Props</h2>
+                <div class="mb-4 p-4 bg-rose-900 rounded-lg border-l-4 border-rose-400">
+                    <p class="text-rose-200">🎯 <strong>Keys únicas y estables para optimizar re-renders</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-rose-300">🌟 Reglas fundamentales:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6 text-gray-300">
+                    <li><strong class="text-red-400">🚫 NUNCA</strong> usar índices como keys en listas dinámicas</li>
+                    <li><strong class="text-green-400">✅ SIEMPRE</strong> usar IDs únicos cuando estén disponibles</li>
+                    <li><strong class="text-blue-400">🔄 Keys estables</strong> mejoran performance dramáticamente</li>
+                    <li><strong class="text-red-400">⚠️ Keys duplicadas</strong> causan bugs de estado</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-4 text-rose-300">💡 Estrategias para Keys:</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full bg-gray-700 rounded-lg">
+                        <thead>
+                            <tr class="bg-gray-600">
+                                <th class="p-3 text-left text-rose-300">Escenario</th>
+                                <th class="p-3 text-left text-red-300">❌ Incorrecto</th>
+                                <th class="p-3 text-left text-green-300">✅ Correcto</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-300">
+                            <tr class="border-t border-gray-600">
+                                <td class="p-3">Lista con IDs</td>
+                                <td class="p-3"><code class="bg-red-900 px-2 py-1 rounded">key={index}</code></td>
+                                <td class="p-3"><code class="bg-green-900 px-2 py-1 rounded">key={item.id}</code></td>
+                            </tr>
+                            <tr class="border-t border-gray-600">
+                                <td class="p-3">Sin ID natural</td>
+                                <td class="p-3"><code class="bg-red-900 px-2 py-1 rounded">key={item.name}</code></td>
+                                <td class="p-3"><code class="bg-green-900 px-2 py-1 rounded">key={`${item.name}-${item.category}`}</code></td>
+                            </tr>
+                            <tr class="border-t border-gray-600">
+                                <td class="p-3">Lista temporal</td>
+                                <td class="p-3"><code class="bg-red-900 px-2 py-1 rounded">key={index}</code></td>
+                                <td class="p-3"><code class="bg-green-900 px-2 py-1 rounded">key={Date.now() + index}</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4 text-rose-300">🚀 Impact en Bottega Projects:</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-rose-900 p-4 rounded-lg">
+                        <p class="text-rose-200">📊 <strong>Portfolio lists</strong> rendering</p>
+                    </div>
+                    <div class="bg-rose-900 p-4 rounded-lg">
+                        <p class="text-rose-200">🔄 <strong>Dynamic form</strong> elements</p>
+                    </div>
+                    <div class="bg-rose-900 p-4 rounded-lg">
+                        <p class="text-rose-200">📱 <strong>Navigation</strong> components</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 15. Crear Portfolio Items -->
+        <section id="crear-portfolio" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-sky-400">✨ 15. Crear Portfolio Items desde React Form</h2>
+                <div class="mb-4 p-4 bg-sky-900 rounded-lg border-l-4 border-sky-400">
+                    <p class="text-sky-200">🎯 <strong>Flujo completo de creación con feedback de usuario</strong></p>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4 text-sky-300">🌟 Flujo de Creación:</h3>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center space-x-3 bg-sky-900 p-3 rounded">
+                        <span class="text-2xl">1️⃣</span>
+                        <span class="text-sky-200"><strong>📝 Captura de datos</strong> del formulario</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-sky-900 p-3 rounded">
+                        <span class="text-2xl">2️⃣</span>
+                        <span class="text-sky-200"><strong>✅ Validación</strong> frontend/backend</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-sky-900 p-3 rounded">
+                        <span class="text-2xl">3️⃣</span>
+                        <span class="text-sky-200"><strong>📡 API call</strong> con error handling</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-sky-900 p-3 rounded">
+                        <span class="text-2xl">4️⃣</span>
+                        <span class="text-sky-200"><strong>🔄 Optimistic updates</strong> en UI</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-sky-900 p-3 rounded">
+                        <span class="text-2xl">5️⃣</span>
+                        <span class="text-sky-200"><strong>💬 User feedback</strong> success/error</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-sky-900 p-3 rounded">
+                        <span class="text-2xl">6️⃣</span>
+                        <span class="text-sky-200"><strong>🧹 Form reset</strong> después del éxito</span>
+                    </div>
+                </div>
+
+                <div class="bg-sky-900 p-6 rounded-lg mb-6">
+                    <h4 class="text-lg font-semibold text-sky-300 mb-3">💡 Estados de la operación:</h4>
+                    <div class="text-center text-sky-200 text-xl">
+                        📝 Editing → ⏳ Submitting → ✅ Success | ❌ Error
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4 text-sky-300">🚀 Consideraciones para Portfolio:</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-sky-900 p-4 rounded-lg">
+                        <p class="text-sky-200">🖼️ <strong>Image preview</strong> antes del upload</p>
+                        <p class="text-sky-200">💾 <strong>Draft saving</strong> para formularios largos</p>
+                    </div>
+                    <div class="bg-sky-900 p-4 rounded-lg">
+                        <p class="text-sky-200">🔄 <strong>Retry mechanism</strong> en caso de error</p>
+                        <p class="text-sky-200">📊 <strong>Progress indicators</strong> para uploads grandes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Patrones Pro -->
+        <section id="patrones-pro" class="mb-16">
+            <div class="bg-gray-800 rounded-lg p-8 card-hover border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-gradient bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">🎯 Patrones y Conceptos Transversales</h2>
+                
+                <!-- Gestión de Estado -->
+                <div id="mejores-practicas" class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-purple-300">🧠 Gestión de Estado</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="w-full bg-gray-700 rounded-lg">
+                            <thead>
+                                <tr class="bg-gray-600">
+                                    <th class="p-3 text-left text-purple-300">Tipo</th>
+                                    <th class="p-3 text-left text-purple-300">🛠️ Herramienta</th>
+                                    <th class="p-3 text-left text-purple-300">📍 Uso</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-300">
+                                <tr class="border-t border-gray-600">
+                                    <td class="p-3"><strong>Local</strong></td>
+                                    <td class="p-3"><code class="bg-purple-900 px-2 py-1 rounded">useState</code></td>
+                                    <td class="p-3">Estado específico del componente</td>
+                                </tr>
+                                <tr class="border-t border-gray-600">
+                                    <td class="p-3"><strong>Compartido</strong></td>
+                                    <td class="p-3"><code class="bg-purple-900 px-2 py-1 rounded">Context API</code></td>
+                                    <td class="p-3">Estado entre componentes relacionados</td>
+                                </tr>
+                                <tr class="border-t border-gray-600">
+                                    <td class="p-3"><strong>Complejo</strong></td>
+                                    <td class="p-3"><code class="bg-purple-900 px-2 py-1 rounded">useReducer</code></td>
+                                    <td class="p-3">Lógica de estado con múltiples acciones</td>
+                                </tr>
+                                <tr class="border-t border-gray-600">
+                                    <td class="p-3"><strong>Global</strong></td>
+                                    <td class="p-3"><code class="bg-purple-900 px-2 py-1 rounded">Redux/Zustand</code></td>
+                                    <td class="p-3">Estado de toda la aplicación</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Comunicación Entre Componentes -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-pink-300">🔄 Comunicación Entre Componentes</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-pink-900 p-4 rounded-lg">
+                            <p class="text-pink-200"><strong>⬇️ Padre → Hijo</strong>: Props</p>
+                            <p class="text-pink-200"><strong>⬆️ Hijo → Padre</strong>: Callback functions</p>
+                        </div>
+                        <div class="bg-pink-900 p-4 rounded-lg">
+                            <p class="text-pink-200"><strong>↔️ Entre Hermanos</strong>: Estado en parent común</p>
+                            <p class="text-pink-200"><strong>🌐 Global</strong>: Context API o estado global</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manejo de Efectos -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-cyan-300">⚡ Manejo de Efectos Secundarios</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
+                        <li><strong class="text-cyan-400">📡 API Calls</strong>: <code class="bg-gray-700 px-2 py-1 rounded">useEffect</code> con dependencias correctas</li>
+                        <li><strong class="text-cyan-400">🧹 Cleanup</strong>: Funciones de limpieza en useEffect</li>
+                        <li><strong class="text-cyan-400">🔄 Optimización</strong>: <code class="bg-gray-700 px-2 py-1 rounded">useCallback</code> para funciones estables</li>
+                        <li><strong class="text-cyan-400">📊 Condicionales</strong>: Arrays de dependencias específicos</li>
+                    </ul>
+                </div>
+
+                <!-- Seguridad y Mejores Prácticas -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-red-300">🛡️ Seguridad y Mejores Prácticas</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-red-900 p-4 rounded-lg">
+                            <p class="text-red-200"><strong>🔐 Autenticación</strong>: Verificar tokens + manejo de expiración</p>
+                            <p class="text-red-200"><strong>✅ Validación</strong>: Cliente Y servidor siempre</p>
+                        </div>
+                        <div class="bg-red-900 p-4 rounded-lg">
+                            <p class="text-red-200"><strong>⚠️ Error Handling</strong>: Graceful degradation + user feedback</p>
+                            <p class="text-red-200"><strong>⚡ Performance</strong>: Evitar re-renders + optimizar listas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips para Bottega -->
+        <section id="tips-bottega" class="mb-16">
+            <div class="bg-gradient-to-br from-blue-900 to-purple-900 rounded-lg p-8 card-hover border border-blue-500">
+                <h2 class="text-3xl font-bold mb-6 text-blue-300">🎯 Tips para el Checkpoint de Bottega</h2>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <!-- Enfoque de Estudio -->
+                    <div class="bg-blue-800 bg-opacity-50 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-300">🚀 Enfoque de Estudio</h3>
+                        <ul class="space-y-2 text-blue-200">
+                            <li>🎯 <strong>Comprende el WHY</strong> antes del HOW</li>
+                            <li>💻 <strong>Practica con código real</strong> de tus proyectos</li>
+                            <li>🔄 <strong>Conecta conceptos</strong> entre diferentes temas</li>
+                            <li>📱 <strong>Piensa en casos de uso</strong> de aplicaciones reales</li>
+                        </ul>
+                    </div>
+
+                    <!-- Conceptos Clave -->
+                    <div class="bg-purple-800 bg-opacity-50 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-300">💡 Conceptos que siempre aparecen</h3>
+                        <ul class="space-y-2 text-purple-200">
+                            <li>✅ <strong>Component lifecycle</strong> y hooks equivalentes</li>
+                            <li>✅ <strong>State management</strong> patterns</li>
+                            <li>✅ <strong>Form handling</strong> con validación</li>
+                            <li>✅ <strong>Authentication flows</strong> completos</li>
+                            <li>✅ <strong>Error handling</strong> y user feedback</li>
+                        </ul>
+                    </div>
+
+                    <!-- Para el éxito -->
+                    <div class="bg-indigo-800 bg-opacity-50 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-indigo-300">🎓 Para el éxito en Bottega</h3>
+                        <ul class="space-y-2 text-indigo-200">
+                            <li>🎯 <strong>Portfolio projects</strong> como ejemplos concretos</li>
+                            <li>🔄 <strong>Full-stack thinking</strong> (React + Python backend)</li>
+                            <li>📱 <strong>Modern patterns</strong> que usan en la industria</li>
+                            <li>⚡ <strong>Performance considerations</strong> desde el inicio</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Mensaje motivacional -->
+                <div class="bg-gradient-to-r from-green-600 to-blue-600 rounded-lg p-6 text-center">
+                    <h3 class="text-2xl font-bold text-white mb-4">🚀 ¡Vas a arrasar en tu checkpoint!</h3>
+                    <p class="text-green-100 text-lg leading-relaxed">
+                        Recuerda que estos conceptos no son solo para el examen - son las bases que te convertirán en un desarrollador Full Stack exitoso. 
+                        <strong class="text-yellow-300">¡Bottega te está preparando para el mundo real!</strong> 💪✨
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg py-8 px-4 mt-16">
+        <div class="container mx-auto text-center">
+            <div class="text-white">
+                <h3 class="text-2xl font-bold mb-2">🎓 Bottega University</h3>
+                <p class="text-blue-200 mb-4">React Checkpoint - Guía de Estudio Completa</p>
+                <div class="flex justify-center space-x-6 text-sm text-blue-300">
+                    <span>📚 15 Temas Cubiertos</span>
+                    <span>⚡ Optimizado para Checkpoint</span>
+                    <span>🚀 Preparación Full-Stack</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTop" class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 opacity-0 invisible">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+
+    <script>
+        // Scroll to top functionality
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.remove('opacity-0', 'invisible');
+                scrollTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                scrollTopBtn.classList.add('opacity-0', 'invisible');
+                scrollTopBtn.classList.remove('opacity-100', 'visible');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Add smooth scroll behavior to all navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80; // Account for sticky nav
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Highlight current section in nav
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+        
+        function highlightNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('text-yellow-300', 'font-bold');
+                link.classList.add('text-blue-300');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.remove('text-blue-300');
+                    link.classList.add('text-yellow-300', 'font-bold');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', highlightNav);
+        
+        // Add hover effects to cards
+        const cards = document.querySelectorAll('.card-hover');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-4px)';
+                this.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '';
+            });
+        });
+    </script>
+
+</body>
+</html>
