@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Higher Order Components - Guía React Avanzado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Navegación -->
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="text-blue-400 hover:text-blue-300 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Volver al Índice
+                </a>
+                <div class="text-sm text-gray-400">
+                    Components & Patterns
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold text-blue-400 mb-2">Higher Order Components (HOCs)</h1>
+                <p class="text-gray-400">Patrón avanzado para reutilizar lógica de componentes mediante composición</p>
+            </header>
+
+            <!-- Contenido Principal -->
+            <main>
+                <!-- Definición -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-200 mb-4">¿Qué es un Higher Order Component?</h2>
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <p class="text-gray-300 mb-4">
+                            Un <strong>Higher Order Component (HOC)</strong> es una función que toma un componente 
+                            y devuelve un nuevo componente con funcionalidad adicional. Es un patrón derivado 
+                            de la naturaleza composicional de React.
+                        </p>
+                        
+                        <div class="bg-blue-900/20 border border-blue-700 rounded-lg p-4 mb-4">
+                            <h3 class="text-blue-300 font-medium mb-2">Fórmula Básica</h3>
+                            <pre class="text-blue-200 text-sm"><code>const EnhancedComponent = higherOrderComponent(WrappedComponent);</code></pre>
+                        </div>
+
+                        <div class="bg-yellow-900/20 border border-yellow-700 rounded-lg p-4">
+                            <p class="text-yellow-300 text-sm">
+                                <strong>Nota importante:</strong> Los HOCs son un patrón más clásico. En aplicaciones modernas, 
+                                los custom hooks suelen ser preferibles para la mayoría de casos de uso.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ejemplo Básico -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-200 mb-4">Ejemplo Básico: withLoading</h2>
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <div class="space-y-4">
+                            <!-- HOC Implementation -->
+                            <div>
+                                <h4 class="text-gray-300 font-medium mb-2">1. Implementación del HOC:</h4>
+                                <pre class="bg-gray-900 rounded p-4 overflow-x-auto text-sm"><code class="text-gray-300">// HOC que añade funcionalidad de loading
+function withLoading(WrappedComponent) {
+  return function WithLoadingComponent(props) {
+    const { isLoading, ...otherProps } = props;
+    
+    if (isLoading) {
+      return (
+        &lt;div className="loading-spinner"&gt;
+          &lt;div&gt;Cargando...&lt;/div&gt;
+        &lt;/div&gt;
+      );
+    }
+    
+    return &lt;WrappedComponent {...otherProps} /&gt;;
+  };
+}
+
+// También se puede escribir como arrow function
+const withLoading = (WrappedComponent) => (props) => {
+  const { isLoading, ...otherProps } = props;
+  
+  if (isLoading) {
+    return &lt;div&gt;Cargando...&lt;/div&gt;;
+  }
+  
+  return &lt;WrappedComponent {...otherProps} /&gt;;
+};</code></pre>
+                            </div>
+
+                            <!-- Uso del HOC -->
+                            <div>
+                                <h4 class="text-gray-300 font-medium mb-2">2. Uso del HOC:</h4>
+                                <pre class="bg-gray-900 rounded p-4 overflow-x-auto text-sm"><code class="text-gray-300">// Componente base
+function UserList({ users }) {
+  return (
+    &lt;ul&gt;
+      {users.map(user => (
+        &lt;li key={user.id}&gt;{user.name}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+// Aplicar el HOC
+const UserListWithLoading = withLoading(UserList);
+
+// Usar el componente mejorado
+function App() {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUsers().then(data => {
+      setUsers(data);
+      setIsLoading(false);
+    });
+  }, []);
+
+  return (
+    &lt;UserListWithLoading 
+      users={users} 
+      isLoading={isLoading} 
+    /&gt;
+  );
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- HOCs Avanzados -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-200 mb-4">HOCs Avanzados</h2>
+                    
+                    <!-- withAuth -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-6">
+                        <h3 class="text-lg font-medium text-green-400 mb-4">1. withAuth - Protección de Rutas</h3>
+                        
+                        <pre class="bg-gray-900 rounded p-4 overflow-x-auto text-sm"><code class="text-gray-300">// HOC para proteger componentes que requieren autenticación
+function withAuth(WrappedComponent) {
+  return function AuthenticatedComponent(props) {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      // Verificar autenticación
+      checkAuthStatus()
+        .then(userData => {
+          setUser(userData);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+          // Redirigir al login
+          window.location.href = '/login';
+        });
+    }, []);
+
+    if (loading) {
+      return &lt;div&gt;Verificando autenticación...&lt;/div&gt;;
+    }
+
+    if (!user) {
+      return &lt;div&gt;Acceso denegado. Redirigiendo...&lt;/div&gt;;
+    }
+
+    // Pasar información del usuario como prop adicional
+    return &lt;WrappedComponent {...props} currentUser={user} /&gt;;
+  };
+}
+
+// Uso
+const ProtectedDashboard = withAuth(Dashboard);
+const ProtectedProfile = withAuth(UserProfile);
+
+// Los componentes protegidos ahora reciben currentUser automáticamente
+function Dashboard({ currentUser }) {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Bienvenido, {currentUser.name}&lt;/h1&gt;
+      &lt;p&gt;Dashboard content...&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+
+                    <!-- withErrorBoundary -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-6">
+                        <h3 class="text-lg font-medium text-green-400 mb-4">2. withErrorBoundary - Manejo de Errores</h3>
+                        
+                        <pre class="bg-gray-900 rounded p-4 overflow-x-auto text-sm"><code class="text-gray-300">// HOC que envuelve componentes con Error Boundary
+function withErrorBoundary(WrappedComponent, ErrorFallback) {
+  return class extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { hasError: false, error: null };
+    }
+
+    static getDerivedStateFromError(error) {
+      return { hasError: true, error };
+    }
+
+    componentDidCatch(error, errorInfo) {
+      console.error('Error capturado por HOC:', error, errorInfo);
+      // Enviar a servicio de logging
+      logErrorToService(error, errorInfo);
+    }
+
+    render() {
+      if (this.state.hasError) {
+        // Usar componente de fallback personalizado o uno por defecto
+        const FallbackComponent = ErrorFallback || DefaultErrorFallback;
+        return (
+          &lt;FallbackComponent 
+            error={this.state.error}
+            resetError={() => this.setState({ hasError: false, error: null })}
+          /&gt;
+        );
+      }
+
+      return &lt;WrappedComponent {...this.props} /&gt;;
+    }
+  };
+}
+
+// Componente de error por defecto
+function DefaultErrorFallback({ error, resetError }) {
+  return (
+    &lt;div className="error-boundary"&gt;
+      &lt;h2&gt;Algo salió mal&lt;/h2&gt;
+      &lt;p&gt;{error?.message}&lt;/p&gt;
+      &lt;button onClick={resetError}&gt;Intentar de nuevo&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Uso
+const SafeUserList = withErrorBoundary(UserList);
+const SafeChart = withErrorBoundary(Chart, CustomChartErrorFallback);</code></pre>
+                    </div>
+
+                    <!-- withData -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-6">
+                        <h3 class="text-lg font-medium text-green-400 mb-4">3. withData - Data Fetching</h3>
+                        
+                        <pre class="bg-gray-900 rounded p-4 overflow-x-auto text-sm"><code class="text-gray-300">// HOC para data fetching con configuración
+function withData(dataConfig) {
+  return function(WrappedComponent) {
+    return function DataEnhancedComponent(props) {
+      const [data, setData] = useState(null);
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
+
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            setLoading(true);
+            setError(null);
+            
+            // Construir URL con props si es necesario
+            const url = typeof dataConfig.url === 'function' 
+              ? dataConfig.url(props) 
+              : dataConfig.url;
+            
+            const response = await fetch(url, dataConfig.options);
+            const result = await response.json();
+            
+            // Transformar data si hay transformador
+            const transformedData = dataConfig.transform 
+              ? dataConfig.transform(result) 
+              : result;
+            
+            setData(transformedData);
+          } catch (err) {
+            setError(err.message);
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        fetchData();
+      }, [dataConfig.dependencies ? dataConfig.dependencies.map(dep => props[dep]) : []]);
+
+      const refetch = useCallback(() => {
+        fetchData();
+      }, []);
+
+      return (
+        &lt;WrappedComponent 
+          {...props}
+          data={data}
+          loading={loading}
+          error={error}
+          refetch={refetch}
+        /&gt;
+      );
+    };
+  };
+}
+
+// Configuraciones de data fetching
+const withUserData = withData({
+  url: (props) => `/api/users/${props.userId}`,
+  dependencies: ['userId'],
+  transform: (data) => ({
+    ...data,
+    fullName: `${data.firstName} ${data.lastName}`
+  })
+});
+
+const withPostsData = withData({
+  url: '/api/posts',
+  transform: (posts) => posts.filter(post => post.published)
+});
+
+// Uso
+const UserProfileWithData = withUserData(UserProfile);
+const PostListWithData = withPostsData(PostList);
+
+function UserProfile({ data: user, loading, error, refetch }) {
+  if (loading) return &lt;div&gt;Cargando usuario...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+  
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{user.fullName}&lt;/h1&gt;
+      &lt;button onClick={refetch}&gt;Actualizar&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+
+                    <!-- Composición de HOCs -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <h3 class="text-lg font-medium text-green-400 mb-4">4. Composición de HOCs</h3>
+                        
+                        <pre class="bg-gray-900 rounded p-4 overflow-x-auto text-sm"><code class="text-gray-300">// Componer múltiples HOCs
+const enhance = compose(
+  withAuth,
+  withErrorBoundary,
+  withLoading,
+  withData({ url: '/api/dashboard' })
+);
+
+const EnhancedDashboard = enhance(Dashboard);
+
+// O aplicarlos uno por uno
+const EnhancedDashboard = withAuth(
+  withErrorBoundary(
+    withLoading(
+      withData({ url: '/api/dashboard' })(Dashboard)
+    )
+  )
+);
+
+// Función compose para mejor legibilidad
+function compose(...fns) {
+  return (component) => fns.reduceRight((acc, fn) => fn(acc), component);
+}
+
+// Usar con pipe para orden natural
+function pipe(...fns) {
+  return (component) => fns.reduce((acc, fn) => fn(acc), component);
+}
+
+const EnhancedDashboard = pipe(
+  withData({ url: '/api/dashboard' }),
+  withLoading,
+  withErrorBoundary,
+  withAuth
+)(Dashboard);</code></pre>
+                    </div>
+                </section>
+
+                <!-- HOCs vs Hooks -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-200 mb-4">HOCs vs Custom Hooks</h2>
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <div class="grid gap-6 lg:grid-cols-2">
+                            <!-- HOC Approach -->
+                            <div>
+                                <h3 class="text-yellow-400 font-medium mb-3">❌ Enfoque HOC (Clásico)</h3>
+                                <pre class="bg-gray-900 rounded p-3 text-sm"><code class="text-gray-300">// HOC para data fetching
+const withUserData = (WrappedComponent) => {
+  return (props) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+      fetchUser(props.userId)
+        .then(setUser)
+        .finally(() => setLoading(false));
+    }, [props.userId]);
+    
+    return (
+      &lt;WrappedComponent 
+        {...props} 
+        user={user} 
+        loading={loading} 
+      /&gt;
+    );
+  };
+};
+
+const UserProfile = withUserData(BaseUserProfile);</code></pre>
+                            </div>
+
+                            <!-- Hook Approach -->
+                            <div>
+                                <h3 class="text-green-400 font-medium mb-3">✅ Enfoque Hook (Moderno)</h3>
+                                <pre class="bg-gray-900 rounded p-3 text-sm"><code class="text-gray-300">// Custom hook para data fetching
+function useUser(userId) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    fetchUser(userId)
+      .then(setUser)
+      .finally(() => setLoading(false));
+  }, [userId]);
+  
+  return { user, loading };
+}
+
+// Uso directo en el componente
+function UserProfile({ userId }) {
+  const { user, loading } = useUser(userId);
+  
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  return &lt;div&gt;{user.name}&lt;/div&gt;;
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 bg-blue-900/20 border border-blue-700 rounded-lg p-4">
+                            <h4 class="text-blue-300 font-medium mb-2">¿Cuándo usar cada uno?</h4>
+                            <div class="grid gap-4 md:grid-cols-2 text-sm">
+                                <div>
+                                    <p class="text-yellow-300 font-medium mb-1">Usar HOCs cuando:</p>
+                                    <ul class="text-yellow-200 space-y-1">
+                                        <li>• Necesitas envolver componentes de clase</li>
+                                        <li>• Quieres interceptar props antes del render</li>
+                                        <li>• Necesitas Error Boundaries</li>
+                                        <li>• Trabajas con librerías que usan HOCs</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="text-green-300 font-medium mb-1">Usar Hooks cuando:</p>
+                                    <ul class="text-green-200 space-y-1">
+                                        <li>• Trabajas con componentes funcionales</li>
+                                        <li>• Quieres compartir lógica entre componentes</li>
+                                        <li>• Prefieres composición sobre herencia</li>
+                                        <li>• Desarrollas aplicaciones nuevas (recomendado)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Mejores Prácticas -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-200 mb-4">Mejores Prácticas para HOCs</h2>
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <div class="space-y-6">
+                            <!-- Do's -->
+                            <div class="bg-green-900/20 border border-green-700 rounded-lg p-4">
+                                <h3 class="text-green-300 font-medium mb-3">✅ Mejores Prácticas</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <h4 class="text-green-200 font-medium mb-2">1. Preservar displayName para debugging</h4>
+                                        <pre class="bg-gray-900 rounded p-3 text-sm"><code class="text-gray-300">function withLoading(WrappedComponent) {
+  const WithLoadingComponent = (props) => {
+    // Lógica del HOC...
+    return &lt;WrappedComponent {...props} /&gt;;
+  };
+  
+  // Preservar nombre para React DevTools
+  WithLoadingComponent.displayName = 
+    `WithLoading(${WrappedComponent.displayName || WrappedComponent.name})`;
+  
+  return WithLoadingComponent;
+}</code></pre>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-green-200 font-medium mb-2">2. Usar hoisting para métodos estáticos</h4>
+                                        <pre class="bg-gray-900 rounded p-3 text-sm"><code class="text-gray-300">import hoistNonReactStatics from 'hoist-non-react-statics';
+
+function withEnhancement(WrappedComponent) {
+  const EnhancedComponent = (props) => {
+    return &lt;WrappedComponent {...props} /&gt;;
+  };
+  
+  // Copiar métodos estáticos del componente original
+  return hoistNonReactStatics(EnhancedComponent, WrappedComponent);
+}</code></pre>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-green-200 font-medium mb-2">3. Pasar refs correctamente</h4>
+                                        <pre class="bg-gray-900 rounded p-3 text-sm"><code class="text-gray-300">function withRef(WrappedComponent) {
+  const WithRefComponent = React.forwardRef((props, ref) => {
+    return &lt;WrappedComponent {...props} ref={ref} /&gt;;
+  });
+  
+  WithRefComponent.displayName = `WithRef(${WrappedComponent.displayName})`;
+  return WithRefComponent;
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Don'ts -->
+                            <div class="bg-red-900/20 border border-red-700 rounded-lg p-4">
+                                <h3 class="text-red-300 font-medium mb-3">❌ Evitar</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <h4 class="text-red-200 font-medium mb-2">1. No mutar el componente original</h4>
+                                        <pre class="bg-gray-900 rounded p-3 text-sm"><code class="text-gray-300">// ❌ Incorrecto - muta el componente original
+function withProps(WrappedComponent, newProps) {
+  WrappedComponent.defaultProps = newProps;
+  return WrappedComponent;
+}
+
+// ✅ Correcto - devuelve nuevo componente
+function withProps(WrappedComponent, newProps) {
+  return (props) => &lt;WrappedComponent {...newProps} {...props} /&gt;;
+}</code></pre>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-red-200 font-medium mb-2">2. No usar HOCs dentro de render</h4>
+                                        <pre class="bg-gray-900 rounded p-3 text-sm"><code class="text-gray-300">// ❌ Incorrecto - crea nuevo componente en cada render
+function MyComponent() {
+  const EnhancedComponent = withLoading(SomeComponent);
+  return &lt;EnhancedComponent /&gt;;
+}
+
+// ✅ Correcto - crear fuera del componente
+const EnhancedComponent = withLoading(SomeComponent);
+function MyComponent() {
+  return &lt;EnhancedComponent /&gt;;
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Herramientas y Librerías -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-200 mb-4">Herramientas y Librerías</h2>
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div>
+                                <h3 class="text-blue-400 font-medium mb-3">📚 Librerías Populares</h3>
+                                <ul class="space-y-2 text-gray-300 text-sm">
+                                    <li>
+                                        <strong>recompose:</strong> 
+                                        <span class="text-gray-400">Utilidades para HOCs (deprecado)</span>
+                                    </li>
+                                    <li>
+                                        <strong>react-redux connect:</strong>
+                                        <span class="text-gray-400">HOC para conectar Redux</span>
+                                    </li>
+                                    <li>
+                                        <strong>react-router withRouter:</strong>
+                                        <span class="text-gray-400">Acceso a router props</span>
+                                    </li>
+                                    <li>
+                                        <strong>hoist-non-react-statics:</strong>
+                                        <span class="text-gray-400">Preservar métodos estáticos</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-purple-400 font-medium mb-3">🔧 Herramientas de Desarrollo</h3>
+                                <ul class="space-y-2 text-gray-300 text-sm">
+                                    <li>• React DevTools - debugging de HOCs</li>
+                                    <li>• ESLint rules para HOCs</li>
+                                    <li>• TypeScript para tipado seguro</li>
+                                    <li>• Jest para testing de HOCs</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Testing HOCs -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-200 mb-4">Testing de HOCs</h2>
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <pre class="bg-gray-900 rounded p-4 overflow-x-auto text-sm"><code class="text-gray-300">// Ejemplo de testing con React Testing Library
+import { render, screen } from '@testing-library/react';
+import withLoading from './withLoading';
+
+// Componente de prueba simple
+const TestComponent = ({ data }) => &lt;div&gt;Data: {data}&lt;/div&gt;;
+
+describe('withLoading HOC', () => {
+  it('muestra loading cuando isLoading es true', () => {
+    const WrappedComponent = withLoading(TestComponent);
+    
+    render(&lt;WrappedComponent isLoading={true} data="test" /&gt;);
+    
+    expect(screen.getByText('Cargando...')).toBeInTheDocument();
+    expect(screen.queryByText('Data: test')).not.toBeInTheDocument();
+  });
+
+  it('muestra el componente cuando isLoading es false', () => {
+    const WrappedComponent = withLoading(TestComponent);
+    
+    render(&lt;WrappedComponent isLoading={false} data="test" /&gt;);
+    
+    expect(screen.queryByText('Cargando...')).not.toBeInTheDocument();
+    expect(screen.getByText('Data: test')).toBeInTheDocument();
+  });
+
+  it('pasa todas las props excepto isLoading', () => {
+    const WrappedComponent = withLoading(TestComponent);
+    
+    render(
+      &lt;WrappedComponent 
+        isLoading={false} 
+        data="test" 
+        extraProp="value" 
+      /&gt;
+    );
+    
+    // Verificar que todas las props se pasaron correctamente
+    expect(screen.getByText('Data: test')).toBeInTheDocument();
+  });
+});</code></pre>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Navegación entre páginas -->
+            <nav class="flex justify-between items-center mt-12 pt-8 border-t border-gray-700">
+                <a href="parent-child-state.html" class="text-gray-400 hover:text-white flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Parent-Child State
+                </a>
+                <div class="text-center">
+                    <span class="text-sm text-gray-500">Components & Patterns</span>
+                </div>
+                <a href="auto-login-check.html" class="text-blue-400 hover:text-white flex items-center">
+                    Auto Login Check
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
