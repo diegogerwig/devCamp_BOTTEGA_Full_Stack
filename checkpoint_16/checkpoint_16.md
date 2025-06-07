@@ -19,7 +19,6 @@
 | [📦 FormData Objects](#13-formdata-objects-en-javascript) | [🔑 Key Props Fix](#14-solucionar-warnings-de-key-props) | [💡 Mejores Prácticas](#patrones-y-conceptos-transversales) |
 | [✨ Crear Portfolio Items](#15-crear-portfolio-items-desde-react-form) | [🚀 Performance Tips](#gestión-de-estado) | [🧠 Conceptos Clave](#comunicación-entre-componentes) |
 
-
 ---
 
 ## 🎭 **1. Render Props**
