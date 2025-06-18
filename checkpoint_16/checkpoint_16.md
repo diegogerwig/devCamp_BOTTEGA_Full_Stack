@@ -37,6 +37,7 @@
 - ✅ Quieres flexibilidad en cómo se renderiza la UI
 - ✅ Necesitas pasar datos dinámicos a diferentes layouts
 
+
 ---
 
 ## ⬆️ **2. Actualizar Estado del Padre desde Componente Hijo**
