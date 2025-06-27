@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CheckPoint 17 - CRUD y Desarrollo Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #2d2d2d;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #4fc3f7;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            border-bottom: 3px solid #4fc3f7;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #81c784;
+            margin: 30px 0 20px 0;
+            font-size: 1.8rem;
+            border-left: 4px solid #81c784;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #ffb74d;
+            margin: 25px 0 15px 0;
+            font-size: 1.3rem;
+        }
+
+        h4 {
+            color: #f48fb1;
+            margin: 20px 0 10px 0;
+            font-size: 1.1rem;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .intro-box {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #4fc3f7;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .benefit-card {
+            background-color: #3a3a3a;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #81c784;
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-title {
+            color: #81c784;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .example-container {
+            background-color: #3a3a3a;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffb74d;
+        }
+
+        .crud-operations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .crud-card {
+            background: linear-gradient(135deg, #4a4a4a, #5a5a5a);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .crud-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .crud-create { border-top: 4px solid #4caf50; }
+        .crud-read { border-top: 4px solid #2196f3; }
+        .crud-update { border-top: 4px solid #ff9800; }
+        .crud-delete { border-top: 4px solid #f44336; }
+
+        .operation-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: 'JavaScript';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: #888;
+            background-color: #333;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .code-block code {
+            color: #f8f8f2;
+            font-size: 0.95rem;
+        }
+
+        .syntax-keyword { color: #66d9ef; }
+        .syntax-string { color: #a6e22e; }
+        .syntax-comment { color: #75715e; font-style: italic; }
+        .syntax-function { color: #fd971f; }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #3a3a3a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #555;
+        }
+
+        .comparison-table th {
+            background-color: #4a4a4a;
+            color: #4fc3f7;
+            font-weight: bold;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #404040;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #2d5016, #4caf50);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #4caf50;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #4a2c2a, #f44336);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #f44336;
+        }
+
+        .api-methods {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .method-badge {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .method-delete { background-color: #f44336; color: white; }
+        .method-put { background-color: #ff9800; color: white; }
+        .method-patch { background-color: #9c27b0; color: white; }
+        .method-post { background-color: #4caf50; color: white; }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4fc3f7;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-top:hover {
+            background-color: #29b6f6;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .benefits-grid,
+            .crud-operations {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 CheckPoint 17: CRUD y Desarrollo Web</h1>
+
+        <section>
+            <h2>🔄 CRUD - Operaciones Fundamentales</h2>
+            
+            <div class="intro-box">
+                <p><strong>CRUD</strong> es un acrónimo que representa las cuatro operaciones fundamentales en la gestión de datos: <strong>Create (Crear)</strong>, <strong>Read (Leer)</strong>, <strong>Update (Actualizar)</strong> y <strong>Delete (Eliminar)</strong>.</p>
+                <p>En el desarrollo web, estas operaciones son la base de cualquier sistema que interactúe con bases de datos, permitiendo a los usuarios gestionar información de manera completa.</p>
+            </div>
+
+            <div class="crud-operations">
+                <div class="crud-card crud-create">
+                    <div class="operation-title">CREATE ➕</div>
+                    <p>Crear nuevos registros o datos en el sistema</p>
+                </div>
+                <div class="crud-card crud-read">
+                    <div class="operation-title">READ 👁️</div>
+                    <p>Leer y consultar información existente</p>
+                </div>
+                <div class="crud-card crud-update">
+                    <div class="operation-title">UPDATE ✏️</div>
+                    <p>Actualizar y modificar datos existentes</p>
+                </div>
+                <div class="crud-card crud-delete">
+                    <div class="operation-title">DELETE 🗑️</div>
+                    <p>Eliminar registros del sistema</p>
+                </div>
+            </div>
+
+            <h3>💡 Beneficios de Implementar CRUD</h3>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-title">🎯 Estandarización</div>
+                    <p>Proporciona un sistema común para gestionar datos, facilitando la integración entre aplicaciones.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-title">🤖 Automatización</div>
+                    <p>Las operaciones pueden automatizarse, eliminando la necesidad de actualizaciones manuales.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-title">📈 Escalabilidad</div>
+                    <p>Facilita el crecimiento de sistemas manteniendo la gestión de datos simple y eficiente.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-title">🎨 Simplicidad</div>
+                    <p>Enfoque claro y directo, útil tanto para desarrolladores junior como senior.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-title">🔗 Compatibilidad</div>
+                    <p>Aplicable a diversas tecnologías: SQL, NoSQL, APIs RESTful, etc.</p>
+                </div>
+            </div>
+
+            <h3>📱 Ejemplos Prácticos de CRUD</h3>
+            
+            <div class="example-container">
+                <h4>Instagram - Red Social</h4>
+                <div class="crud-operations">
+                    <div class="crud-card crud-create">
+                        <strong>Create:</strong> Crear nueva publicación, story o video
+                    </div>
+                    <div class="crud-card crud-read">
+                        <strong>Read:</strong> Ver contenido de cuentas que sigues
+                    </div>
+                    <div class="crud-card crud-update">
+                        <strong>Update:</strong> Editar información del perfil
+                    </div>
+                    <div class="crud-card crud-delete">
+                        <strong>Delete:</strong> Borrar publicaciones o comentarios
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-container">
+                <h4>Tienda de Muebles - Inventario</h4>
+                <div class="crud-operations">
+                    <div class="crud-card crud-create">
+                        <strong>Create:</strong> Añadir nuevo tipo de mueble
+                    </div>
+                    <div class="crud-card crud-read">
+                        <strong>Read:</strong> Consultar disponibilidad y precios
+                    </div>
+                    <div class="crud-card crud-update">
+                        <strong>Update:</strong> Actualizar cantidad y características
+                    </div>
+                    <div class="crud-card crud-delete">
+                        <strong>Delete:</strong> Eliminar productos descatalogados
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>❓ Operador Ternario - Condicionales Simplificados</h2>
+            
+            <div class="intro-box">
+                <p>El <strong>operador ternario</strong> es una estructura condicional que permite evaluar una condición y devolver uno de dos valores posibles en una sola línea de código.</p>
+                <p>Es una forma abreviada y elegante de escribir declaraciones if-else simples.</p>
+            </div>
+
+            <h3>📝 Sintaxis del Operador Ternario</h3>
+            <div class="code-block">
+<code><span class="syntax-keyword">condición</span> ? <span class="syntax-string">valorSiVerdadero</span> : <span class="syntax-string">valorSiFalso</span></code>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Donde:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li><strong>condición:</strong> expresión que se evalúa como verdadera o falsa</li>
+                    <li><strong>valorSiVerdadero:</strong> valor devuelto si la condición es verdadera</li>
+                    <li><strong>valorSiFalso:</strong> valor devuelto si la condición es falsa</li>
+                </ul>
+            </div>
+
+            <h3>🔄 Comparación: if-else vs Operador Ternario</h3>
+            
+            <div class="example-container">
+                <h4>Ejemplo 1: Sistema de Descuentos</h4>
+                
+                <p><strong>Método tradicional (if-else):</strong></p>
+                <div class="code-block">
+<code><span class="syntax-keyword">let</span> precioTotal;
+
+<span class="syntax-keyword">if</span> (clienteFiel) {
+    precioTotal = precioProducto * <span class="syntax-string">0.85</span>;
+} <span class="syntax-keyword">else</span> {
+    precioTotal = precioProducto;
+}</code>
+                </div>
+
+                <p><strong>Con operador ternario:</strong></p>
+                <div class="code-block">
+<code><span class="syntax-keyword">const</span> precioTotal = clienteFiel ? precioProducto * <span class="syntax-string">0.85</span> : precioProducto;</code>
+                </div>
+            </div>
+
+            <div class="example-container">
+                <h4>Ejemplo 2: Saludo Personalizado</h4>
+                
+                <p><strong>Con operador ternario:</strong></p>
+                <div class="code-block">
+<code><span class="syntax-keyword">const</span> saludoInicial = usuarioRegistrado ? 
+    <span class="syntax-string">`Bienvenido ${nombreUsuario}!`</span> : 
+    <span class="syntax-string">"Bienvenido invitado!"</span>;</code>
+                </div>
+
+                <p><strong>Método tradicional (if-else):</strong></p>
+                <div class="code-block">
+<code><span class="syntax-keyword">let</span> saludoInicial;
+
+<span class="syntax-keyword">if</span> (usuarioRegistrado) {
+    saludoInicial = <span class="syntax-string">`Bienvenido ${nombreUsuario}!`</span>;
+} <span class="syntax-keyword">else</span> {
+    saludoInicial = <span class="syntax-string">"Bienvenido invitado!"</span>;
+}</code>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <p><strong>⚠️ Importante:</strong> Los operadores ternarios son ideales para condiciones simples. Para lógica compleja o múltiples operaciones, es preferible usar if-else tradicionales para mantener la claridad del código.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>🗑️ Solicitudes DELETE - Eliminando Datos</h2>
+            
+            <div class="intro-box">
+                <p>Para eliminar datos a través de APIs, utilizamos solicitudes <strong>HTTP DELETE</strong>. Esta operación forma parte de la arquitectura REST y proporciona una forma estándar de eliminar recursos.</p>
+            </div>
+
+            <div class="api-methods">
+                <div class="method-badge method-delete">DELETE</div>
+            </div>
+
+            <h3>📋 Ejemplo Práctico con Axios</h3>
+            <div class="code-block">
+<code><span class="syntax-function">componentDidMount</span>() {
+    axios.<span class="syntax-keyword">delete</span>(<span class="syntax-string">'https://api.instagram.com/v1/media/1'</span>)
+        .<span class="syntax-function">then</span>(() => <span class="syntax-keyword">this</span>.<span class="syntax-function">setState</span>({ 
+            status: <span class="syntax-string">'Delete successful'</span> 
+        }))
+        .<span class="syntax-function">catch</span>(error => {
+            <span class="syntax-function">console.error</span>(<span class="syntax-string">'Error al eliminar:'</span>, error);
+            <span class="syntax-keyword">this</span>.<span class="syntax-function">setState</span>({ 
+                status: <span class="syntax-string">'Error en la eliminación'</span> 
+            });
+        });
+}</code>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>🎯 Casos de Uso Comunes:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Eliminar publicaciones en redes sociales</li>
+                    <li>Quitar productos de catálogos</li>
+                    <li>Eliminar cuentas de usuario</li>
+                    <li>Borrar archivos en sistemas de almacenamiento</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>✏️ Solicitudes PUT y PATCH - Actualizando Datos</h2>
+            
+            <div class="intro-box">
+                <p>Para actualizar datos existentes, utilizamos principalmente dos tipos de solicitudes HTTP:</p>
+            </div>
+
+            <div class="api-methods">
+                <div class="method-badge method-put">PUT</div>
+                <div class="method-badge method-patch">PATCH</div>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Método</th>
+                        <th>Propósito</th>
+                        <th>Uso Recomendado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PUT</strong></td>
+                        <td>Reemplazar completamente un recurso</td>
+                        <td>Cuando necesitas actualizar todos los campos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PATCH</strong></td>
+                        <td>Actualizar campos específicos</td>
+                        <td>Para modificaciones parciales y eficientes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>📋 Ejemplo con PUT</h3>
+            <div class="code-block">
+<code><span class="syntax-function">componentDidMount</span>() {
+    <span class="syntax-keyword">const</span> article = { 
+        title: <span class="syntax-string">'React PUT Request Example'</span> 
+    };
+    
+    axios.<span class="syntax-keyword">put</span>(<span class="syntax-string">'https://api.ejemplo.com/articles/1'</span>, article)
+        .<span class="syntax-function">then</span>(response => 
+            <span class="syntax-keyword">this</span>.<span class="syntax-function">setState</span>({ 
+                updatedAt: response.data.updatedAt 
+            })
+        )
+        .<span class="syntax-function">catch</span>(error => {
+            <span class="syntax-function">console.error</span>(<span class="syntax-string">'Error en la solicitud PUT:'</span>, error);
+        });
+}</code>
+            </div>
+        </section>
+
+        <section>
+            <h2>⚡ Código Dinámico - Adaptabilidad en Tiempo Real</h2>
+            
+            <div class="intro-box">
+                <p>El <strong>código dinámico</strong> se ejecuta en respuesta a eventos específicos y se adapta según las condiciones o datos en tiempo real. A diferencia del código estático, puede generar diferentes resultados basados en entradas variables e interacciones del usuario.</p>
+            </div>
+
+            <h3>📋 Ejemplo Completo: Componente AñadirPersona</h3>
+            <div class="code-block">
+<code><span class="syntax-keyword">import</span> React <span class="syntax-keyword">from</span> <span class="syntax-string">'react'</span>;
+<span class="syntax-keyword">import</span> axios <span class="syntax-keyword">from</span> <span class="syntax-string">'axios'</span>;
+
+<span class="syntax-keyword">export default class</span> <span class="syntax-function">AñadirPersona</span> <span class="syntax-keyword">extends</span> React.Component {
+  state = {
+    name: <span class="syntax-string">''</span>
+  }
+
+  <span class="syntax-function">handleChange</span> = event => {
+    <span class="syntax-keyword">this</span>.<span class="syntax-function">setState</span>({ name: event.target.value });
+  }
+
+  <span class="syntax-function">handleSubmit</span> = event => {
+    event.<span class="syntax-function">preventDefault</span>();
+
+    <span class="syntax-keyword">const</span> user = {
+      name: <span class="syntax-keyword">this</span>.state.name
+    };
+
+    axios.<span class="syntax-keyword">post</span>(<span class="syntax-string">'https://jsonplaceholder.typicode.com/users'</span>, { user })
+      .<span class="syntax-function">then</span>(res => {
+        <span class="syntax-function">console.log</span>(res);
+        <span class="syntax-function">console.log</span>(res.data);
+      })
+  }
+
+  <span class="syntax-function">render</span>() {
+    <span class="syntax-keyword">return</span> (
+      &lt;div&gt;
+        &lt;form <span class="syntax-function">onSubmit</span>={<span class="syntax-keyword">this</span>.handleSubmit}&gt;
+          &lt;label&gt;
+            Person Name:
+            &lt;input 
+              <span class="syntax-function">type</span>=<span class="syntax-string">"text"</span> 
+              <span class="syntax-function">name</span>=<span class="syntax-string">"name"</span> 
+              <span class="syntax-function">onChange</span>={<span class="syntax-keyword">this</span>.handleChange} 
+            /&gt;
+          &lt;/label&gt;
+          &lt;button <span class="syntax-function">type</span>=<span class="syntax-string">"submit"</span>&gt;Add&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    )
+  }
+}</code>
+            </div>
+
+            <h3>🔧 Integración en App.js</h3>
+            <div class="code-block">
+<code><span class="syntax-keyword">import</span> AñadirPersona <span class="syntax-keyword">from</span> <span class="syntax-string">'./components/AñadirPersona'</span>;
+
+<span class="syntax-keyword">function</span> <span class="syntax-function">App</span>() {
+  <span class="syntax-keyword">return</span> (
+    &lt;div <span class="syntax-function">className</span>=<span class="syntax-string">"App"</span>&gt;
+      &lt;AñadirPersona/&gt;
+    &lt;/div&gt;
+  )
+}</code>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>🚀 Características del Código Dinámico:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Reactivo:</strong> Responde a eventos del usuario</li>
+                    <li><strong>Adaptable:</strong> Cambia según datos en tiempo real</li>
+                    <li><strong>Interactivo:</strong> Permite experiencias de usuario fluidas</li>
+                    <li><strong>Flexible:</strong> Se ajusta a diferentes condiciones</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="highlight-box" style="margin-top: 40px; text-align: center;">
+            <h3>🎯 Resumen Clave</h3>
+            <p>CRUD proporciona la base para la gestión de datos, los operadores ternarios simplifican condicionales, y el código dinámico permite crear aplicaciones interactivas y adaptables. Estas herramientas son fundamentales para el desarrollo web moderno.</p>
+        </div>
+    </div>
+
+    <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Volver al inicio">
+        ↑
+    </button>
+
+    <script>
+        // Mostrar/ocultar botón de scroll según la posición
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.style.display = 'block';
+            } else {
+                scrollTop.style.display = 'none';
+            }
+        });
+
+        // Efecto de hover en las tarjetas
+        document.querySelectorAll('.benefit-card, .crud-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
