@@ -1,0 +1,3229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de React</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#121212',
+                            700: '#1a1a1a',
+                            600: '#242424',
+                            500: '#2d2d2d',
+                        },
+                        accent: {
+                            500: '#64ffda',
+                            600: '#50e3c2',
+                            400: '#7fffd4',
+                        },
+                        secondary: {
+                            500: '#bb86fc',
+                            400: '#d1a3ff',
+                        },
+                        react: {
+                            500: '#61dafb',
+                            600: '#21d4fd',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(-10px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #64ffda' },
+                            '100%': { boxShadow: '0 0 20px #64ffda, 0 0 30px #64ffda' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #121212 100%);
+        }
+        
+        .code-block {
+            background: linear-gradient(135deg, #1e1e1e 0%, #252525 100%);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #64ffda, #bb86fc, #61dafb);
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .code-block code {
+            color: #e6e6e6;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .code-keyword {
+            color: #c586c0;
+            font-weight: 500;
+        }
+        
+        .code-function {
+            color: #dcdcaa;
+            font-weight: 500;
+        }
+        
+        .code-string {
+            color: #ce9178;
+        }
+        
+        .code-comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+        
+        .topic-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .topic-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(100, 255, 218, 0.1), rgba(187, 134, 252, 0.1));
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .topic-item:hover::before {
+            width: 100%;
+        }
+        
+        .topic-item:hover, .topic-item.active {
+            background-color: rgba(30, 30, 30, 0.7);
+            border-left-color: #64ffda;
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(100, 255, 218, 0.2);
+        }
+        
+        .topic-item.active {
+            font-weight: 600;
+            color: #64ffda;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(187, 134, 252, 0.1) 100%);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #64ffda, #bb86fc);
+        }
+        
+        .content-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(36, 36, 36, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(100, 255, 218, 0.1);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+        
+        .content-card h3 {
+            background: linear-gradient(135deg, #64ffda, #bb86fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-gradient {
+            background: linear-gradient(180deg, #121212 0%, #1a1a1a 50%, #121212 100%);
+            border-right: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .main-title {
+            background: linear-gradient(135deg, #64ffda 0%, #bb86fc 50%, #61dafb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(100, 255, 218, 0.3);
+        }
+        
+        .category-divider {
+            background: linear-gradient(90deg, transparent, #64ffda, transparent);
+            height: 1px;
+            margin: 1rem 0;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #2d2d2d, #64ffda);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #3d3d3d, #50e3c2);
+        }
+        
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.05) 0%, rgba(187, 134, 252, 0.05) 100%);
+            border-left: 4px solid #64ffda;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-300 min-h-screen flex">
+    <!-- Sidebar -->
+    <div class="w-64 sidebar-gradient h-screen sticky top-0 overflow-y-auto flex-shrink-0 hidden md:block">
+        <div class="p-5 border-b border-dark-600">
+            <h1 class="text-xl font-bold text-accent-500 flex items-center animate-fade-in">
+                <i class="fab fa-react mr-2 floating-icon"></i> Guía React
+            </h1>
+            <p class="text-sm mt-1 text-gray-400">Conceptos avanzados y mejores prácticas</p>
+        </div>
+        
+        <div class="p-4">
+            <ul class="space-y-1">
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 font-semibold">
+                    <i class="fas fa-file-alt mr-2"></i>Formularios
+                </li>
+                <li><a href="#select-dropdowns" class="topic-item block px-3 py-2 rounded active">Select Dropdowns</a></li>
+                <li><a href="#textarea" class="topic-item block px-3 py-2 rounded">Textarea Tag</a></li>
+                <li><a href="#base-state" class="topic-item block px-3 py-2 rounded">Base State Value</a></li>
+                <li><a href="#parent-data" class="topic-item block px-3 py-2 rounded">Populating Parent Data</a></li>
+                
+                <div class="category-divider"></div>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4 font-semibold">
+                    <i class="fas fa-cloud-upload-alt mr-2"></i>Dropzone
+                </li>
+                <li><a href="#dropzone-install" class="topic-item block px-3 py-2 rounded">React Dropzone</a></li>
+                <li><a href="#security-audit" class="topic-item block px-3 py-2 rounded">Security Audit Fix</a></li>
+                <li><a href="#dropzone-integration" class="topic-item block px-3 py-2 rounded">Integration</a></li>
+                <li><a href="#thumbnail-upload" class="topic-item block px-3 py-2 rounded">Thumbnail Upload</a></li>
+                <li><a href="#banner-logo" class="topic-item block px-3 py-2 rounded">Banner & Logo</a></li>
+                
+                <div class="category-divider"></div>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4 font-semibold">
+                    <i class="fas fa-code mr-2"></i>Refs y Estilos
+                </li>
+                <li><a href="#react-refs" class="topic-item block px-3 py-2 rounded">React Refs</a></li>
+                <li><a href="#form-mixin" class="topic-item block px-3 py-2 rounded">Form Input Mixin</a></li>
+                <li><a href="#custom-styles" class="topic-item block px-3 py-2 rounded">Custom Styles</a></li>
+                <li><a href="#css-grid" class="topic-item block px-3 py-2 rounded">CSS Grid</a></li>
+                <li><a href="#dropzone-labels" class="topic-item block px-3 py-2 rounded">Dropzone Labels</a></li>
+                
+                <div class="category-divider"></div>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4 font-semibold">
+                    <i class="fas fa-database mr-2"></i>CRUD
+                </li>
+                <li><a href="#delete-handler" class="topic-item block px-3 py-2 rounded">Delete Handler</a></li>
+                <li><a href="#delete-api" class="topic-item block px-3 py-2 rounded">Delete API Data</a></li>
+                <li><a href="#font-awesome" class="topic-item block px-3 py-2 rounded">Font Awesome</a></li>
+                <li><a href="#edit-handler" class="topic-item block px-3 py-2 rounded">Edit Handler</a></li>
+                <li><a href="#edit-form" class="topic-item block px-3 py-2 rounded">Edit Form</a></li>
+                <li><a href="#dynamic-api" class="topic-item block px-3 py-2 rounded">Dynamic API Queries</a></li>
+                
+                <div class="category-divider"></div>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4 font-semibold">
+                    <i class="fas fa-rocket mr-2"></i>Avanzado
+                </li>
+                <li><a href="#ternary" class="topic-item block px-3 py-2 rounded">Multi Line Ternary</a></li>
+                <li><a href="#thumbnail-conditionals" class="topic-item block px-3 py-2 rounded">Thumbnail Conditionals</a></li>
+                <li><a href="#delete-image" class="topic-item block px-3 py-2 rounded">Delete Image Links</a></li>
+                <li><a href="#image-bug" class="topic-item block px-3 py-2 rounded">Image Edit Bug Fix</a></li>
+                <li><a href="#final-delete" class="topic-item block px-3 py-2 rounded">Final Image Delete</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Mobile header -->
+    <div class="md:hidden bg-dark-800 w-full p-4 fixed top-0 z-10 border-b border-dark-600">
+        <div class="flex justify-between items-center">
+            <h1 class="text-lg font-bold text-accent-500 flex items-center">
+                <i class="fab fa-react mr-2"></i> Guía React
+            </h1>
+            <button id="mobile-menu" class="text-gray-400 hover:text-accent-500 transition-colors">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="flex-1 p-4 md:p-8 pt-16 md:pt-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12 animate-fade-in">
+                <h1 class="text-4xl md:text-5xl font-bold main-title mb-4">Guía Completa de React</h1>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
+                    Domina React con conceptos avanzados, mejores prácticas y ejemplos prácticos 
+                    que te llevarán al siguiente nivel como desarrollador
+                </p>
+                <div class="mt-6 flex justify-center space-x-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-500 bg-opacity-20 text-accent-400">
+                        <i class="fab fa-react mr-1"></i> React 18+
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary-500 bg-opacity-20 text-secondary-400">
+                        <i class="fas fa-code mr-1"></i> ES6+
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-react-500 bg-opacity-20 text-react-500">
+                        <i class="fas fa-rocket mr-1"></i> Hooks
+                    </span>
+                </div>
+            </div>
+
+
+            
+            <!-- Formularios Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-file-alt mr-3 text-secondary-500"></i>
+                        Formularios en React
+                    </h2>
+                    <p class="text-gray-400">
+                        Aprende a manejar formularios de manera eficiente con componentes controlados y estado local
+                    </p>
+                </div>
+                
+                <!-- Select Dropdowns -->
+                <div id="select-dropdowns" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Select Dropdowns en React</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Los elementos <code class="bg-dark-700 px-2 py-1 rounded text-accent-400">&lt;select&gt;</code> 
+                            en React funcionan como componentes controlados. El valor se maneja a través del estado del componente, 
+                            lo que permite un control total sobre la selección del usuario.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">SelectExample</span>() {
+  <span class="code-keyword">const</span> [selectedOption, setSelectedOption] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleChange</span> = (event) => {
+    <span class="code-function">setSelectedOption</span>(event.target.value);
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;label&gt;Elige una opción:&lt;/label&gt;
+      &lt;select value={selectedOption} onChange={handleChange}&gt;
+        &lt;option value=<span class="code-string">""</span>&gt;-- Selecciona --&lt;/option&gt;
+        &lt;option value=<span class="code-string">"react"</span>&gt;React&lt;/option&gt;
+        &lt;option value=<span class="code-string">"vue"</span>&gt;Vue&lt;/option&gt;
+        &lt;option value=<span class="code-string">"angular"</span>&gt;Angular&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;p&gt;Seleccionaste: {selectedOption}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                    
+                    <div class="mt-4 p-4 bg-dark-700 rounded-lg border-l-4 border-accent-500">
+                        <p class="text-sm text-gray-300">
+                            <strong>Punto clave:</strong> Siempre usa la prop <code>value</code> junto con <code>onChange</code> 
+                            para mantener el componente controlado y sincronizado con el estado.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Textarea Tag -->
+                <div id="textarea" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Textarea en React</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            A diferencia del HTML tradicional, en React el <code class="bg-dark-700 px-2 py-1 rounded text-accent-400">&lt;textarea&gt;</code> 
+                            usa la prop <code>value</code> en lugar de contenido entre etiquetas, manteniéndolo consistente con otros inputs.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">TextareaExample</span>() {
+  <span class="code-keyword">const</span> [message, setMessage] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;label&gt;Tu mensaje:&lt;/label&gt;
+      &lt;textarea
+        value={message}
+        onChange={<span class="code-keyword">e</span> => <span class="code-function">setMessage</span>(e.target.value)}
+        placeholder=<span class="code-string">"Escribe tu mensaje aquí..."</span>
+        rows={4}
+        cols={50}
+      /&gt;
+      &lt;p&gt;Caracteres: {message.length}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Base State Value -->
+                <div id="base-state" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Valores Iniciales del Estado</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Establecer valores iniciales apropiados en el estado ayuda a evitar errores y proporciona 
+                            una mejor experiencia de usuario. Siempre inicializa con el tipo de dato correcto.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">FormWithDefaults</span>() {
+  <span class="code-comment">// Objeto para múltiples campos</span>
+  <span class="code-keyword">const</span> [formData, setFormData] = <span class="code-function">useState</span>({
+    name: <span class="code-string">''</span>,
+    email: <span class="code-string">''</span>,
+    age: 18,
+    country: <span class="code-string">'mexico'</span>
+  });
+  
+  <span class="code-comment">// Para un solo campo con valor por defecto</span>
+  <span class="code-keyword">const</span> [category, setCategory] = <span class="code-function">useState</span>(<span class="code-string">'general'</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleInputChange</span> = (field, value) => {
+    <span class="code-function">setFormData</span>(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;form&gt;
+      &lt;input 
+        value={formData.name}
+        onChange={<span class="code-keyword">e</span> => <span class="code-function">handleInputChange</span>(<span class="code-string">'name'</span>, e.target.value)}
+        placeholder=<span class="code-string">"Nombre"</span>
+      /&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Populating Parent Component Data -->
+                <div id="parent-data" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Comunicación Hijo → Padre</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Para enviar datos desde un componente hijo al padre, usamos funciones callback. 
+                            El padre pasa una función como prop, y el hijo la ejecuta con los datos necesarios.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Componente Padre</span>
+<span class="code-keyword">function</span> <span class="code-function">ParentComponent</span>() {
+  <span class="code-keyword">const</span> [userData, setUserData] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">receiveUserData</span> = (data) => {
+    <span class="code-function">setUserData</span>(data);
+    console.<span class="code-function">log</span>(<span class="code-string">'Datos recibidos:'</span>, data);
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;h2&gt;Formulario Principal&lt;/h2&gt;
+      &lt;UserForm onSubmit={receiveUserData} /&gt;
+      {userData && &lt;p&gt;Usuario: {userData.name}&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-comment">// Componente Hijo</span>
+<span class="code-keyword">function</span> <span class="code-function">UserForm</span>({ onSubmit }) {
+  <span class="code-keyword">const</span> [name, setName] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleSubmit</span> = () => {
+    <span class="code-keyword">if</span> (name.trim()) {
+      <span class="code-function">onSubmit</span>({ name, timestamp: <span class="code-keyword">new</span> <span class="code-function">Date</span>() });
+      <span class="code-function">setName</span>(<span class="code-string">''</span>); <span class="code-comment">// Limpiar formulario</span>
+    }
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;input 
+        value={name}
+        onChange={<span class="code-keyword">e</span> => <span class="code-function">setName</span>(e.target.value)}
+        placeholder=<span class="code-string">"Tu nombre"</span>
+      /&gt;
+      &lt;button onClick={handleSubmit}&gt;Enviar&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dropzone Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-cloud-upload-alt mr-3 text-secondary-500"></i>
+                        Manejo de Archivos con Dropzone
+                    </h2>
+                    <p class="text-gray-400">
+                        Implementa funcionalidad de arrastrar y soltar archivos de forma elegante y funcional
+                    </p>
+                </div>
+                
+                <!-- React Dropzone -->
+                <div id="dropzone-install" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Instalación y Configuración de React Dropzone</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            React Dropzone es la librería más popular para manejar uploads de archivos con funcionalidad 
+                            drag & drop. Proporciona una API simple y flexible para crear zonas de carga intuitivas.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// 1. Instalación</span>
+npm install react-dropzone
+
+<span class="code-comment">// 2. Importación y uso básico</span>
+<span class="code-keyword">import</span> { useDropzone } <span class="code-keyword">from</span> <span class="code-string">'react-dropzone'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">FileUploader</span>() {
+  <span class="code-keyword">const</span> [files, setFiles] = <span class="code-function">useState</span>([]);
+  
+  <span class="code-keyword">const</span> { getRootProps, getInputProps, isDragActive } = <span class="code-function">useDropzone</span>({
+    accept: {
+      <span class="code-string">'image/*'</span>: [<span class="code-string">'.jpeg'</span>, <span class="code-string">'.jpg'</span>, <span class="code-string">'.png'</span>]
+    },
+    onDrop: <span class="code-keyword">acceptedFiles</span> => {
+      <span class="code-function">setFiles</span>(acceptedFiles);
+    }
+  });
+
+  <span class="code-keyword">return</span> (
+    &lt;div {...getRootProps()} style={{ 
+      border: <span class="code-string">'2px dashed #ccc'</span>, 
+      padding: <span class="code-string">'20px'</span>, 
+      textAlign: <span class="code-string">'center'</span> 
+    }}&gt;
+      &lt;input {...getInputProps()} /&gt;
+      {isDragActive ? (
+        &lt;p&gt;Suelta las imágenes aquí...&lt;/p&gt;
+      ) : (
+        &lt;p&gt;Arrastra imágenes aquí o haz clic para seleccionar&lt;/p&gt;
+      )}
+      
+      {files.length > 0 && (
+        &lt;div&gt;
+          &lt;h4&gt;Archivos seleccionados:&lt;/h4&gt;
+          {files.map(file => &lt;p key={file.name}&gt;{file.name}&lt;/p&gt;)}
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Security Audit Fix -->
+                <div id="security-audit" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Auditoría de Seguridad</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Mantener las dependencias actualizadas es crucial para la seguridad. 
+                            NPM incluye herramientas integradas para detectar y corregir vulnerabilidades.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Verificar vulnerabilidades en el proyecto</span>
+npm audit
+
+<span class="code-comment">// Corregir automáticamente las vulnerabilidades</span>
+npm audit fix
+
+<span class="code-comment">// Para correcciones más agresivas (con cuidado)</span>
+npm audit fix --force
+
+<span class="code-comment">// Ver detalles de una vulnerabilidad específica</span>
+npm audit --audit-level moderate</code></pre>
+                    </div>
+                    
+                    <div class="mt-4 p-4 bg-yellow-900 bg-opacity-30 rounded-lg border-l-4 border-yellow-500">
+                        <p class="text-sm text-yellow-200">
+                            <strong>⚠️ Precaución:</strong> Siempre prueba tu aplicación después de ejecutar 
+                            <code>npm audit fix</code>, ya que puede actualizar dependencias de manera significativa.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Dropzone Integration -->
+                <div id="dropzone-integration" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Integración Avanzada de Dropzone</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Una implementación más completa que incluye validación de archivos, 
+                            previsualización de imágenes y manejo de errores.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">AdvancedDropzone</span>() {
+  <span class="code-keyword">const</span> [uploadedFiles, setUploadedFiles] = <span class="code-function">useState</span>([]);
+  <span class="code-keyword">const</span> [errors, setErrors] = <span class="code-function">useState</span>([]);
+  
+  <span class="code-keyword">const</span> { getRootProps, getInputProps } = <span class="code-function">useDropzone</span>({
+    accept: {
+      <span class="code-string">'image/*'</span>: []
+    },
+    maxSize: 5242880, <span class="code-comment">// 5MB</span>
+    onDrop: (acceptedFiles, rejectedFiles) => {
+      <span class="code-comment">// Procesar archivos aceptados</span>
+      <span class="code-keyword">const</span> filesWithPreview = acceptedFiles.<span class="code-function">map</span>(file => 
+        <span class="code-function">Object</span>.<span class="code-function">assign</span>(file, {
+          preview: URL.<span class="code-function">createObjectURL</span>(file)
+        })
+      );
+      
+      <span class="code-function">setUploadedFiles</span>(prev => [...prev, ...filesWithPreview]);
+      
+      <span class="code-comment">// Manejar archivos rechazados</span>
+      <span class="code-keyword">if</span> (rejectedFiles.length > 0) {
+        <span class="code-keyword">const</span> newErrors = rejectedFiles.<span class="code-function">map</span>(file => 
+          <span class="code-string">`${file.file.name}: ${file.errors[0].message}`</span>
+        );
+        <span class="code-function">setErrors</span>(newErrors);
+      }
+    }
+  });
+  
+  <span class="code-keyword">const</span> <span class="code-function">removeFile</span> = (index) => {
+    <span class="code-function">setUploadedFiles</span>(files => files.<span class="code-function">filter</span>((_, i) => i !== index));
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;div {...getRootProps()} className=<span class="code-string">"dropzone"</span>&gt;
+        &lt;input {...getInputProps()} /&gt;
+        &lt;p&gt;Arrastra imágenes (máx. 5MB) o haz clic&lt;/p&gt;
+      &lt;/div&gt;
+      
+      {errors.length > 0 && (
+        &lt;div className=<span class="code-string">"errors"</span>&gt;
+          {errors.<span class="code-function">map</span>((error, index) => (
+            &lt;p key={index} style={{ color: <span class="code-string">'red'</span> }}&gt;{error}&lt;/p&gt;
+          ))}
+        &lt;/div&gt;
+      )}
+      
+      &lt;div className=<span class="code-string">"preview-container"</span>&gt;
+        {uploadedFiles.<span class="code-function">map</span>((file, index) => (
+          &lt;div key={index} className=<span class="code-string">"preview-item"</span>&gt;
+            &lt;img src={file.preview} alt={file.name} width={100} /&gt;
+            &lt;p&gt;{file.name}&lt;/p&gt;
+            &lt;button onClick={() => <span class="code-function">removeFile</span>(index)}&gt;Eliminar&lt;/button&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Upload -->
+                <div id="thumbnail-upload" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Upload de Miniaturas</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Crear miniaturas automáticamente al subir imágenes mejora el rendimiento 
+                            y la experiencia del usuario en aplicaciones web.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">ThumbnailUploader</span>() {
+  <span class="code-keyword">const</span> [thumbnails, setThumbnails] = <span class="code-function">useState</span>([]);
+  
+  <span class="code-keyword">const</span> <span class="code-function">createThumbnail</span> = (file) => {
+    <span class="code-keyword">return new</span> <span class="code-function">Promise</span>((resolve) => {
+      <span class="code-keyword">const</span> canvas = document.<span class="code-function">createElement</span>(<span class="code-string">'canvas'</span>);
+      <span class="code-keyword">const</span> ctx = canvas.<span class="code-function">getContext</span>(<span class="code-string">'2d'</span>);
+      <span class="code-keyword">const</span> img = <span class="code-keyword">new</span> <span class="code-function">Image</span>();
+      
+      img.<span class="code-function">onload</span> = () => {
+        <span class="code-comment">// Redimensionar a 150x150</span>
+        canvas.width = 150;
+        canvas.height = 150;
+        
+        ctx.<span class="code-function">drawImage</span>(img, 0, 0, 150, 150);
+        
+        canvas.<span class="code-function">toBlob</span>((blob) => {
+          <span class="code-function">resolve</span>({
+            original: file,
+            thumbnail: blob,
+            preview: URL.<span class="code-function">createObjectURL</span>(blob)
+          });
+        });
+      };
+      
+      img.src = URL.<span class="code-function">createObjectURL</span>(file);
+    });
+  };
+  
+  <span class="code-keyword">const</span> { getRootProps, getInputProps } = <span class="code-function">useDropzone</span>({
+    accept: { <span class="code-string">'image/*'</span>: [] },
+    onDrop: <span class="code-keyword">async</span> (acceptedFiles) => {
+      <span class="code-keyword">const</span> thumbnailPromises = acceptedFiles.<span class="code-function">map</span>(createThumbnail);
+      <span class="code-keyword">const</span> results = <span class="code-keyword">await</span> Promise.<span class="code-function">all</span>(thumbnailPromises);
+      <span class="code-function">setThumbnails</span>(prev => [...prev, ...results]);
+    }
+  });
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;div {...getRootProps()}&gt;
+        &lt;input {...getInputProps()} /&gt;
+        &lt;p&gt;Sube imágenes para crear miniaturas&lt;/p&gt;
+      &lt;/div&gt;
+      
+      &lt;div style={{ display: <span class="code-string">'flex'</span>, flexWrap: <span class="code-string">'wrap'</span> }}&gt;
+        {thumbnails.<span class="code-function">map</span>((item, index) => (
+          &lt;div key={index} style={{ margin: <span class="code-string">'10px'</span> }}&gt;
+            &lt;img src={item.preview} alt=<span class="code-string">"thumbnail"</span> /&gt;
+            &lt;p&gt;{item.original.name}&lt;/p&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Banner & Logo -->
+                <div id="banner-logo" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Upload de Banner y Logo</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Implementación específica para manejar diferentes tipos de imágenes 
+                            con validaciones y restricciones particulares para cada uso.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">BannerLogoUploader</span>() {
+  <span class="code-keyword">const</span> [banner, setBanner] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  <span class="code-keyword">const</span> [logo, setLogo] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">createDropzone</span> = (type, setter, dimensions) => {
+    <span class="code-keyword">return</span> <span class="code-function">useDropzone</span>({
+      accept: { <span class="code-string">'image/*'</span>: [] },
+      maxFiles: 1,
+      onDrop: (acceptedFiles) => {
+        <span class="code-keyword">const</span> file = acceptedFiles[0];
+        <span class="code-keyword">if</span> (file) {
+          <span class="code-comment">// Validar dimensiones si es necesario</span>
+          <span class="code-keyword">const</span> img = <span class="code-keyword">new</span> <span class="code-function">Image</span>();
+          img.<span class="code-function">onload</span> = () => {
+            <span class="code-keyword">if</span> (dimensions) {
+              <span class="code-keyword">const</span> { minWidth, minHeight } = dimensions;
+              <span class="code-keyword">if</span> (img.width < minWidth || img.height < minHeight) {
+                <span class="code-function">alert</span>(<span class="code-string">`${type} debe ser mínimo ${minWidth}x${minHeight}px`</span>);
+                <span class="code-keyword">return</span>;
+              }
+            }
+            
+            <span class="code-function">setter</span>({
+              file,
+              preview: URL.<span class="code-function">createObjectURL</span>(file),
+              dimensions: { width: img.width, height: img.height }
+            });
+          };
+          img.src = URL.<span class="code-function">createObjectURL</span>(file);
+        }
+      }
+    });
+  };
+  
+  <span class="code-keyword">const</span> bannerDropzone = <span class="code-function">createDropzone</span>(<span class="code-string">'Banner'</span>, setBanner, { 
+    minWidth: 1200, 
+    minHeight: 300 
+  });
+  
+  <span class="code-keyword">const</span> logoDropzone = <span class="code-function">createDropzone</span>(<span class="code-string">'Logo'</span>, setLogo, { 
+    minWidth: 200, 
+    minHeight: 200 
+  });
+  
+  <span class="code-keyword">return</span> (
+    &lt;div style={{ display: <span class="code-string">'grid'</span>, gridTemplateColumns: <span class="code-string">'1fr 1fr'</span>, gap: <span class="code-string">'20px'</span> }}&gt;
+      <span class="code-comment">// Banner Upload</span>
+      &lt;div&gt;
+        &lt;h3&gt;Banner (1200x300px mínimo)&lt;/h3&gt;
+        &lt;div {...bannerDropzone.getRootProps()} className=<span class="code-string">"upload-area"</span>&gt;
+          &lt;input {...bannerDropzone.getInputProps()} /&gt;
+          {banner ? (
+            &lt;img src={banner.preview} alt=<span class="code-string">"banner"</span> style={{ maxWidth: <span class="code-string">'100%'</span> }} /&gt;
+          ) : (
+            &lt;p&gt;Sube tu banner aquí&lt;/p&gt;
+          )}
+        &lt;/div&gt;
+      &lt;/div&gt;
+      
+      <span class="code-comment">// Logo Upload</span>
+      &lt;div&gt;
+        &lt;h3&gt;Logo (200x200px mínimo)&lt;/h3&gt;
+        &lt;div {...logoDropzone.getRootProps()} className=<span class="code-string">"upload-area"</span>&gt;
+          &lt;input {...logoDropzone.getInputProps()} /&gt;
+          {logo ? (
+            &lt;img src={logo.preview} alt=<span class="code-string">"logo"</span> style={{ maxWidth: <span class="code-string">'200px'</span> }} /&gt;
+          ) : (
+            &lt;p&gt;Sube tu logo aquí&lt;/p&gt;
+          )}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+
+            
+            <!-- Refs y Estilos Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-code mr-3 text-secondary-500"></i>
+                        Refs y Estilos Avanzados
+                    </h2>
+                    <p class="text-gray-400">
+                        Domina las referencias directas a elementos DOM y técnicas avanzadas de estilizado
+                    </p>
+                </div>
+                
+                <!-- React Refs -->
+                <div id="react-refs" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">React Refs - Acceso Directo al DOM</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Los refs permiten acceder directamente a elementos DOM o componentes. 
+                            Úsalos cuando necesites enfocar inputs, medir elementos o integrar librerías externas.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">import</span> { useRef, useEffect } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">FocusInput</span>() {
+  <span class="code-keyword">const</span> inputRef = <span class="code-function">useRef</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-comment">// Enfocar automáticamente al montar</span>
+  <span class="code-function">useEffect</span>(() => {
+    inputRef.current.<span class="code-function">focus</span>();
+  }, []);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleFocus</span> = () => {
+    inputRef.current.<span class="code-function">focus</span>();
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleClear</span> = () => {
+    inputRef.current.value = <span class="code-string">''</span>;
+    inputRef.current.<span class="code-function">focus</span>();
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;input 
+        ref={inputRef}
+        type=<span class="code-string">"text"</span>
+        placeholder=<span class="code-string">"Escribe algo..."</span>
+      /&gt;
+      &lt;button onClick={handleFocus}&gt;Enfocar&lt;/button&gt;
+      &lt;button onClick={handleClear}&gt;Limpiar&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-comment">// Ref para medir elementos</span>
+<span class="code-keyword">function</span> <span class="code-function">MeasureElement</span>() {
+  <span class="code-keyword">const</span> divRef = <span class="code-function">useRef</span>(<span class="code-keyword">null</span>);
+  <span class="code-keyword">const</span> [dimensions, setDimensions] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">measureElement</span> = () => {
+    <span class="code-keyword">if</span> (divRef.current) {
+      <span class="code-keyword">const</span> rect = divRef.current.<span class="code-function">getBoundingClientRect</span>();
+      <span class="code-function">setDimensions</span>({
+        width: rect.width,
+        height: rect.height
+      });
+    }
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;div ref={divRef} style={{ padding: <span class="code-string">'20px'</span>, background: <span class="code-string">'lightblue'</span> }}&gt;
+        Elemento a medir
+      &lt;/div&gt;
+      &lt;button onClick={measureElement}&gt;Medir&lt;/button&gt;
+      {dimensions && (
+        &lt;p&gt;Dimensiones: {dimensions.width}px x {dimensions.height}px&lt;/p&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Form Input Mixin -->
+                <div id="form-mixin" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Mixin para Inputs de Formulario</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Un hook personalizado que simplifica el manejo de múltiples inputs en formularios, 
+                            reduciendo código repetitivo y mejorando la mantenibilidad.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Hook personalizado para formularios</span>
+<span class="code-keyword">function</span> <span class="code-function">useFormInput</span>(initialValue) {
+  <span class="code-keyword">const</span> [value, setValue] = <span class="code-function">useState</span>(initialValue);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleChange</span> = (e) => {
+    <span class="code-function">setValue</span>(e.target.value);
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">reset</span> = () => {
+    <span class="code-function">setValue</span>(initialValue);
+  };
+  
+  <span class="code-keyword">return</span> {
+    value,
+    onChange: handleChange,
+    reset
+  };
+}
+
+<span class="code-comment">// Uso del hook en un formulario</span>
+<span class="code-keyword">function</span> <span class="code-function">ContactForm</span>() {
+  <span class="code-keyword">const</span> name = <span class="code-function">useFormInput</span>(<span class="code-string">''</span>);
+  <span class="code-keyword">const</span> email = <span class="code-function">useFormInput</span>(<span class="code-string">''</span>);
+  <span class="code-keyword">const</span> message = <span class="code-function">useFormInput</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleSubmit</span> = (e) => {
+    e.<span class="code-function">preventDefault</span>();
+    
+    console.<span class="code-function">log</span>({
+      name: name.value,
+      email: email.value,
+      message: message.value
+    });
+    
+    <span class="code-comment">// Limpiar formulario</span>
+    name.<span class="code-function">reset</span>();
+    email.<span class="code-function">reset</span>();
+    message.<span class="code-function">reset</span>();
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input 
+        type=<span class="code-string">"text"</span>
+        placeholder=<span class="code-string">"Nombre"</span>
+        {...name}
+      /&gt;
+      
+      &lt;input 
+        type=<span class="code-string">"email"</span>
+        placeholder=<span class="code-string">"Email"</span>
+        {...email}
+      /&gt;
+      
+      &lt;textarea 
+        placeholder=<span class="code-string">"Mensaje"</span>
+        {...message}
+      /&gt;
+      
+      &lt;button type=<span class="code-string">"submit"</span>&gt;Enviar&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Custom Styles -->
+                <div id="custom-styles" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Estilos Personalizados en React</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            React ofrece múltiples formas de aplicar estilos: inline styles, CSS modules, 
+                            styled-components y CSS-in-JS. Cada método tiene sus ventajas según el caso de uso.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// 1. Estilos inline dinámicos</span>
+<span class="code-keyword">function</span> <span class="code-function">DynamicButton</span>({ variant = <span class="code-string">'primary'</span>, size = <span class="code-string">'medium'</span> }) {
+  <span class="code-keyword">const</span> baseStyles = {
+    padding: size === <span class="code-string">'large'</span> ? <span class="code-string">'12px 24px'</span> : <span class="code-string">'8px 16px'</span>,
+    border: <span class="code-string">'none'</span>,
+    borderRadius: <span class="code-string">'4px'</span>,
+    cursor: <span class="code-string">'pointer'</span>,
+    fontSize: size === <span class="code-string">'large'</span> ? <span class="code-string">'16px'</span> : <span class="code-string">'14px'</span>
+  };
+  
+  <span class="code-keyword">const</span> variantStyles = {
+    primary: {
+      backgroundColor: <span class="code-string">'#007bff'</span>,
+      color: <span class="code-string">'white'</span>
+    },
+    secondary: {
+      backgroundColor: <span class="code-string">'#6c757d'</span>,
+      color: <span class="code-string">'white'</span>
+    },
+    outline: {
+      backgroundColor: <span class="code-string">'transparent'</span>,
+      color: <span class="code-string">'#007bff'</span>,
+      border: <span class="code-string">'1px solid #007bff'</span>
+    }
+  };
+  
+  <span class="code-keyword">const</span> buttonStyles = {
+    ...baseStyles,
+    ...variantStyles[variant]
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;button style={buttonStyles}&gt;
+      Botón {variant}
+    &lt;/button&gt;
+  );
+}
+
+<span class="code-comment">// 2. CSS Modules (archivo Button.module.css)</span>
+<span class="code-comment">/*
+.button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.secondary {
+  background-color: #6c757d;
+  color: white;
+}
+*/</span>
+
+<span class="code-keyword">import</span> styles <span class="code-keyword">from</span> <span class="code-string">'./Button.module.css'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">ModuleButton</span>({ variant = <span class="code-string">'primary'</span> }) {
+  <span class="code-keyword">return</span> (
+    &lt;button className={<span class="code-string">`${styles.button} ${styles[variant]}`</span>}&gt;
+      Botón con CSS Modules
+    &lt;/button&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- CSS Grid -->
+                <div id="css-grid" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">CSS Grid en React</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            CSS Grid es perfecto para crear layouts complejos y responsivos. 
+                            En React, puedes combinarlo con estado para crear grids dinámicos.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">ResponsiveGrid</span>() {
+  <span class="code-keyword">const</span> [items, setItems] = <span class="code-function">useState</span>([
+    { id: 1, title: <span class="code-string">'Item 1'</span>, size: <span class="code-string">'normal'</span> },
+    { id: 2, title: <span class="code-string">'Item 2'</span>, size: <span class="code-string">'large'</span> },
+    { id: 3, title: <span class="code-string">'Item 3'</span>, size: <span class="code-string">'normal'</span> },
+    { id: 4, title: <span class="code-string">'Item 4'</span>, size: <span class="code-string">'wide'</span> }
+  ]);
+  
+  <span class="code-keyword">const</span> gridStyles = {
+    display: <span class="code-string">'grid'</span>,
+    gridTemplateColumns: <span class="code-string">'repeat(auto-fit, minmax(200px, 1fr))'</span>,
+    gap: <span class="code-string">'16px'</span>,
+    padding: <span class="code-string">'20px'</span>
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">getItemStyles</span> = (size) => {
+    <span class="code-keyword">const</span> baseStyles = {
+      backgroundColor: <span class="code-string">'#f0f0f0'</span>,
+      padding: <span class="code-string">'20px'</span>,
+      borderRadius: <span class="code-string">'8px'</span>,
+      textAlign: <span class="code-string">'center'</span>
+    };
+    
+    <span class="code-keyword">switch</span> (size) {
+      <span class="code-keyword">case</span> <span class="code-string">'large'</span>:
+        <span class="code-keyword">return</span> { ...baseStyles, gridRow: <span class="code-string">'span 2'</span> };
+      <span class="code-keyword">case</span> <span class="code-string">'wide'</span>:
+        <span class="code-keyword">return</span> { ...baseStyles, gridColumn: <span class="code-string">'span 2'</span> };
+      <span class="code-keyword">default</span>:
+        <span class="code-keyword">return</span> baseStyles;
+    }
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div style={gridStyles}&gt;
+      {items.<span class="code-function">map</span>(item => (
+        &lt;div 
+          key={item.id}
+          style={<span class="code-function">getItemStyles</span>(item.size)}
+        &gt;
+          &lt;h3&gt;{item.title}&lt;/h3&gt;
+          &lt;p&gt;Tamaño: {item.size}&lt;/p&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-comment">// Grid con áreas nombradas</span>
+<span class="code-keyword">function</span> <span class="code-function">LayoutGrid</span>() {
+  <span class="code-keyword">const</span> layoutStyles = {
+    display: <span class="code-string">'grid'</span>,
+    gridTemplateAreas: <span class="code-string">`
+      "header header header"
+      "sidebar main main"
+      "footer footer footer"
+    `</span>,
+    gridTemplateRows: <span class="code-string">'auto 1fr auto'</span>,
+    gridTemplateColumns: <span class="code-string">'200px 1fr 1fr'</span>,
+    minHeight: <span class="code-string">'100vh'</span>,
+    gap: <span class="code-string">'10px'</span>
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div style={layoutStyles}&gt;
+      &lt;header style={{ gridArea: <span class="code-string">'header'</span>, background: <span class="code-string">'#333'</span>, color: <span class="code-string">'white'</span>, padding: <span class="code-string">'20px'</span> }}&gt;
+        Header
+      &lt;/header&gt;
+      
+      &lt;aside style={{ gridArea: <span class="code-string">'sidebar'</span>, background: <span class="code-string">'#f0f0f0'</span>, padding: <span class="code-string">'20px'</span> }}&gt;
+        Sidebar
+      &lt;/aside&gt;
+      
+      &lt;main style={{ gridArea: <span class="code-string">'main'</span>, background: <span class="code-string">'white'</span>, padding: <span class="code-string">'20px'</span> }}&gt;
+        Contenido principal
+      &lt;/main&gt;
+      
+      &lt;footer style={{ gridArea: <span class="code-string">'footer'</span>, background: <span class="code-string">'#333'</span>, color: <span class="code-string">'white'</span>, padding: <span class="code-string">'20px'</span> }}&gt;
+        Footer
+      &lt;/footer&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Dropzone Labels -->
+                <div id="dropzone-labels" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Etiquetas Personalizadas para Dropzone</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Personalizar la apariencia y mensajes del dropzone mejora significativamente 
+                            la experiencia del usuario y la accesibilidad de la aplicación.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">CustomDropzoneLabels</span>() {
+  <span class="code-keyword">const</span> [files, setFiles] = <span class="code-function">useState</span>([]);
+  <span class="code-keyword">const</span> [isDragOver, setIsDragOver] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-keyword">const</span> { getRootProps, getInputProps, isDragActive } = <span class="code-function">useDropzone</span>({
+    accept: {
+      <span class="code-string">'image/*'</span>: [<span class="code-string">'.jpeg'</span>, <span class="code-string">'.jpg'</span>, <span class="code-string">'.png'</span>, <span class="code-string">'.gif'</span>]
+    },
+    onDrop: (acceptedFiles) => {
+      <span class="code-function">setFiles</span>(acceptedFiles);
+      <span class="code-function">setIsDragOver</span>(<span class="code-keyword">false</span>);
+    },
+    onDragEnter: () => <span class="code-function">setIsDragOver</span>(<span class="code-keyword">true</span>),
+    onDragLeave: () => <span class="code-function">setIsDragOver</span>(<span class="code-keyword">false</span>)
+  });
+  
+  <span class="code-keyword">const</span> <span class="code-function">getDropzoneStyles</span> = () => ({
+    border: <span class="code-string">'2px dashed'</span>,
+    borderColor: isDragActive ? <span class="code-string">'#007bff'</span> : <span class="code-string">'#ccc'</span>,
+    borderRadius: <span class="code-string">'8px'</span>,
+    padding: <span class="code-string">'40px'</span>,
+    textAlign: <span class="code-string">'center'</span>,
+    backgroundColor: isDragActive ? <span class="code-string">'#f8f9fa'</span> : <span class="code-string">'white'</span>,
+    cursor: <span class="code-string">'pointer'</span>,
+    transition: <span class="code-string">'all 0.3s ease'</span>
+  });
+  
+  <span class="code-keyword">const</span> <span class="code-function">getDropzoneContent</span> = () => {
+    <span class="code-keyword">if</span> (isDragActive) {
+      <span class="code-keyword">return</span> (
+        &lt;div&gt;
+          &lt;div style={{ fontSize: <span class="code-string">'48px'</span>, marginBottom: <span class="code-string">'16px'</span> }}&gt;📁&lt;/div&gt;
+          &lt;h3 style={{ color: <span class="code-string">'#007bff'</span>, margin: 0 }}&gt;¡Suelta las imágenes aquí!&lt;/h3&gt;
+        &lt;/div&gt;
+      );
+    }
+    
+    <span class="code-keyword">if</span> (files.length > 0) {
+      <span class="code-keyword">return</span> (
+        &lt;div&gt;
+          &lt;div style={{ fontSize: <span class="code-string">'48px'</span>, marginBottom: <span class="code-string">'16px'</span> }}&gt;✅&lt;/div&gt;
+          &lt;h3 style={{ color: <span class="code-string">'#28a745'</span>, margin: 0 }}&gt;
+            {files.length} archivo{files.length > 1 ? <span class="code-string">'s'</span> : <span class="code-string">''</span>} seleccionado{files.length > 1 ? <span class="code-string">'s'</span> : <span class="code-string">''</span>}
+          &lt;/h3&gt;
+          &lt;p style={{ margin: <span class="code-string">'8px 0 0 0'</span>, color: <span class="code-string">'#666'</span> }}&gt;
+            Haz clic o arrastra más archivos para reemplazar
+          &lt;/p&gt;
+        &lt;/div&gt;
+      );
+    }
+    
+    <span class="code-keyword">return</span> (
+      &lt;div&gt;
+        &lt;div style={{ fontSize: <span class="code-string">'48px'</span>, marginBottom: <span class="code-string">'16px'</span> }}&gt;📸&lt;/div&gt;
+        &lt;h3 style={{ margin: <span class="code-string">'0 0 8px 0'</span> }}&gt;Sube tus imágenes&lt;/h3&gt;
+        &lt;p style={{ margin: 0, color: <span class="code-string">'#666'</span> }}&gt;
+          Arrastra y suelta archivos aquí, o &lt;span style={{ color: <span class="code-string">'#007bff'</span> }}&gt;haz clic para seleccionar&lt;/span&gt;
+        &lt;/p&gt;
+        &lt;p style={{ margin: <span class="code-string">'8px 0 0 0'</span>, fontSize: <span class="code-string">'12px'</span>, color: <span class="code-string">'#999'</span> }}&gt;
+          Formatos soportados: JPG, PNG, GIF
+        &lt;/p&gt;
+      &lt;/div&gt;
+    );
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;div {...getRootProps()} style={<span class="code-function">getDropzoneStyles</span>()}&gt;
+        &lt;input {...getInputProps()} /&gt;
+        {<span class="code-function">getDropzoneContent</span>()}
+      &lt;/div&gt;
+      
+      {files.length > 0 && (
+        &lt;div style={{ marginTop: <span class="code-string">'20px'</span> }}&gt;
+          &lt;h4&gt;Archivos seleccionados:&lt;/h4&gt;
+          &lt;ul&gt;
+            {files.<span class="code-function">map</span>((file, index) => (
+              &lt;li key={index}&gt;
+                {file.name} ({(file.size / 1024).toFixed(1)} KB)
+              &lt;/li&gt;
+            ))}
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CRUD Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-database mr-3 text-secondary-500"></i>
+                        Operaciones CRUD
+                    </h2>
+                    <p class="text-gray-400">
+                        Implementa operaciones completas de Crear, Leer, Actualizar y Eliminar datos
+                    </p>
+                </div>
+                
+                <!-- Delete Handler -->
+                <div id="delete-handler" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Manejador de Eliminación</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Implementar eliminación segura con confirmación del usuario y manejo de errores. 
+                            Siempre proporciona feedback visual y permite deshacer acciones críticas.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">ItemList</span>() {
+  <span class="code-keyword">const</span> [items, setItems] = <span class="code-function">useState</span>([
+    { id: 1, name: <span class="code-string">'Producto A'</span>, price: 100 },
+    { id: 2, name: <span class="code-string">'Producto B'</span>, price: 200 },
+    { id: 3, name: <span class="code-string">'Producto C'</span>, price: 150 }
+  ]);
+  
+  <span class="code-keyword">const</span> [deletingId, setDeletingId] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleDelete</span> = <span class="code-keyword">async</span> (id) => {
+    <span class="code-comment">// Confirmar eliminación</span>
+    <span class="code-keyword">const</span> confirmed = window.<span class="code-function">confirm</span>(<span class="code-string">'¿Estás seguro de eliminar este elemento?'</span>);
+    <span class="code-keyword">if</span> (!confirmed) <span class="code-keyword">return</span>;
+    
+    <span class="code-function">setDeletingId</span>(id); <span class="code-comment">// Mostrar loading</span>
+    
+    <span class="code-keyword">try</span> {
+      <span class="code-comment">// Simular llamada a API</span>
+      <span class="code-keyword">await new</span> <span class="code-function">Promise</span>(resolve => <span class="code-function">setTimeout</span>(resolve, 1000));
+      
+      <span class="code-comment">// Eliminar del estado local</span>
+      <span class="code-function">setItems</span>(prevItems => prevItems.<span class="code-function">filter</span>(item => item.id !== id));
+      
+      <span class="code-comment">// Mostrar mensaje de éxito</span>
+      <span class="code-function">alert</span>(<span class="code-string">'Elemento eliminado correctamente'</span>);
+      
+    } <span class="code-keyword">catch</span> (error) {
+      console.<span class="code-function">error</span>(<span class="code-string">'Error al eliminar:'</span>, error);
+      <span class="code-function">alert</span>(<span class="code-string">'Error al eliminar el elemento'</span>);
+    } <span class="code-keyword">finally</span> {
+      <span class="code-function">setDeletingId</span>(<span class="code-keyword">null</span>);
+    }
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;h2&gt;Lista de Productos&lt;/h2&gt;
+      {items.<span class="code-function">map</span>(item => (
+        &lt;div key={item.id} style={{ 
+          display: <span class="code-string">'flex'</span>, 
+          justifyContent: <span class="code-string">'space-between'</span>, 
+          padding: <span class="code-string">'10px'</span>,
+          border: <span class="code-string">'1px solid #ccc'</span>,
+          margin: <span class="code-string">'5px 0'</span>
+        }}&gt;
+          &lt;div&gt;
+            &lt;strong&gt;{item.name}&lt;/strong&gt; - ${item.price}
+          &lt;/div&gt;
+          
+          &lt;button 
+            onClick={() => <span class="code-function">handleDelete</span>(item.id)}
+            disabled={deletingId === item.id}
+            style={{
+              backgroundColor: <span class="code-string">'#dc3545'</span>,
+              color: <span class="code-string">'white'</span>,
+              border: <span class="code-string">'none'</span>,
+              padding: <span class="code-string">'5px 10px'</span>,
+              cursor: deletingId === item.id ? <span class="code-string">'not-allowed'</span> : <span class="code-string">'pointer'</span>
+            }}
+          &gt;
+            {deletingId === item.id ? <span class="code-string">'Eliminando...'</span> : <span class="code-string">'Eliminar'</span>}
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Delete API Data -->
+                <div id="delete-api" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Eliminación con API</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Conectar la eliminación con una API real, incluyendo manejo de errores, 
+                            estados de carga y actualización optimista del UI.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Hook personalizado para operaciones CRUD</span>
+<span class="code-keyword">function</span> <span class="code-function">useApiDelete</span>(apiEndpoint) {
+  <span class="code-keyword">const</span> [isDeleting, setIsDeleting] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  <span class="code-keyword">const</span> [error, setError] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">deleteItem</span> = <span class="code-keyword">async</span> (id) => {
+    <span class="code-function">setIsDeleting</span>(<span class="code-keyword">true</span>);
+    <span class="code-function">setError</span>(<span class="code-keyword">null</span>);
+    
+    <span class="code-keyword">try</span> {
+      <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> <span class="code-function">fetch</span>(<span class="code-string">`${apiEndpoint}/${id}`</span>, {
+        method: <span class="code-string">'DELETE'</span>,
+        headers: {
+          <span class="code-string">'Content-Type'</span>: <span class="code-string">'application/json'</span>,
+          <span class="code-comment">// Agregar token de autenticación si es necesario</span>
+          <span class="code-string">'Authorization'</span>: <span class="code-string">`Bearer ${localStorage.getItem('token')}`</span>
+        }
+      });
+      
+      <span class="code-keyword">if</span> (!response.ok) {
+        <span class="code-keyword">throw new</span> <span class="code-function">Error</span>(<span class="code-string">`Error ${response.status}: ${response.statusText}`</span>);
+      }
+      
+      <span class="code-keyword">return</span> <span class="code-keyword">true</span>; <span class="code-comment">// Éxito</span>
+      
+    } <span class="code-keyword">catch</span> (err) {
+      <span class="code-function">setError</span>(err.message);
+      <span class="code-keyword">return</span> <span class="code-keyword">false</span>; <span class="code-comment">// Error</span>
+    } <span class="code-keyword">finally</span> {
+      <span class="code-function">setIsDeleting</span>(<span class="code-keyword">false</span>);
+    }
+  };
+  
+  <span class="code-keyword">return</span> { deleteItem, isDeleting, error };
+}
+
+<span class="code-comment">// Componente que usa el hook</span>
+<span class="code-keyword">function</span> <span class="code-function">ProductManager</span>() {
+  <span class="code-keyword">const</span> [products, setProducts] = <span class="code-function">useState</span>([]);
+  <span class="code-keyword">const</span> { deleteItem, isDeleting, error } = <span class="code-function">useApiDelete</span>(<span class="code-string">'/api/products'</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleDelete</span> = <span class="code-keyword">async</span> (productId) => {
+    <span class="code-comment">// Actualización optimista (eliminar inmediatamente del UI)</span>
+    <span class="code-keyword">const</span> originalProducts = [...products];
+    <span class="code-function">setProducts</span>(prev => prev.<span class="code-function">filter</span>(p => p.id !== productId));
+    
+    <span class="code-keyword">const</span> success = <span class="code-keyword">await</span> <span class="code-function">deleteItem</span>(productId);
+    
+    <span class="code-keyword">if</span> (!success) {
+      <span class="code-comment">// Revertir si falló</span>
+      <span class="code-function">setProducts</span>(originalProducts);
+      <span class="code-function">alert</span>(<span class="code-string">'Error al eliminar el producto'</span>);
+    }
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      {error && (
+        &lt;div style={{ color: <span class="code-string">'red'</span>, padding: <span class="code-string">'10px'</span>, background: <span class="code-string">'#ffe6e6'</span> }}&gt;
+          Error: {error}
+        &lt;/div&gt;
+      )}
+      
+      {products.<span class="code-function">map</span>(product => (
+        &lt;div key={product.id}&gt;
+          &lt;span&gt;{product.name}&lt;/span&gt;
+          &lt;button 
+            onClick={() => <span class="code-function">handleDelete</span>(product.id)}
+            disabled={isDeleting}
+          &gt;
+            {isDeleting ? <span class="code-string">'Eliminando...'</span> : <span class="code-string">'Eliminar'</span>}
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Font Awesome -->
+                <div id="font-awesome" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Integración de Font Awesome</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Font Awesome proporciona iconos vectoriales escalables que mejoran la interfaz de usuario. 
+                            Aprende a integrarlos eficientemente en React.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// 1. Instalación</span>
+npm install @fortawesome/fontawesome-svg-core
+npm install @fortawesome/free-solid-svg-icons
+npm install @fortawesome/react-fontawesome
+
+<span class="code-comment">// 2. Configuración en el archivo principal (App.js o index.js)</span>
+<span class="code-keyword">import</span> { library } <span class="code-keyword">from</span> <span class="code-string">'@fortawesome/fontawesome-svg-core'</span>;
+<span class="code-keyword">import</span> { 
+  faTrash, 
+  faEdit, 
+  faPlus, 
+  faSave,
+  faEye,
+  faHeart
+} <span class="code-keyword">from</span> <span class="code-string">'@fortawesome/free-solid-svg-icons'</span>;
+
+<span class="code-comment">// Agregar iconos a la librería</span>
+library.<span class="code-function">add</span>(faTrash, faEdit, faPlus, faSave, faEye, faHeart);
+
+<span class="code-comment">// 3. Uso en componentes</span>
+<span class="code-keyword">import</span> { FontAwesomeIcon } <span class="code-keyword">from</span> <span class="code-string">'@fortawesome/react-fontawesome'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">ActionButtons</span>({ onEdit, onDelete, onView }) {
+  <span class="code-keyword">return</span> (
+    &lt;div style={{ display: <span class="code-string">'flex'</span>, gap: <span class="code-string">'8px'</span> }}&gt;
+      &lt;button 
+        onClick={onView}
+        style={{ color: <span class="code-string">'#007bff'</span> }}
+        title=<span class="code-string">"Ver detalles"</span>
+      &gt;
+        &lt;FontAwesomeIcon icon=<span class="code-string">"eye"</span> /&gt; Ver
+      &lt;/button&gt;
+      
+      &lt;button 
+        onClick={onEdit}
+        style={{ color: <span class="code-string">'#28a745'</span> }}
+        title=<span class="code-string">"Editar"</span>
+      &gt;
+        &lt;FontAwesomeIcon icon=<span class="code-string">"edit"</span> /&gt; Editar
+      &lt;/button&gt;
+      
+      &lt;button 
+        onClick={onDelete}
+        style={{ color: <span class="code-string">'#dc3545'</span> }}
+        title=<span class="code-string">"Eliminar"</span>
+      &gt;
+        &lt;FontAwesomeIcon icon=<span class="code-string">"trash"</span> /&gt; Eliminar
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-comment">// 4. Iconos con animaciones y estilos</span>
+<span class="code-keyword">function</span> <span class="code-function">AnimatedIcons</span>() {
+  <span class="code-keyword">const</span> [liked, setLiked] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;button 
+        onClick={() => <span class="code-function">setLiked</span>(!liked)}
+        style={{ 
+          background: <span class="code-string">'none'</span>, 
+          border: <span class="code-string">'none'</span>, 
+          fontSize: <span class="code-string">'24px'</span>,
+          color: liked ? <span class="code-string">'#e74c3c'</span> : <span class="code-string">'#ccc'</span>,
+          cursor: <span class="code-string">'pointer'</span>
+        }}
+      &gt;
+        &lt;FontAwesomeIcon 
+          icon=<span class="code-string">"heart"</span> 
+          beat={liked}
+          style={{ transition: <span class="code-string">'color 0.3s ease'</span> }}
+        /&gt;
+      &lt;/button&gt;
+      
+      &lt;FontAwesomeIcon 
+        icon=<span class="code-string">"plus"</span> 
+        spin 
+        style={{ marginLeft: <span class="code-string">'20px'</span>, color: <span class="code-string">'#007bff'</span> }}
+      /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Edit Handler -->
+                <div id="edit-handler" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Manejador de Edición</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Implementar edición inline o modal con validación y manejo de estados. 
+                            Proporciona una experiencia fluida para modificar datos existentes.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">EditableItem</span>({ item, onUpdate }) {
+  <span class="code-keyword">const</span> [isEditing, setIsEditing] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  <span class="code-keyword">const</span> [editData, setEditData] = <span class="code-function">useState</span>(item);
+  <span class="code-keyword">const</span> [isSaving, setIsSaving] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  <span class="code-keyword">const</span> [errors, setErrors] = <span class="code-function">useState</span>({});
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleEdit</span> = () => {
+    <span class="code-function">setIsEditing</span>(<span class="code-keyword">true</span>);
+    <span class="code-function">setEditData</span>(item); <span class="code-comment">// Resetear a valores originales</span>
+    <span class="code-function">setErrors</span>({});
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleCancel</span> = () => {
+    <span class="code-function">setIsEditing</span>(<span class="code-keyword">false</span>);
+    <span class="code-function">setEditData</span>(item);
+    <span class="code-function">setErrors</span>({});
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">validateData</span> = (data) => {
+    <span class="code-keyword">const</span> newErrors = {};
+    
+    <span class="code-keyword">if</span> (!data.name || data.name.trim().length < 2) {
+      newErrors.name = <span class="code-string">'El nombre debe tener al menos 2 caracteres'</span>;
+    }
+    
+    <span class="code-keyword">if</span> (!data.price || data.price <= 0) {
+      newErrors.price = <span class="code-string">'El precio debe ser mayor a 0'</span>;
+    }
+    
+    <span class="code-keyword">return</span> newErrors;
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleSave</span> = <span class="code-keyword">async</span> () => {
+    <span class="code-keyword">const</span> validationErrors = <span class="code-function">validateData</span>(editData);
+    
+    <span class="code-keyword">if</span> (<span class="code-function">Object</span>.<span class="code-function">keys</span>(validationErrors).length > 0) {
+      <span class="code-function">setErrors</span>(validationErrors);
+      <span class="code-keyword">return</span>;
+    }
+    
+    <span class="code-function">setIsSaving</span>(<span class="code-keyword">true</span>);
+    
+    <span class="code-keyword">try</span> {
+      <span class="code-comment">// Simular llamada a API</span>
+      <span class="code-keyword">await new</span> <span class="code-function">Promise</span>(resolve => <span class="code-function">setTimeout</span>(resolve, 1000));
+      
+      <span class="code-function">onUpdate</span>(editData); <span class="code-comment">// Actualizar en componente padre</span>
+      <span class="code-function">setIsEditing</span>(<span class="code-keyword">false</span>);
+      
+    } <span class="code-keyword">catch</span> (error) {
+      <span class="code-function">setErrors</span>({ general: <span class="code-string">'Error al guardar los cambios'</span> });
+    } <span class="code-keyword">finally</span> {
+      <span class="code-function">setIsSaving</span>(<span class="code-keyword">false</span>);
+    }
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleInputChange</span> = (field, value) => {
+    <span class="code-function">setEditData</span>(prev => ({ ...prev, [field]: value }));
+    
+    <span class="code-comment">// Limpiar error del campo al escribir</span>
+    <span class="code-keyword">if</span> (errors[field]) {
+      <span class="code-function">setErrors</span>(prev => ({ ...prev, [field]: <span class="code-keyword">null</span> }));
+    }
+  };
+  
+  <span class="code-keyword">if</span> (isEditing) {
+    <span class="code-keyword">return</span> (
+      &lt;div style={{ border: <span class="code-string">'2px solid #007bff'</span>, padding: <span class="code-string">'15px'</span>, borderRadius: <span class="code-string">'8px'</span> }}&gt;
+        &lt;div style={{ marginBottom: <span class="code-string">'10px'</span> }}&gt;
+          &lt;label&gt;Nombre:&lt;/label&gt;
+          &lt;input
+            type=<span class="code-string">"text"</span>
+            value={editData.name}
+            onChange={<span class="code-keyword">e</span> => <span class="code-function">handleInputChange</span>(<span class="code-string">'name'</span>, e.target.value)}
+            style={{ 
+              width: <span class="code-string">'100%'</span>, 
+              padding: <span class="code-string">'5px'</span>,
+              border: errors.name ? <span class="code-string">'1px solid red'</span> : <span class="code-string">'1px solid #ccc'</span>
+            }}
+          /&gt;
+          {errors.name && &lt;div style={{ color: <span class="code-string">'red'</span>, fontSize: <span class="code-string">'12px'</span> }}&gt;{errors.name}&lt;/div&gt;}
+        &lt;/div&gt;
+        
+        &lt;div style={{ marginBottom: <span class="code-string">'10px'</span> }}&gt;
+          &lt;label&gt;Precio:&lt;/label&gt;
+          &lt;input
+            type=<span class="code-string">"number"</span>
+            value={editData.price}
+            onChange={<span class="code-keyword">e</span> => <span class="code-function">handleInputChange</span>(<span class="code-string">'price'</span>, <span class="code-function">parseFloat</span>(e.target.value))}
+            style={{ 
+              width: <span class="code-string">'100%'</span>, 
+              padding: <span class="code-string">'5px'</span>,
+              border: errors.price ? <span class="code-string">'1px solid red'</span> : <span class="code-string">'1px solid #ccc'</span>
+            }}
+          /&gt;
+          {errors.price && &lt;div style={{ color: <span class="code-string">'red'</span>, fontSize: <span class="code-string">'12px'</span> }}&gt;{errors.price}&lt;/div&gt;}
+        &lt;/div&gt;
+        
+        {errors.general && (
+          &lt;div style={{ color: <span class="code-string">'red'</span>, marginBottom: <span class="code-string">'10px'</span> }}&gt;{errors.general}&lt;/div&gt;
+        )}
+        
+        &lt;div style={{ display: <span class="code-string">'flex'</span>, gap: <span class="code-string">'10px'</span> }}&gt;
+          &lt;button 
+            onClick={handleSave}
+            disabled={isSaving}
+            style={{ backgroundColor: <span class="code-string">'#28a745'</span>, color: <span class="code-string">'white'</span>, border: <span class="code-string">'none'</span>, padding: <span class="code-string">'8px 16px'</span> }}
+          &gt;
+            {isSaving ? <span class="code-string">'Guardando...'</span> : <span class="code-string">'Guardar'</span>}
+          &lt;/button&gt;
+          
+          &lt;button 
+            onClick={handleCancel}
+            disabled={isSaving}
+            style={{ backgroundColor: <span class="code-string">'#6c757d'</span>, color: <span class="code-string">'white'</span>, border: <span class="code-string">'none'</span>, padding: <span class="code-string">'8px 16px'</span> }}
+          &gt;
+            Cancelar
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+  
+  <span class="code-comment">// Vista normal (no editando)</span>
+  <span class="code-keyword">return</span> (
+    &lt;div style={{ display: <span class="code-string">'flex'</span>, justifyContent: <span class="code-string">'space-between'</span>, padding: <span class="code-string">'10px'</span>, border: <span class="code-string">'1px solid #ccc'</span> }}&gt;
+      &lt;div&gt;
+        &lt;strong&gt;{item.name}&lt;/strong&gt; - ${item.price}
+      &lt;/div&gt;
+      &lt;button onClick={handleEdit} style={{ backgroundColor: <span class="code-string">'#007bff'</span>, color: <span class="code-string">'white'</span>, border: <span class="code-string">'none'</span>, padding: <span class="code-string">'5px 10px'</span> }}&gt;
+        Editar
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+
+                
+                <!-- Edit Form -->
+                <div id="edit-form" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Formulario de Edición Modal</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Un formulario modal reutilizable para editar elementos, con validación completa 
+                            y manejo de estados de carga. Ideal para interfaces más complejas.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">EditModal</span>({ isOpen, item, onClose, onSave }) {
+  <span class="code-keyword">const</span> [formData, setFormData] = <span class="code-function">useState</span>(item || {});
+  <span class="code-keyword">const</span> [isSubmitting, setIsSubmitting] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-comment">// Actualizar formulario cuando cambie el item</span>
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-keyword">if</span> (item) {
+      <span class="code-function">setFormData</span>(item);
+    }
+  }, [item]);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleSubmit</span> = <span class="code-keyword">async</span> (e) => {
+    e.<span class="code-function">preventDefault</span>();
+    <span class="code-function">setIsSubmitting</span>(<span class="code-keyword">true</span>);
+    
+    <span class="code-keyword">try</span> {
+      <span class="code-keyword">await</span> <span class="code-function">onSave</span>(formData);
+      <span class="code-function">onClose</span>();
+    } <span class="code-keyword">catch</span> (error) {
+      console.<span class="code-function">error</span>(<span class="code-string">'Error al guardar:'</span>, error);
+    } <span class="code-keyword">finally</span> {
+      <span class="code-function">setIsSubmitting</span>(<span class="code-keyword">false</span>);
+    }
+  };
+  
+  <span class="code-keyword">if</span> (!isOpen) <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+  
+  <span class="code-keyword">return</span> (
+    &lt;div style={{
+      position: <span class="code-string">'fixed'</span>,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: <span class="code-string">'rgba(0,0,0,0.5)'</span>,
+      display: <span class="code-string">'flex'</span>,
+      justifyContent: <span class="code-string">'center'</span>,
+      alignItems: <span class="code-string">'center'</span>,
+      zIndex: 1000
+    }}&gt;
+      &lt;div style={{
+        backgroundColor: <span class="code-string">'white'</span>,
+        padding: <span class="code-string">'30px'</span>,
+        borderRadius: <span class="code-string">'8px'</span>,
+        width: <span class="code-string">'90%'</span>,
+        maxWidth: <span class="code-string">'500px'</span>,
+        maxHeight: <span class="code-string">'80vh'</span>,
+        overflow: <span class="code-string">'auto'</span>
+      }}&gt;
+        &lt;h2 style={{ marginTop: 0 }}&gt;Editar Elemento&lt;/h2&gt;
+        
+        &lt;form onSubmit={handleSubmit}&gt;
+          &lt;div style={{ marginBottom: <span class="code-string">'15px'</span> }}&gt;
+            &lt;label style={{ display: <span class="code-string">'block'</span>, marginBottom: <span class="code-string">'5px'</span> }}&gt;Nombre:&lt;/label&gt;
+            &lt;input
+              type=<span class="code-string">"text"</span>
+              value={formData.name || <span class="code-string">''</span>}
+              onChange={<span class="code-keyword">e</span> => <span class="code-function">setFormData</span>(prev => ({ ...prev, name: e.target.value }))}
+              style={{ width: <span class="code-string">'100%'</span>, padding: <span class="code-string">'8px'</span>, border: <span class="code-string">'1px solid #ccc'</span>, borderRadius: <span class="code-string">'4px'</span> }}
+              required
+            /&gt;
+          &lt;/div&gt;
+          
+          &lt;div style={{ marginBottom: <span class="code-string">'15px'</span> }}&gt;
+            &lt;label style={{ display: <span class="code-string">'block'</span>, marginBottom: <span class="code-string">'5px'</span> }}&gt;Descripción:&lt;/label&gt;
+            &lt;textarea
+              value={formData.description || <span class="code-string">''</span>}
+              onChange={<span class="code-keyword">e</span> => <span class="code-function">setFormData</span>(prev => ({ ...prev, description: e.target.value }))}
+              style={{ width: <span class="code-string">'100%'</span>, padding: <span class="code-string">'8px'</span>, border: <span class="code-string">'1px solid #ccc'</span>, borderRadius: <span class="code-string">'4px'</span>, minHeight: <span class="code-string">'80px'</span> }}
+              rows={3}
+            /&gt;
+          &lt;/div&gt;
+          
+          &lt;div style={{ marginBottom: <span class="code-string">'20px'</span> }}&gt;
+            &lt;label style={{ display: <span class="code-string">'block'</span>, marginBottom: <span class="code-string">'5px'</span> }}&gt;Precio:&lt;/label&gt;
+            &lt;input
+              type=<span class="code-string">"number"</span>
+              step=<span class="code-string">"0.01"</span>
+              value={formData.price || <span class="code-string">''</span>}
+              onChange={<span class="code-keyword">e</span> => <span class="code-function">setFormData</span>(prev => ({ ...prev, price: <span class="code-function">parseFloat</span>(e.target.value) }))}
+              style={{ width: <span class="code-string">'100%'</span>, padding: <span class="code-string">'8px'</span>, border: <span class="code-string">'1px solid #ccc'</span>, borderRadius: <span class="code-string">'4px'</span> }}
+              required
+            /&gt;
+          &lt;/div&gt;
+          
+          &lt;div style={{ display: <span class="code-string">'flex'</span>, justifyContent: <span class="code-string">'flex-end'</span>, gap: <span class="code-string">'10px'</span> }}&gt;
+            &lt;button
+              type=<span class="code-string">"button"</span>
+              onClick={onClose}
+              disabled={isSubmitting}
+              style={{ 
+                padding: <span class="code-string">'10px 20px'</span>, 
+                border: <span class="code-string">'1px solid #ccc'</span>, 
+                backgroundColor: <span class="code-string">'white'</span>, 
+                borderRadius: <span class="code-string">'4px'</span>,
+                cursor: <span class="code-string">'pointer'</span>
+              }}
+            &gt;
+              Cancelar
+            &lt;/button&gt;
+            
+            &lt;button
+              type=<span class="code-string">"submit"</span>
+              disabled={isSubmitting}
+              style={{ 
+                padding: <span class="code-string">'10px 20px'</span>, 
+                border: <span class="code-string">'none'</span>, 
+                backgroundColor: <span class="code-string">'#007bff'</span>, 
+                color: <span class="code-string">'white'</span>, 
+                borderRadius: <span class="code-string">'4px'</span>,
+                cursor: isSubmitting ? <span class="code-string">'not-allowed'</span> : <span class="code-string">'pointer'</span>
+              }}
+            &gt;
+              {isSubmitting ? <span class="code-string">'Guardando...'</span> : <span class="code-string">'Guardar'</span>}
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Dynamic API Queries -->
+                <div id="dynamic-api" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Consultas Dinámicas a API</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Implementa consultas flexibles a APIs con filtros, paginación y búsqueda en tiempo real. 
+                            Optimiza el rendimiento con debouncing y caché de resultados.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Hook para consultas dinámicas con debouncing</span>
+<span class="code-keyword">function</span> <span class="code-function">useApiQuery</span>(baseUrl, initialParams = {}) {
+  <span class="code-keyword">const</span> [data, setData] = <span class="code-function">useState</span>([]);
+  <span class="code-keyword">const</span> [loading, setLoading] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  <span class="code-keyword">const</span> [error, setError] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  <span class="code-keyword">const</span> [params, setParams] = <span class="code-function">useState</span>(initialParams);
+  
+  <span class="code-comment">// Debounce para búsquedas</span>
+  <span class="code-keyword">const</span> [debouncedParams, setDebouncedParams] = <span class="code-function">useState</span>(params);
+  
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-keyword">const</span> timer = <span class="code-function">setTimeout</span>(() => {
+      <span class="code-function">setDebouncedParams</span>(params);
+    }, 300);
+    
+    <span class="code-keyword">return</span> () => <span class="code-function">clearTimeout</span>(timer);
+  }, [params]);
+  
+  <span class="code-comment">// Realizar consulta cuando cambien los parámetros</span>
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-keyword">const</span> <span class="code-function">fetchData</span> = <span class="code-keyword">async</span> () => {
+      <span class="code-function">setLoading</span>(<span class="code-keyword">true</span>);
+      <span class="code-function">setError</span>(<span class="code-keyword">null</span>);
+      
+      <span class="code-keyword">try</span> {
+        <span class="code-keyword">const</span> queryString = <span class="code-keyword">new</span> <span class="code-function">URLSearchParams</span>(debouncedParams).<span class="code-function">toString</span>();
+        <span class="code-keyword">const</span> url = <span class="code-string">`${baseUrl}?${queryString}`</span>;
+        
+        <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> <span class="code-function">fetch</span>(url);
+        
+        <span class="code-keyword">if</span> (!response.ok) {
+          <span class="code-keyword">throw new</span> <span class="code-function">Error</span>(<span class="code-string">`Error ${response.status}: ${response.statusText}`</span>);
+        }
+        
+        <span class="code-keyword">const</span> result = <span class="code-keyword">await</span> response.<span class="code-function">json</span>();
+        <span class="code-function">setData</span>(result.data || result);
+        
+      } <span class="code-keyword">catch</span> (err) {
+        <span class="code-function">setError</span>(err.message);
+        <span class="code-function">setData</span>([]);
+      } <span class="code-keyword">finally</span> {
+        <span class="code-function">setLoading</span>(<span class="code-keyword">false</span>);
+      }
+    };
+    
+    <span class="code-function">fetchData</span>();
+  }, [baseUrl, debouncedParams]);
+  
+  <span class="code-keyword">const</span> <span class="code-function">updateParams</span> = (newParams) => {
+    <span class="code-function">setParams</span>(prev => ({ ...prev, ...newParams }));
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">resetParams</span> = () => {
+    <span class="code-function">setParams</span>(initialParams);
+  };
+  
+  <span class="code-keyword">return</span> { data, loading, error, updateParams, resetParams, params };
+}
+
+<span class="code-comment">// Componente que usa el hook</span>
+<span class="code-keyword">function</span> <span class="code-function">ProductSearch</span>() {
+  <span class="code-keyword">const</span> { 
+    data: products, 
+    loading, 
+    error, 
+    updateParams, 
+    resetParams 
+  } = <span class="code-function">useApiQuery</span>(<span class="code-string">'/api/products'</span>, {
+    page: 1,
+    limit: 10,
+    search: <span class="code-string">''</span>,
+    category: <span class="code-string">''</span>,
+    sortBy: <span class="code-string">'name'</span>,
+    sortOrder: <span class="code-string">'asc'</span>
+  });
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleSearch</span> = (searchTerm) => {
+    <span class="code-function">updateParams</span>({ search: searchTerm, page: 1 });
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleCategoryChange</span> = (category) => {
+    <span class="code-function">updateParams</span>({ category, page: 1 });
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleSort</span> = (field) => {
+    <span class="code-function">updateParams</span>({ 
+      sortBy: field,
+      sortOrder: params.sortBy === field && params.sortOrder === <span class="code-string">'asc'</span> ? <span class="code-string">'desc'</span> : <span class="code-string">'asc'</span>
+    });
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;div style={{ marginBottom: <span class="code-string">'20px'</span>, display: <span class="code-string">'flex'</span>, gap: <span class="code-string">'10px'</span>, flexWrap: <span class="code-string">'wrap'</span> }}&gt;
+        &lt;input
+          type=<span class="code-string">"text"</span>
+          placeholder=<span class="code-string">"Buscar productos..."</span>
+          onChange={<span class="code-keyword">e</span> => <span class="code-function">handleSearch</span>(e.target.value)}
+          style={{ padding: <span class="code-string">'8px'</span>, border: <span class="code-string">'1px solid #ccc'</span>, borderRadius: <span class="code-string">'4px'</span>, flex: 1, minWidth: <span class="code-string">'200px'</span> }}
+        /&gt;
+        
+        &lt;select 
+          onChange={<span class="code-keyword">e</span> => <span class="code-function">handleCategoryChange</span>(e.target.value)}
+          style={{ padding: <span class="code-string">'8px'</span>, border: <span class="code-string">'1px solid #ccc'</span>, borderRadius: <span class="code-string">'4px'</span> }}
+        &gt;
+          &lt;option value=<span class="code-string">""</span>&gt;Todas las categorías&lt;/option&gt;
+          &lt;option value=<span class="code-string">"electronics"</span>&gt;Electrónicos&lt;/option&gt;
+          &lt;option value=<span class="code-string">"clothing"</span>&gt;Ropa&lt;/option&gt;
+          &lt;option value=<span class="code-string">"books"</span>&gt;Libros&lt;/option&gt;
+        &lt;/select&gt;
+        
+        &lt;button 
+          onClick={resetParams}
+          style={{ padding: <span class="code-string">'8px 16px'</span>, backgroundColor: <span class="code-string">'#6c757d'</span>, color: <span class="code-string">'white'</span>, border: <span class="code-string">'none'</span>, borderRadius: <span class="code-string">'4px'</span> }}
+        &gt;
+          Limpiar filtros
+        &lt;/button&gt;
+      &lt;/div&gt;
+      
+      {error && (
+        &lt;div style={{ color: <span class="code-string">'red'</span>, padding: <span class="code-string">'10px'</span>, backgroundColor: <span class="code-string">'#ffe6e6'</span>, borderRadius: <span class="code-string">'4px'</span>, marginBottom: <span class="code-string">'20px'</span> }}&gt;
+          Error: {error}
+        &lt;/div&gt;
+      )}
+      
+      {loading && (
+        &lt;div style={{ textAlign: <span class="code-string">'center'</span>, padding: <span class="code-string">'20px'</span> }}&gt;
+          Cargando productos...
+        &lt;/div&gt;
+      )}
+      
+      {!loading && products.length === 0 && (
+        &lt;div style={{ textAlign: <span class="code-string">'center'</span>, padding: <span class="code-string">'20px'</span>, color: <span class="code-string">'#666'</span> }}&gt;
+          No se encontraron productos
+        &lt;/div&gt;
+      )}
+      
+      &lt;div style={{ display: <span class="code-string">'grid'</span>, gridTemplateColumns: <span class="code-string">'repeat(auto-fill, minmax(250px, 1fr))'</span>, gap: <span class="code-string">'20px'</span> }}&gt;
+        {products.<span class="code-function">map</span>(product => (
+          &lt;div key={product.id} style={{ border: <span class="code-string">'1px solid #ccc'</span>, padding: <span class="code-string">'15px'</span>, borderRadius: <span class="code-string">'8px'</span> }}&gt;
+            &lt;h3&gt;{product.name}&lt;/h3&gt;
+            &lt;p&gt;{product.description}&lt;/p&gt;
+            &lt;p style={{ fontWeight: <span class="code-string">'bold'</span>, color: <span class="code-string">'#007bff'</span> }}&gt;${product.price}&lt;/p&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Avanzado Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-rocket mr-3 text-secondary-500"></i>
+                        Técnicas Avanzadas
+                    </h2>
+                    <p class="text-gray-400">
+                        Patrones avanzados y técnicas especializadas para aplicaciones React complejas
+                    </p>
+                </div>
+                
+                <!-- Multi Line Ternary -->
+                <div id="ternary" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Operadores Ternarios Multilínea</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Los operadores ternarios multilínea permiten renderizado condicional complejo 
+                            manteniendo el código legible y organizando múltiples condiciones de manera clara.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">UserStatus</span>({ user, isLoading, error }) {
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      {isLoading ? (
+        <span class="code-comment">// Estado de carga</span>
+        &lt;div style={{ textAlign: <span class="code-string">'center'</span>, padding: <span class="code-string">'20px'</span> }}&gt;
+          &lt;div style={{ fontSize: <span class="code-string">'24px'</span> }}&gt;⏳&lt;/div&gt;
+          &lt;p&gt;Cargando información del usuario...&lt;/p&gt;
+        &lt;/div&gt;
+      ) : error ? (
+        <span class="code-comment">// Estado de error</span>
+        &lt;div style={{ 
+          backgroundColor: <span class="code-string">'#ffe6e6'</span>, 
+          border: <span class="code-string">'1px solid #ff9999'</span>, 
+          padding: <span class="code-string">'15px'</span>, 
+          borderRadius: <span class="code-string">'8px'</span>,
+          color: <span class="code-string">'#cc0000'</span>
+        }}&gt;
+          &lt;h3&gt;❌ Error al cargar usuario&lt;/h3&gt;
+          &lt;p&gt;{error}&lt;/p&gt;
+          &lt;button style={{ 
+            backgroundColor: <span class="code-string">'#cc0000'</span>, 
+            color: <span class="code-string">'white'</span>, 
+            border: <span class="code-string">'none'</span>, 
+            padding: <span class="code-string">'8px 16px'</span>, 
+            borderRadius: <span class="code-string">'4px'</span> 
+          }}&gt;
+            Reintentar
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ) : !user ? (
+        <span class="code-comment">// Usuario no encontrado</span>
+        &lt;div style={{ textAlign: <span class="code-string">'center'</span>, padding: <span class="code-string">'40px'</span>, color: <span class="code-string">'#666'</span> }}&gt;
+          &lt;div style={{ fontSize: <span class="code-string">'48px'</span>, marginBottom: <span class="code-string">'16px'</span> }}&gt;👤&lt;/div&gt;
+          &lt;h3&gt;Usuario no encontrado&lt;/h3&gt;
+          &lt;p&gt;No se pudo encontrar la información del usuario solicitado&lt;/p&gt;
+        &lt;/div&gt;
+      ) : user.status === <span class="code-string">'active'</span> ? (
+        <span class="code-comment">// Usuario activo</span>
+        &lt;div style={{ 
+          backgroundColor: <span class="code-string">'#e6ffe6'</span>, 
+          border: <span class="code-string">'1px solid #99ff99'</span>, 
+          padding: <span class="code-string">'20px'</span>, 
+          borderRadius: <span class="code-string">'8px'</span> 
+        }}&gt;
+          &lt;div style={{ display: <span class="code-string">'flex'</span>, alignItems: <span class="code-string">'center'</span>, marginBottom: <span class="code-string">'10px'</span> }}&gt;
+            &lt;div style={{ fontSize: <span class="code-string">'24px'</span>, marginRight: <span class="code-string">'10px'</span> }}&gt;✅&lt;/div&gt;
+            &lt;h3 style={{ color: <span class="code-string">'#006600'</span>, margin: 0 }}&gt;{user.name}&lt;/h3&gt;
+          &lt;/div&gt;
+          &lt;p&gt;Email: {user.email}&lt;/p&gt;
+          &lt;p&gt;Último acceso: {<span class="code-keyword">new</span> <span class="code-function">Date</span>(user.lastLogin).<span class="code-function">toLocaleDateString</span>()}&lt;/p&gt;
+          &lt;span style={{ 
+            backgroundColor: <span class="code-string">'#006600'</span>, 
+            color: <span class="code-string">'white'</span>, 
+            padding: <span class="code-string">'4px 8px'</span>, 
+            borderRadius: <span class="code-string">'12px'</span>, 
+            fontSize: <span class="code-string">'12px'</span> 
+          }}&gt;
+            ACTIVO
+          &lt;/span&gt;
+        &lt;/div&gt;
+      ) : user.status === <span class="code-string">'suspended'</span> ? (
+        <span class="code-comment">// Usuario suspendido</span>
+        &lt;div style={{ 
+          backgroundColor: <span class="code-string">'#fff3cd'</span>, 
+          border: <span class="code-string">'1px solid #ffeaa7'</span>, 
+          padding: <span class="code-string">'20px'</span>, 
+          borderRadius: <span class="code-string">'8px'</span> 
+        }}&gt;
+          &lt;div style={{ display: <span class="code-string">'flex'</span>, alignItems: <span class="code-string">'center'</span>, marginBottom: <span class="code-string">'10px'</span> }}&gt;
+            &lt;div style={{ fontSize: <span class="code-string">'24px'</span>, marginRight: <span class="code-string">'10px'</span> }}&gt;⚠️&lt;/div&gt;
+            &lt;h3 style={{ color: <span class="code-string">'#856404'</span>, margin: 0 }}&gt;{user.name}&lt;/h3&gt;
+          &lt;/div&gt;
+          &lt;p&gt;Esta cuenta ha sido suspendida temporalmente&lt;/p&gt;
+          &lt;p&gt;Razón: {user.suspensionReason || <span class="code-string">'No especificada'</span>}&lt;/p&gt;
+          &lt;span style={{ 
+            backgroundColor: <span class="code-string">'#856404'</span>, 
+            color: <span class="code-string">'white'</span>, 
+            padding: <span class="code-string">'4px 8px'</span>, 
+            borderRadius: <span class="code-string">'12px'</span>, 
+            fontSize: <span class="code-string">'12px'</span> 
+          }}&gt;
+            SUSPENDIDO
+          &lt;/span&gt;
+        &lt;/div&gt;
+      ) : (
+        <span class="code-comment">// Estado desconocido</span>
+        &lt;div style={{ 
+          backgroundColor: <span class="code-string">'#f8f9fa'</span>, 
+          border: <span class="code-string">'1px solid #dee2e6'</span>, 
+          padding: <span class="code-string">'20px'</span>, 
+          borderRadius: <span class="code-string">'8px'</span> 
+        }}&gt;
+          &lt;h3&gt;{user.name}&lt;/h3&gt;
+          &lt;p&gt;Estado: {user.status}&lt;/p&gt;
+          &lt;span style={{ 
+            backgroundColor: <span class="code-string">'#6c757d'</span>, 
+            color: <span class="code-string">'white'</span>, 
+            padding: <span class="code-string">'4px 8px'</span>, 
+            borderRadius: <span class="code-string">'12px'</span>, 
+            fontSize: <span class="code-string">'12px'</span> 
+          }}&gt;
+            {user.status.toUpperCase()}
+          &lt;/span&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Conditionals -->
+                <div id="thumbnail-conditionals" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Renderizado Condicional de Miniaturas</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Maneja diferentes estados de imágenes: carga, error, placeholder y diferentes tamaños. 
+                            Proporciona una experiencia visual consistente independientemente del estado de la imagen.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">SmartThumbnail</span>({ 
+  src, 
+  alt, 
+  size = <span class="code-string">'medium'</span>, 
+  fallbackSrc, 
+  placeholder = <span class="code-string">'📷'</span> 
+}) {
+  <span class="code-keyword">const</span> [imageState, setImageState] = <span class="code-function">useState</span>(<span class="code-string">'loading'</span>);
+  <span class="code-keyword">const</span> [currentSrc, setCurrentSrc] = <span class="code-function">useState</span>(src);
+  
+  <span class="code-keyword">const</span> sizeStyles = {
+    small: { width: <span class="code-string">'60px'</span>, height: <span class="code-string">'60px'</span> },
+    medium: { width: <span class="code-string">'120px'</span>, height: <span class="code-string">'120px'</span> },
+    large: { width: <span class="code-string">'200px'</span>, height: <span class="code-string">'200px'</span> }
+  };
+  
+  <span class="code-keyword">const</span> baseStyles = {
+    ...sizeStyles[size],
+    borderRadius: <span class="code-string">'8px'</span>,
+    objectFit: <span class="code-string">'cover'</span>,
+    border: <span class="code-string">'1px solid #ddd'</span>,
+    display: <span class="code-string">'flex'</span>,
+    alignItems: <span class="code-string">'center'</span>,
+    justifyContent: <span class="code-string">'center'</span>,
+    backgroundColor: <span class="code-string">'#f8f9fa'</span>
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleImageLoad</span> = () => {
+    <span class="code-function">setImageState</span>(<span class="code-string">'loaded'</span>);
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleImageError</span> = () => {
+    <span class="code-keyword">if</span> (fallbackSrc && currentSrc !== fallbackSrc) {
+      <span class="code-function">setCurrentSrc</span>(fallbackSrc);
+      <span class="code-function">setImageState</span>(<span class="code-string">'loading'</span>);
+    } <span class="code-keyword">else</span> {
+      <span class="code-function">setImageState</span>(<span class="code-string">'error'</span>);
+    }
+  };
+  
+  <span class="code-comment">// Resetear estado cuando cambie la fuente</span>
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-function">setCurrentSrc</span>(src);
+    <span class="code-function">setImageState</span>(<span class="code-string">'loading'</span>);
+  }, [src]);
+  
+  <span class="code-keyword">return</span> (
+    &lt;div style={baseStyles}&gt;
+      {imageState === <span class="code-string">'loading'</span> ? (
+        <span class="code-comment">// Estado de carga</span>
+        &lt;div style={{ 
+          display: <span class="code-string">'flex'</span>, 
+          flexDirection: <span class="code-string">'column'</span>, 
+          alignItems: <span class="code-string">'center'</span>, 
+          color: <span class="code-string">'#666'</span> 
+        }}&gt;
+          &lt;div style={{ 
+            fontSize: size === <span class="code-string">'small'</span> ? <span class="code-string">'16px'</span> : size === <span class="code-string">'medium'</span> ? <span class="code-string">'24px'</span> : <span class="code-string">'32px'</span>,
+            marginBottom: <span class="code-string">'4px'</span>,
+            animation: <span class="code-string">'pulse 1.5s infinite'</span>
+          }}&gt;
+            ⏳
+          &lt;/div&gt;
+          {size !== <span class="code-string">'small'</span> && &lt;span style={{ fontSize: <span class="code-string">'12px'</span> }}&gt;Cargando...&lt;/span&gt;}
+        &lt;/div&gt;
+      ) : imageState === <span class="code-string">'error'</span> ? (
+        <span class="code-comment">// Estado de error</span>
+        &lt;div style={{ 
+          display: <span class="code-string">'flex'</span>, 
+          flexDirection: <span class="code-string">'column'</span>, 
+          alignItems: <span class="code-string">'center'</span>, 
+          color: <span class="code-string">'#999'</span> 
+        }}&gt;
+          &lt;div style={{ 
+            fontSize: size === <span class="code-string">'small'</span> ? <span class="code-string">'16px'</span> : size === <span class="code-string">'medium'</span> ? <span class="code-string">'24px'</span> : <span class="code-string">'32px'</span>,
+            marginBottom: <span class="code-string">'4px'</span>
+          }}&gt;
+            {placeholder}
+          &lt;/div&gt;
+          {size !== <span class="code-string">'small'</span> && &lt;span style={{ fontSize: <span class="code-string">'10px'</span> }}&gt;Sin imagen&lt;/span&gt;}
+        &lt;/div&gt;
+      ) : (
+        <span class="code-comment">// Imagen cargada exitosamente</span>
+        &lt;img
+          src={currentSrc}
+          alt={alt}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+          style={{
+            ...baseStyles,
+            border: <span class="code-string">'none'</span>,
+            backgroundColor: <span class="code-string">'transparent'</span>
+          }}
+        /&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-comment">// Galería con miniaturas inteligentes</span>
+<span class="code-keyword">function</span> <span class="code-function">ImageGallery</span>({ images }) {
+  <span class="code-keyword">return</span> (
+    &lt;div style={{ 
+      display: <span class="code-string">'grid'</span>, 
+      gridTemplateColumns: <span class="code-string">'repeat(auto-fill, minmax(120px, 1fr))'</span>, 
+      gap: <span class="code-string">'16px'</span>,
+      padding: <span class="code-string">'20px'</span>
+    }}&gt;
+      {images.<span class="code-function">map</span>((image, index) => (
+        &lt;SmartThumbnail
+          key={index}
+          src={image.url}
+          alt={image.description}
+          size=<span class="code-string">"medium"</span>
+          fallbackSrc={image.fallback}
+          placeholder=<span class="code-string">"🖼️"</span>
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Delete Image Links -->
+                <div id="delete-image" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Enlaces de Eliminación de Imágenes</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Implementa controles intuitivos para eliminar imágenes con confirmación visual 
+                            y animaciones suaves. Mejora la experiencia del usuario en galerías editables.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">DeletableImage</span>({ 
+  src, 
+  alt, 
+  onDelete, 
+  confirmDelete = <span class="code-keyword">true</span>,
+  size = <span class="code-string">'medium'</span> 
+}) {
+  <span class="code-keyword">const</span> [isHovered, setIsHovered] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  <span class="code-keyword">const</span> [isDeleting, setIsDeleting] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  <span class="code-keyword">const</span> [showConfirm, setShowConfirm] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-keyword">const</span> sizeMap = {
+    small: 100,
+    medium: 150,
+    large: 200
+  };
+  
+  <span class="code-keyword">const</span> imageSize = sizeMap[size];
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleDeleteClick</span> = () => {
+    <span class="code-keyword">if</span> (confirmDelete) {
+      <span class="code-function">setShowConfirm</span>(<span class="code-keyword">true</span>);
+    } <span class="code-keyword">else</span> {
+      <span class="code-function">handleConfirmDelete</span>();
+    }
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleConfirmDelete</span> = <span class="code-keyword">async</span> () => {
+    <span class="code-function">setIsDeleting</span>(<span class="code-keyword">true</span>);
+    <span class="code-function">setShowConfirm</span>(<span class="code-keyword">false</span>);
+    
+    <span class="code-keyword">try</span> {
+      <span class="code-keyword">await</span> <span class="code-function">onDelete</span>();
+    } <span class="code-keyword">catch</span> (error) {
+      console.<span class="code-function">error</span>(<span class="code-string">'Error al eliminar imagen:'</span>, error);
+      <span class="code-function">setIsDeleting</span>(<span class="code-keyword">false</span>);
+    }
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleCancelDelete</span> = () => {
+    <span class="code-function">setShowConfirm</span>(<span class="code-keyword">false</span>);
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div 
+      style={{
+        position: <span class="code-string">'relative'</span>,
+        display: <span class="code-string">'inline-block'</span>,
+        borderRadius: <span class="code-string">'8px'</span>,
+        overflow: <span class="code-string">'hidden'</span>,
+        transition: <span class="code-string">'all 0.3s ease'</span>,
+        opacity: isDeleting ? 0.5 : 1,
+        transform: isDeleting ? <span class="code-string">'scale(0.9)'</span> : <span class="code-string">'scale(1)'</span>
+      }}
+      onMouseEnter={() => <span class="code-function">setIsHovered</span>(<span class="code-keyword">true</span>)}
+      onMouseLeave={() => <span class="code-function">setIsHovered</span>(<span class="code-keyword">false</span>)}
+    &gt;
+      &lt;img
+        src={src}
+        alt={alt}
+        style={{
+          width: <span class="code-string">`${imageSize}px`</span>,
+          height: <span class="code-string">`${imageSize}px`</span>,
+          objectFit: <span class="code-string">'cover'</span>,
+          display: <span class="code-string">'block'</span>
+        }}
+      /&gt;
+      
+      <span class="code-comment">// Overlay con botón de eliminar</span>
+      {(isHovered || showConfirm) && !isDeleting && (
+        &lt;div style={{
+          position: <span class="code-string">'absolute'</span>,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: <span class="code-string">'rgba(0, 0, 0, 0.7)'</span>,
+          display: <span class="code-string">'flex'</span>,
+          alignItems: <span class="code-string">'center'</span>,
+          justifyContent: <span class="code-string">'center'</span>,
+          transition: <span class="code-string">'opacity 0.2s ease'</span>
+        }}&gt;
+          {!showConfirm ? (
+            &lt;button
+              onClick={handleDeleteClick}
+              style={{
+                backgroundColor: <span class="code-string">'#dc3545'</span>,
+                color: <span class="code-string">'white'</span>,
+                border: <span class="code-string">'none'</span>,
+                borderRadius: <span class="code-string">'50%'</span>,
+                width: <span class="code-string">'40px'</span>,
+                height: <span class="code-string">'40px'</span>,
+                fontSize: <span class="code-string">'18px'</span>,
+                cursor: <span class="code-string">'pointer'</span>,
+                display: <span class="code-string">'flex'</span>,
+                alignItems: <span class="code-string">'center'</span>,
+                justifyContent: <span class="code-string">'center'</span>,
+                transition: <span class="code-string">'transform 0.2s ease'</span>
+              }}
+              onMouseEnter={<span class="code-keyword">e</span> => e.target.style.transform = <span class="code-string">'scale(1.1)'</span>}
+              onMouseLeave={<span class="code-keyword">e</span> => e.target.style.transform = <span class="code-string">'scale(1)'</span>}
+              title=<span class="code-string">"Eliminar imagen"</span>
+            &gt;
+              🗑️
+            &lt;/button&gt;
+          ) : (
+            &lt;div style={{
+              display: <span class="code-string">'flex'</span>,
+              flexDirection: <span class="code-string">'column'</span>,
+              alignItems: <span class="code-string">'center'</span>,
+              gap: <span class="code-string">'10px'</span>
+            }}&gt;
+              &lt;p style={{ 
+                color: <span class="code-string">'white'</span>, 
+                margin: 0, 
+                fontSize: <span class="code-string">'14px'</span>, 
+                textAlign: <span class="code-string">'center'</span> 
+              }}&gt;
+                ¿Eliminar imagen?
+              &lt;/p&gt;
+              &lt;div style={{ display: <span class="code-string">'flex'</span>, gap: <span class="code-string">'8px'</span> }}&gt;
+                &lt;button
+                  onClick={handleConfirmDelete}
+                  style={{
+                    backgroundColor: <span class="code-string">'#dc3545'</span>,
+                    color: <span class="code-string">'white'</span>,
+                    border: <span class="code-string">'none'</span>,
+                    borderRadius: <span class="code-string">'4px'</span>,
+                    padding: <span class="code-string">'6px 12px'</span>,
+                    fontSize: <span class="code-string">'12px'</span>,
+                    cursor: <span class="code-string">'pointer'</span>
+                  }}
+                &gt;
+                  Sí
+                &lt;/button&gt;
+                &lt;button
+                  onClick={handleCancelDelete}
+                  style={{
+                    backgroundColor: <span class="code-string">'#6c757d'</span>,
+                    color: <span class="code-string">'white'</span>,
+                    border: <span class="code-string">'none'</span>,
+                    borderRadius: <span class="code-string">'4px'</span>,
+                    padding: <span class="code-string">'6px 12px'</span>,
+                    fontSize: <span class="code-string">'12px'</span>,
+                    cursor: <span class="code-string">'pointer'</span>
+                  }}
+                &gt;
+                  No
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          )}
+        &lt;/div&gt;
+      )}
+      
+      <span class="code-comment">// Indicador de eliminación en progreso</span>
+      {isDeleting && (
+        &lt;div style={{
+          position: <span class="code-string">'absolute'</span>,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: <span class="code-string">'rgba(0, 0, 0, 0.8)'</span>,
+          display: <span class="code-string">'flex'</span>,
+          alignItems: <span class="code-string">'center'</span>,
+          justifyContent: <span class="code-string">'center'</span>,
+          color: <span class="code-string">'white'</span>,
+          fontSize: <span class="code-string">'24px'</span>
+        }}&gt;
+          ⏳
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Image Edit Bug Fix -->
+                <div id="image-bug" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Corrección de Bugs en Edición de Imágenes</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Soluciones a problemas comunes al editar imágenes: memory leaks, estados inconsistentes, 
+                            y problemas de sincronización entre el estado local y el servidor.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">ImageEditor</span>({ initialImages, onImagesChange }) {
+  <span class="code-keyword">const</span> [images, setImages] = <span class="code-function">useState</span>(initialImages || []);
+  <span class="code-keyword">const</span> [previewUrls, setPreviewUrls] = <span class="code-function">useState</span>(<span class="code-keyword">new</span> <span class="code-function">Map</span>());
+  <span class="code-keyword">const</span> [isUploading, setIsUploading] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-comment">// Limpiar URLs de objeto al desmontar (evitar memory leaks)</span>
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-keyword">return</span> () => {
+      previewUrls.<span class="code-function">forEach</span>(url => {
+        <span class="code-keyword">if</span> (url.<span class="code-function">startsWith</span>(<span class="code-string">'blob:'</span>)) {
+          URL.<span class="code-function">revokeObjectURL</span>(url);
+        }
+      });
+    };
+  }, [previewUrls]);
+  
+  <span class="code-comment">// Sincronizar con props cuando cambien</span>
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-keyword">if</span> (initialImages && initialImages !== images) {
+      <span class="code-function">setImages</span>(initialImages);
+    }
+  }, [initialImages]);
+  
+  <span class="code-keyword">const</span> <span class="code-function">addImages</span> = (newFiles) => {
+    <span class="code-keyword">const</span> newImages = [];
+    <span class="code-keyword">const</span> newPreviews = <span class="code-keyword">new</span> <span class="code-function">Map</span>(previewUrls);
+    
+    newFiles.<span class="code-function">forEach</span>((file, index) => {
+      <span class="code-keyword">const</span> tempId = <span class="code-string">`temp-${Date.now()}-${index}`</span>;
+      <span class="code-keyword">const</span> previewUrl = URL.<span class="code-function">createObjectURL</span>(file);
+      
+      newImages.<span class="code-function">push</span>({
+        id: tempId,
+        file,
+        name: file.name,
+        size: file.size,
+        isNew: <span class="code-keyword">true</span>,
+        isUploading: <span class="code-keyword">false</span>
+      });
+      
+      newPreviews.<span class="code-function">set</span>(tempId, previewUrl);
+    });
+    
+    <span class="code-function">setImages</span>(prev => [...prev, ...newImages]);
+    <span class="code-function">setPreviewUrls</span>(newPreviews);
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">removeImage</span> = (imageId) => {
+    <span class="code-comment">// Limpiar URL de preview si existe</span>
+    <span class="code-keyword">const</span> previewUrl = previewUrls.<span class="code-function">get</span>(imageId);
+    <span class="code-keyword">if</span> (previewUrl && previewUrl.<span class="code-function">startsWith</span>(<span class="code-string">'blob:'</span>)) {
+      URL.<span class="code-function">revokeObjectURL</span>(previewUrl);
+    }
+    
+    <span class="code-comment">// Actualizar estados</span>
+    <span class="code-function">setImages</span>(prev => prev.<span class="code-function">filter</span>(img => img.id !== imageId));
+    <span class="code-function">setPreviewUrls</span>(prev => {
+      <span class="code-keyword">const</span> newMap = <span class="code-keyword">new</span> <span class="code-function">Map</span>(prev);
+      newMap.<span class="code-function">delete</span>(imageId);
+      <span class="code-keyword">return</span> newMap;
+    });
+    
+    <span class="code-comment">// Notificar cambio al componente padre</span>
+    <span class="code-keyword">const</span> updatedImages = images.<span class="code-function">filter</span>(img => img.id !== imageId);
+    <span class="code-function">onImagesChange</span>?.(updatedImages);
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">uploadImage</span> = <span class="code-keyword">async</span> (imageId) => {
+    <span class="code-keyword">const</span> image = images.<span class="code-function">find</span>(img => img.id === imageId);
+    <span class="code-keyword">if</span> (!image || !image.isNew) <span class="code-keyword">return</span>;
+    
+    <span class="code-comment">// Marcar como subiendo</span>
+    <span class="code-function">setImages</span>(prev => prev.<span class="code-function">map</span>(img => 
+      img.id === imageId 
+        ? { ...img, isUploading: <span class="code-keyword">true</span>, error: <span class="code-keyword">null</span> }
+        : img
+    ));
+    
+    <span class="code-keyword">try</span> {
+      <span class="code-keyword">const</span> formData = <span class="code-keyword">new</span> <span class="code-function">FormData</span>();
+      formData.<span class="code-function">append</span>(<span class="code-string">'image'</span>, image.file);
+      
+      <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> <span class="code-function">fetch</span>(<span class="code-string">'/api/upload'</span>, {
+        method: <span class="code-string">'POST'</span>,
+        body: formData
+      });
+      
+      <span class="code-keyword">if</span> (!response.ok) {
+        <span class="code-keyword">throw new</span> <span class="code-function">Error</span>(<span class="code-string">`Upload failed: ${response.statusText}`</span>);
+      }
+      
+      <span class="code-keyword">const</span> result = <span class="code-keyword">await</span> response.<span class="code-function">json</span>();
+      
+      <span class="code-comment">// Actualizar imagen con datos del servidor</span>
+      <span class="code-function">setImages</span>(prev => prev.<span class="code-function">map</span>(img => 
+        img.id === imageId 
+          ? { 
+              ...img, 
+              id: result.id,
+              url: result.url,
+              isNew: <span class="code-keyword">false</span>,
+              isUploading: <span class="code-keyword">false</span>,
+              file: <span class="code-keyword">null</span> <span class="code-comment">// Limpiar archivo para liberar memoria</span>
+            }
+          : img
+      ));
+      
+      <span class="code-comment">// Limpiar preview URL temporal</span>
+      <span class="code-keyword">const</span> previewUrl = previewUrls.<span class="code-function">get</span>(imageId);
+      <span class="code-keyword">if</span> (previewUrl) {
+        URL.<span class="code-function">revokeObjectURL</span>(previewUrl);
+        <span class="code-function">setPreviewUrls</span>(prev => {
+          <span class="code-keyword">const</span> newMap = <span class="code-keyword">new</span> <span class="code-function">Map</span>(prev);
+          newMap.<span class="code-function">delete</span>(imageId);
+          newMap.<span class="code-function">set</span>(result.id, result.url);
+          <span class="code-keyword">return</span> newMap;
+        });
+      }
+      
+    } <span class="code-keyword">catch</span> (error) {
+      console.<span class="code-function">error</span>(<span class="code-string">'Upload error:'</span>, error);
+      
+      <span class="code-comment">// Marcar error en la imagen</span>
+      <span class="code-function">setImages</span>(prev => prev.<span class="code-function">map</span>(img => 
+        img.id === imageId 
+          ? { ...img, isUploading: <span class="code-keyword">false</span>, error: error.message }
+          : img
+      ));
+    }
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">uploadAllImages</span> = <span class="code-keyword">async</span> () => {
+    <span class="code-function">setIsUploading</span>(<span class="code-keyword">true</span>);
+    
+    <span class="code-keyword">const</span> newImages = images.<span class="code-function">filter</span>(img => img.isNew);
+    <span class="code-keyword">const</span> uploadPromises = newImages.<span class="code-function">map</span>(img => <span class="code-function">uploadImage</span>(img.id));
+    
+    <span class="code-keyword">try</span> {
+      <span class="code-keyword">await</span> Promise.<span class="code-function">all</span>(uploadPromises);
+    } <span class="code-keyword">catch</span> (error) {
+      console.<span class="code-function">error</span>(<span class="code-string">'Batch upload error:'</span>, error);
+    } <span class="code-keyword">finally</span> {
+      <span class="code-function">setIsUploading</span>(<span class="code-keyword">false</span>);
+    }
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">getImageUrl</span> = (image) => {
+    <span class="code-keyword">if</span> (image.url) <span class="code-keyword">return</span> image.url;
+    <span class="code-keyword">return</span> previewUrls.<span class="code-function">get</span>(image.id) || <span class="code-string">''</span>;
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;div style={{ marginBottom: <span class="code-string">'20px'</span> }}&gt;
+        &lt;input
+          type=<span class="code-string">"file"</span>
+          multiple
+          accept=<span class="code-string">"image/*"</span>
+          onChange={<span class="code-keyword">e</span> => <span class="code-function">addImages</span>(<span class="code-function">Array</span>.<span class="code-function">from</span>(e.target.files))}
+          style={{ marginRight: <span class="code-string">'10px'</span> }}
+        /&gt;
+        
+        &lt;button 
+          onClick={uploadAllImages}
+          disabled={isUploading || !images.<span class="code-function">some</span>(img => img.isNew)}
+          style={{ 
+            backgroundColor: <span class="code-string">'#007bff'</span>, 
+            color: <span class="code-string">'white'</span>, 
+            border: <span class="code-string">'none'</span>, 
+            padding: <span class="code-string">'8px 16px'</span>, 
+            borderRadius: <span class="code-string">'4px'</span> 
+          }}
+        &gt;
+          {isUploading ? <span class="code-string">'Subiendo...'</span> : <span class="code-string">'Subir todas'</span>}
+        &lt;/button&gt;
+      &lt;/div&gt;
+      
+      &lt;div style={{ 
+        display: <span class="code-string">'grid'</span>, 
+        gridTemplateColumns: <span class="code-string">'repeat(auto-fill, minmax(150px, 1fr))'</span>, 
+        gap: <span class="code-string">'16px'</span> 
+      }}&gt;
+        {images.<span class="code-function">map</span>(image => (
+          &lt;div key={image.id} style={{ position: <span class="code-string">'relative'</span> }}&gt;
+            &lt;img
+              src={<span class="code-function">getImageUrl</span>(image)}
+              alt={image.name}
+              style={{ 
+                width: <span class="code-string">'100%'</span>, 
+                height: <span class="code-string">'150px'</span>, 
+                objectFit: <span class="code-string">'cover'</span>, 
+                borderRadius: <span class="code-string">'8px'</span> 
+              }}
+            /&gt;
+            
+            {image.isUploading && (
+              &lt;div style={{
+                position: <span class="code-string">'absolute'</span>,
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: <span class="code-string">'rgba(0,0,0,0.7)'</span>,
+                display: <span class="code-string">'flex'</span>,
+                alignItems: <span class="code-string">'center'</span>,
+                justifyContent: <span class="code-string">'center'</span>,
+                color: <span class="code-string">'white'</span>,
+                borderRadius: <span class="code-string">'8px'</span>
+              }}&gt;
+                ⏳ Subiendo...
+              &lt;/div&gt;
+            )}
+            
+            {image.error && (
+              &lt;div style={{
+                position: <span class="code-string">'absolute'</span>,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                backgroundColor: <span class="code-string">'rgba(220, 53, 69, 0.9)'</span>,
+                color: <span class="code-string">'white'</span>,
+                padding: <span class="code-string">'4px'</span>,
+                fontSize: <span class="code-string">'12px'</span>,
+                borderRadius: <span class="code-string">'0 0 8px 8px'</span>
+              }}&gt;
+                Error: {image.error}
+              &lt;/div&gt;
+            )}
+            
+            &lt;button
+              onClick={() => <span class="code-function">removeImage</span>(image.id)}
+              style={{
+                position: <span class="code-string">'absolute'</span>,
+                top: <span class="code-string">'8px'</span>,
+                right: <span class="code-string">'8px'</span>,
+                backgroundColor: <span class="code-string">'rgba(220, 53, 69, 0.8)'</span>,
+                color: <span class="code-string">'white'</span>,
+                border: <span class="code-string">'none'</span>,
+                borderRadius: <span class="code-string">'50%'</span>,
+                width: <span class="code-string">'24px'</span>,
+                height: <span class="code-string">'24px'</span>,
+                cursor: <span class="code-string">'pointer'</span>,
+                fontSize: <span class="code-string">'12px'</span>
+              }}
+            &gt;
+              ×
+            &lt;/button&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Final Image Delete -->
+                <div id="final-delete" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Eliminación Final de Imágenes</h3>
+                    
+                    <div class="highlight-box">
+                        <p class="text-gray-300 mb-4">
+                            Implementación completa para eliminar imágenes del servidor con rollback automático, 
+                            manejo de errores robusto y sincronización perfecta entre cliente y servidor.
+                        </p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">useImageDeletion</span>(apiEndpoint) {
+  <span class="code-keyword">const</span> [deletingIds, setDeletingIds] = <span class="code-function">useState</span>(<span class="code-keyword">new</span> <span class="code-function">Set</span>());
+  <span class="code-keyword">const</span> [errors, setErrors] = <span class="code-function">useState</span>(<span class="code-keyword">new</span> <span class="code-function">Map</span>());
+  
+  <span class="code-keyword">const</span> <span class="code-function">deleteImage</span> = <span class="code-keyword">async</span> (imageId, optimisticUpdate) => {
+    <span class="code-comment">// Marcar como eliminando</span>
+    <span class="code-function">setDeletingIds</span>(prev => <span class="code-keyword">new</span> <span class="code-function">Set</span>(prev).<span class="code-function">add</span>(imageId));
+    <span class="code-function">setErrors</span>(prev => {
+      <span class="code-keyword">const</span> newErrors = <span class="code-keyword">new</span> <span class="code-function">Map</span>(prev);
+      newErrors.<span class="code-function">delete</span>(imageId);
+      <span class="code-keyword">return</span> newErrors;
+    });
+    
+    <span class="code-comment">// Actualización optimista</span>
+    <span class="code-keyword">const</span> rollback = optimisticUpdate?.(imageId);
+    
+    <span class="code-keyword">try</span> {
+      <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> <span class="code-function">fetch</span>(<span class="code-string">`${apiEndpoint}/${imageId}`</span>, {
+        method: <span class="code-string">'DELETE'</span>,
+        headers: {
+          <span class="code-string">'Content-Type'</span>: <span class="code-string">'application/json'</span>,
+          <span class="code-string">'Authorization'</span>: <span class="code-string">`Bearer ${localStorage.getItem('authToken')}`</span>
+        }
+      });
+      
+      <span class="code-keyword">if</span> (!response.ok) {
+        <span class="code-keyword">const</span> errorData = <span class="code-keyword">await</span> response.<span class="code-function">json</span>().<span class="code-function">catch</span>(() => ({}));
+        <span class="code-keyword">throw new</span> <span class="code-function">Error</span>(
+          errorData.message || 
+          <span class="code-string">`Error ${response.status}: ${response.statusText}`</span>
+        );
+      }
+      
+      <span class="code-comment">// Éxito - la actualización optimista se mantiene</span>
+      <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+      
+    } <span class="code-keyword">catch</span> (error) {
+      console.<span class="code-function">error</span>(<span class="code-string">'Delete error:'</span>, error);
+      
+      <span class="code-comment">// Revertir actualización optimista</span>
+      rollback?.();
+      
+      <span class="code-comment">// Guardar error</span>
+      <span class="code-function">setErrors</span>(prev => <span class="code-keyword">new</span> <span class="code-function">Map</span>(prev).<span class="code-function">set</span>(imageId, error.message));
+      
+      <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+      
+    } <span class="code-keyword">finally</span> {
+      <span class="code-comment">// Quitar de la lista de eliminando</span>
+      <span class="code-function">setDeletingIds</span>(prev => {
+        <span class="code-keyword">const</span> newSet = <span class="code-keyword">new</span> <span class="code-function">Set</span>(prev);
+        newSet.<span class="code-function">delete</span>(imageId);
+        <span class="code-keyword">return</span> newSet;
+      });
+    }
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">clearError</span> = (imageId) => {
+    <span class="code-function">setErrors</span>(prev => {
+      <span class="code-keyword">const</span> newErrors = <span class="code-keyword">new</span> <span class="code-function">Map</span>(prev);
+      newErrors.<span class="code-function">delete</span>(imageId);
+      <span class="code-keyword">return</span> newErrors;
+    });
+  };
+  
+  <span class="code-keyword">return</span> {
+    deleteImage,
+    clearError,
+    isDeleting: (id) => deletingIds.<span class="code-function">has</span>(id),
+    getError: (id) => errors.<span class="code-function">get</span>(id),
+    hasErrors: errors.size > 0
+  };
+}
+
+<span class="code-comment">// Componente principal con eliminación robusta</span>
+<span class="code-keyword">function</span> <span class="code-function">ImageGalleryManager</span>({ initialImages, onImagesChange }) {
+  <span class="code-keyword">const</span> [images, setImages] = <span class="code-function">useState</span>(initialImages || []);
+  <span class="code-keyword">const</span> [showDeletedImages, setShowDeletedImages] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-keyword">const</span> { 
+    deleteImage, 
+    clearError, 
+    isDeleting, 
+    getError 
+  } = <span class="code-function">useImageDeletion</span>(<span class="code-string">'/api/images'</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleDeleteImage</span> = <span class="code-keyword">async</span> (imageId) => {
+    <span class="code-comment">// Confirmar eliminación</span>
+    <span class="code-keyword">const</span> image = images.<span class="code-function">find</span>(img => img.id === imageId);
+    <span class="code-keyword">const</span> confirmed = window.<span class="code-function">confirm</span>(
+      <span class="code-string">`¿Estás seguro de eliminar "${image?.name || 'esta imagen'}"?`</span>
+    );
+    
+    <span class="code-keyword">if</span> (!confirmed) <span class="code-keyword">return</span>;
+    
+    <span class="code-comment">// Función de actualización optimista</span>
+    <span class="code-keyword">const</span> <span class="code-function">optimisticUpdate</span> = (id) => {
+      <span class="code-keyword">const</span> originalImages = [...images];
+      
+      <span class="code-comment">// Marcar como eliminada (no remover completamente)</span>
+      <span class="code-function">setImages</span>(prev => prev.<span class="code-function">map</span>(img => 
+        img.id === id 
+          ? { ...img, isDeleted: <span class="code-keyword">true</span>, deletedAt: <span class="code-keyword">new</span> <span class="code-function">Date</span>() }
+          : img
+      ));
+      
+      <span class="code-comment">// Función de rollback</span>
+      <span class="code-keyword">return</span> () => {
+        <span class="code-function">setImages</span>(originalImages);
+      };
+    };
+    
+    <span class="code-keyword">const</span> success = <span class="code-keyword">await</span> <span class="code-function">deleteImage</span>(imageId, optimisticUpdate);
+    
+    <span class="code-keyword">if</span> (success) {
+      <span class="code-comment">// Notificar al componente padre</span>
+      <span class="code-keyword">const</span> updatedImages = images.<span class="code-function">filter</span>(img => img.id !== imageId);
+      <span class="code-function">onImagesChange</span>?.(updatedImages);
+      
+      <span class="code-comment">// Remover completamente después de un delay</span>
+      <span class="code-function">setTimeout</span>(() => {
+        <span class="code-function">setImages</span>(prev => prev.<span class="code-function">filter</span>(img => img.id !== imageId));
+      }, 2000);
+    }
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">restoreImage</span> = (imageId) => {
+    <span class="code-function">setImages</span>(prev => prev.<span class="code-function">map</span>(img => 
+      img.id === imageId 
+        ? { ...img, isDeleted: <span class="code-keyword">false</span>, deletedAt: <span class="code-keyword">null</span> }
+        : img
+    ));
+    <span class="code-function">clearError</span>(imageId);
+  };
+  
+  <span class="code-keyword">const</span> visibleImages = showDeletedImages 
+    ? images 
+    : images.<span class="code-function">filter</span>(img => !img.isDeleted);
+  
+  <span class="code-keyword">const</span> deletedCount = images.<span class="code-function">filter</span>(img => img.isDeleted).length;
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;div style={{ 
+        display: <span class="code-string">'flex'</span>, 
+        justifyContent: <span class="code-string">'space-between'</span>, 
+        alignItems: <span class="code-string">'center'</span>, 
+        marginBottom: <span class="code-string">'20px'</span> 
+      }}&gt;
+        &lt;h2&gt;Galería de Imágenes ({visibleImages.length})&lt;/h2&gt;
+        
+        {deletedCount > 0 && (
+          &lt;button
+            onClick={() => <span class="code-function">setShowDeletedImages</span>(!showDeletedImages)}
+            style={{
+              backgroundColor: showDeletedImages ? <span class="code-string">'#dc3545'</span> : <span class="code-string">'#6c757d'</span>,
+              color: <span class="code-string">'white'</span>,
+              border: <span class="code-string">'none'</span>,
+              padding: <span class="code-string">'8px 16px'</span>,
+              borderRadius: <span class="code-string">'4px'</span>,
+              cursor: <span class="code-string">'pointer'</span>
+            }}
+          &gt;
+            {showDeletedImages 
+              ? <span class="code-string">'Ocultar eliminadas'</span> 
+              : <span class="code-string">`Ver eliminadas (${deletedCount})`</span>
+            }
+          &lt;/button&gt;
+        )}
+      &lt;/div&gt;
+      
+      &lt;div style={{ 
+        display: <span class="code-string">'grid'</span>, 
+        gridTemplateColumns: <span class="code-string">'repeat(auto-fill, minmax(200px, 1fr))'</span>, 
+        gap: <span class="code-string">'20px'</span> 
+      }}&gt;
+        {visibleImages.<span class="code-function">map</span>(image => (
+          &lt;div 
+            key={image.id} 
+            style={{ 
+              position: <span class="code-string">'relative'</span>,
+              opacity: image.isDeleted ? 0.5 : 1,
+              transition: <span class="code-string">'opacity 0.3s ease'</span>
+            }}
+          &gt;
+            &lt;img
+              src={image.url}
+              alt={image.name}
+              style={{ 
+                width: <span class="code-string">'100%'</span>, 
+                height: <span class="code-string">'200px'</span>, 
+                objectFit: <span class="code-string">'cover'</span>, 
+                borderRadius: <span class="code-string">'8px'</span> 
+              }}
+            /&gt;
+            
+            &lt;div style={{ 
+              position: <span class="code-string">'absolute'</span>, 
+              bottom: <span class="code-string">'8px'</span>, 
+              left: <span class="code-string">'8px'</span>, 
+              right: <span class="code-string">'8px'</span>,
+              display: <span class="code-string">'flex'</span>,
+              justifyContent: <span class="code-string">'space-between'</span>,
+              alignItems: <span class="code-string">'center'</span>
+            }}&gt;
+              &lt;span style={{ 
+                backgroundColor: <span class="code-string">'rgba(0,0,0,0.7)'</span>, 
+                color: <span class="code-string">'white'</span>, 
+                padding: <span class="code-string">'4px 8px'</span>, 
+                borderRadius: <span class="code-string">'4px'</span>,
+                fontSize: <span class="code-string">'12px'</span>,
+                maxWidth: <span class="code-string">'60%'</span>,
+                overflow: <span class="code-string">'hidden'</span>,
+                textOverflow: <span class="code-string">'ellipsis'</span>,
+                whiteSpace: <span class="code-string">'nowrap'</span>
+              }}&gt;
+                {image.name}
+              &lt;/span&gt;
+              
+              {image.isDeleted ? (
+                &lt;button
+                  onClick={() => <span class="code-function">restoreImage</span>(image.id)}
+                  style={{
+                    backgroundColor: <span class="code-string">'#28a745'</span>,
+                    color: <span class="code-string">'white'</span>,
+                    border: <span class="code-string">'none'</span>,
+                    borderRadius: <span class="code-string">'4px'</span>,
+                    padding: <span class="code-string">'4px 8px'</span>,
+                    fontSize: <span class="code-string">'12px'</span>,
+                    cursor: <span class="code-string">'pointer'</span>
+                  }}
+                &gt;
+                  Restaurar
+                &lt;/button&gt;
+              ) : (
+                &lt;button
+                  onClick={() => <span class="code-function">handleDeleteImage</span>(image.id)}
+                  disabled={<span class="code-function">isDeleting</span>(image.id)}
+                  style={{
+                    backgroundColor: <span class="code-function">isDeleting</span>(image.id) ? <span class="code-string">'#6c757d'</span> : <span class="code-string">'#dc3545'</span>,
+                    color: <span class="code-string">'white'</span>,
+                    border: <span class="code-string">'none'</span>,
+                    borderRadius: <span class="code-string">'4px'</span>,
+                    padding: <span class="code-string">'4px 8px'</span>,
+                    fontSize: <span class="code-string">'12px'</span>,
+                    cursor: <span class="code-function">isDeleting</span>(image.id) ? <span class="code-string">'not-allowed'</span> : <span class="code-string">'pointer'</span>
+                  }}
+                &gt;
+                  {<span class="code-function">isDeleting</span>(image.id) ? <span class="code-string">'⏳'</span> : <span class="code-string">'🗑️'</span>}
+                &lt;/button&gt;
+              )}
+            &lt;/div&gt;
+            
+            {<span class="code-function">getError</span>(image.id) && (
+              &lt;div style={{
+                position: <span class="code-string">'absolute'</span>,
+                top: <span class="code-string">'8px'</span>,
+                left: <span class="code-string">'8px'</span>,
+                right: <span class="code-string">'8px'</span>,
+                backgroundColor: <span class="code-string">'rgba(220, 53, 69, 0.9)'</span>,
+                color: <span class="code-string">'white'</span>,
+                padding: <span class="code-string">'8px'</span>,
+                borderRadius: <span class="code-string">'4px'</span>,
+                fontSize: <span class="code-string">'12px'</span>
+              }}&gt;
+                Error: {<span class="code-function">getError</span>(image.id)}
+                &lt;button
+                  onClick={() => <span class="code-function">clearError</span>(image.id)}
+                  style={{
+                    background: <span class="code-string">'none'</span>,
+                    border: <span class="code-string">'none'</span>,
+                    color: <span class="code-string">'white'</span>,
+                    float: <span class="code-string">'right'</span>,
+                    cursor: <span class="code-string">'pointer'</span>
+                  }}
+                &gt;
+                  ×
+                &lt;/button&gt;
+              &lt;/div&gt;
+            )}
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="text-center py-12 border-t border-dark-600 mt-16">
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-white mb-2">¡Felicidades!</h3>
+                    <p class="text-gray-400 max-w-2xl mx-auto">
+                        Has completado esta guía completa de React. Ahora tienes las herramientas y conocimientos 
+                        necesarios para crear aplicaciones React robustas y profesionales.
+                    </p>
+                </div>
+                
+                <div class="flex justify-center space-x-6 text-sm text-gray-500">
+                    <span>© 2024 Guía React</span>
+                    <span>•</span>
+                    <span>Conceptos Avanzados</span>
+                    <span>•</span>
+                    <span>Mejores Prácticas</span>
+                </div>
+                
+                <div class="mt-6 flex justify-center space-x-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-500 bg-opacity-20 text-accent-400">
+                        <i class="fab fa-react mr-1"></i> React 18+
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary-500 bg-opacity-20 text-secondary-400">
+                        <i class="fas fa-code mr-1"></i> JavaScript ES6+
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-react-500 bg-opacity-20 text-react-500">
+                        <i class="fas fa-rocket mr-1"></i> Hooks & Context
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Navegación suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Actualizar elemento activo
+                    document.querySelectorAll('.topic-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+        
+        // Menú móvil
+        document.getElementById('mobile-menu')?.addEventListener('click', function() {
+            const sidebar = document.querySelector('.w-64');
+            if (sidebar) {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('fixed');
+                sidebar.classList.toggle('z-20');
+            }
+        });
+        
+        // Animaciones al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observar elementos animados
+        document.querySelectorAll('.animate-slide-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+        
+        // Resaltar código
+        document.querySelectorAll('.code-block code').forEach(block => {
+            // Agregar números de línea
+            const lines = block.innerHTML.split('\n');
+            if (lines.length > 3) {
+                const numberedLines = lines.map((line, index) => {
+                    if (line.trim() === '') return line;
+                    return `<span class="line-number">${index + 1}</span>${line}`;
+                });
+                block.innerHTML = numberedLines.join('\n');
+            }
+        });
+    </script>
+    
+    <style>
+        .line-number {
+            display: inline-block;
+            width: 30px;
+            color: #666;
+            font-size: 12px;
+            margin-right: 10px;
+            text-align: right;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar-gradient {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar-gradient.fixed {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</body>
+</html>
+
