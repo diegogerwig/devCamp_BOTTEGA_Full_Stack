@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de React</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#121212',
+                            700: '#1a1a1a',
+                            600: '#242424',
+                            500: '#2d2d2d',
+                        },
+                        accent: {
+                            500: '#64ffda',
+                            600: '#50e3c2',
+                            400: '#7fffd4',
+                        },
+                        secondary: {
+                            500: '#bb86fc',
+                            400: '#d1a3ff',
+                        },
+                        react: {
+                            500: '#61dafb',
+                            600: '#21d4fd',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(-10px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #64ffda' },
+                            '100%': { boxShadow: '0 0 20px #64ffda, 0 0 30px #64ffda' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #121212 100%);
+        }
+        
+        .code-block {
+            background: linear-gradient(135deg, #1e1e1e 0%, #252525 100%);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #64ffda, #bb86fc, #61dafb);
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .code-block code {
+            color: #e6e6e6;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .code-keyword {
+            color: #c586c0;
+            font-weight: 500;
+        }
+        
+        .code-function {
+            color: #dcdcaa;
+            font-weight: 500;
+        }
+        
+        .code-string {
+            color: #ce9178;
+        }
+        
+        .code-comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+        
+        .topic-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .topic-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(100, 255, 218, 0.1), rgba(187, 134, 252, 0.1));
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .topic-item:hover::before {
+            width: 100%;
+        }
+        
+        .topic-item:hover, .topic-item.active {
+            background-color: rgba(30, 30, 30, 0.7);
+            border-left-color: #64ffda;
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(100, 255, 218, 0.2);
+        }
+        
+        .topic-item.active {
+            font-weight: 600;
+            color: #64ffda;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(187, 134, 252, 0.1) 100%);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #64ffda, #bb86fc);
+        }
+        
+        .content-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(36, 36, 36, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(100, 255, 218, 0.1);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+        
+        .content-card h3 {
+            background: linear-gradient(135deg, #64ffda, #bb86fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-gradient {
+            background: linear-gradient(180deg, #121212 0%, #1a1a1a 50%, #121212 100%);
+            border-right: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .main-title {
+            background: linear-gradient(135deg, #64ffda 0%, #bb86fc 50%, #61dafb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(100, 255, 218, 0.3);
+        }
+        
+        .category-divider {
+            background: linear-gradient(90deg, transparent, #64ffda, transparent);
+            height: 1px;
+            margin: 1rem 0;
+        }
+        
+        .description-list {
+            background: rgba(100, 255, 218, 0.05);
+            border-left: 4px solid #64ffda;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .description-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .description-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #e6e6e6;
+        }
+        
+        .description-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #64ffda;
+            font-weight: bold;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #2d2d2d, #64ffda);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #3d3d3d, #50e3c2);
+        }
+        
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-300 min-h-screen flex">
+    <!-- Sidebar -->
+    <div class="w-64 sidebar-gradient h-screen sticky top-0 overflow-y-auto flex-shrink-0">
+        <div class="p-5 border-b border-dark-600">
+            <h1 class="text-xl font-bold text-accent-500 flex items-center animate-fade-in">
+                <i class="fab fa-react mr-2 floating-icon"></i> Guía React
+            </h1>
+            <p class="text-sm mt-1 text-gray-400">Conceptos avanzados y mejores prácticas</p>
+        </div>
+        
+        <div class="p-4">
+            <ul class="space-y-1">
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 font-semibold">
+                    <i class="fas fa-file-alt mr-2"></i>Formularios
+                </li>
+                <li><a href="#select-dropdowns" class="topic-item block px-3 py-2 rounded active">Select Dropdowns</a></li>
+                <li><a href="#textarea" class="topic-item block px-3 py-2 rounded">Textarea Tag</a></li>
+                <li><a href="#base-state" class="topic-item block px-3 py-2 rounded">Base State Value</a></li>
+                <li><a href="#parent-data" class="topic-item block px-3 py-2 rounded">Populating Parent Data</a></li>
+                
+                <div class="category-divider"></div>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4 font-semibold">
+                    <i class="fas fa-cloud-upload-alt mr-2"></i>Dropzone
+                </li>
+                <li><a href="#dropzone-install" class="topic-item block px-3 py-2 rounded">React Dropzone</a></li>
+                <li><a href="#security-audit" class="topic-item block px-3 py-2 rounded">Security Audit Fix</a></li>
+                <li><a href="#dropzone-integration" class="topic-item block px-3 py-2 rounded">Integration</a></li>
+                <li><a href="#thumbnail-upload" class="topic-item block px-3 py-2 rounded">Thumbnail Upload</a></li>
+                <li><a href="#banner-logo" class="topic-item block px-3 py-2 rounded">Banner & Logo</a></li>
+                
+                <div class="category-divider"></div>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4 font-semibold">
+                    <i class="fas fa-code mr-2"></i>Refs y Estilos
+                </li>
+                <li><a href="#react-refs" class="topic-item block px-3 py-2 rounded">React Refs</a></li>
+                <li><a href="#form-mixin" class="topic-item block px-3 py-2 rounded">Form Input Mixin</a></li>
+                <li><a href="#custom-styles" class="topic-item block px-3 py-2 rounded">Custom Styles</a></li>
+                <li><a href="#css-grid" class="topic-item block px-3 py-2 rounded">CSS Grid</a></li>
+                <li><a href="#dropzone-labels" class="topic-item block px-3 py-2 rounded">Dropzone Labels</a></li>
+                
+                <div class="category-divider"></div>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4 font-semibold">
+                    <i class="fas fa-database mr-2"></i>CRUD
+                </li>
+                <li><a href="#delete-handler" class="topic-item block px-3 py-2 rounded">Delete Handler</a></li>
+                <li><a href="#delete-api" class="topic-item block px-3 py-2 rounded">Delete API Data</a></li>
+                <li><a href="#font-awesome" class="topic-item block px-3 py-2 rounded">Font Awesome</a></li>
+                <li><a href="#edit-handler" class="topic-item block px-3 py-2 rounded">Edit Handler</a></li>
+                <li><a href="#edit-form" class="topic-item block px-3 py-2 rounded">Edit Form</a></li>
+                <li><a href="#dynamic-api" class="topic-item block px-3 py-2 rounded">Dynamic API Queries</a></li>
+                
+                <div class="category-divider"></div>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4 font-semibold">
+                    <i class="fas fa-rocket mr-2"></i>Avanzado
+                </li>
+                <li><a href="#ternary" class="topic-item block px-3 py-2 rounded">Multi Line Ternary</a></li>
+                <li><a href="#thumbnail-conditionals" class="topic-item block px-3 py-2 rounded">Thumbnail Conditionals</a></li>
+                <li><a href="#delete-image" class="topic-item block px-3 py-2 rounded">Delete Image Links</a></li>
+                <li><a href="#image-bug" class="topic-item block px-3 py-2 rounded">Image Edit Bug Fix</a></li>
+                <li><a href="#final-delete" class="topic-item block px-3 py-2 rounded">Final Image Delete</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="flex-1 p-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12 animate-fade-in">
+                <h1 class="text-5xl font-bold main-title mb-4">Guía Completa de React</h1>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
+                    Domina React con conceptos avanzados, mejores prácticas y ejemplos prácticos 
+                    que te llevarán al siguiente nivel como desarrollador
+                </p>
+                <div class="mt-6 flex justify-center space-x-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-500 bg-opacity-20 text-accent-400">
+                        <i class="fab fa-react mr-1"></i> React 18+
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary-500 bg-opacity-20 text-secondary-400">
+                        <i class="fas fa-code mr-1"></i> ES6+
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-react-500 bg-opacity-20 text-react-500">
+                        <i class="fas fa-rocket mr-1"></i> Hooks
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Formularios Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-file-alt mr-3 text-secondary-500"></i>
+                        Formularios en React
+                    </h2>
+                    <p class="text-gray-400">
+                        Aprende a manejar formularios de manera eficiente con componentes controlados y estado local
+                    </p>
+                </div>
+                
+                <!-- Select Dropdowns -->
+                <div id="select-dropdowns" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Select Dropdowns en React</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Conceptos Clave:</h4>
+                        <ul>
+                            <li><strong>Componente Controlado:</strong> El valor del select se maneja mediante el estado del componente</li>
+                            <li><strong>Prop value:</strong> Define qué opción está seleccionada actualmente</li>
+                            <li><strong>Evento onChange:</strong> Se ejecuta cada vez que el usuario cambia la selección</li>
+                            <li><strong>Sincronización:</strong> El estado y la UI siempre están sincronizados</li>
+                            <li><strong>Validación:</strong> Fácil implementación de reglas de validación</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">SelectExample</span>() {
+  <span class="code-keyword">const</span> [selected, setSelected] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">return</span> (
+    &lt;select value={selected} onChange={<span class="code-keyword">e</span> => <span class="code-function">setSelected</span>(e.target.value)}&gt;
+      &lt;option value=<span class="code-string">""</span>&gt;Selecciona una opción&lt;/option&gt;
+      &lt;option value=<span class="code-string">"react"</span>&gt;React&lt;/option&gt;
+      &lt;option value=<span class="code-string">"vue"</span>&gt;Vue&lt;/option&gt;
+    &lt;/select&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Textarea Tag -->
+                <div id="textarea" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Textarea en React</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Diferencias con HTML tradicional:</h4>
+                        <ul>
+                            <li><strong>Prop value:</strong> En React se usa value en lugar de contenido entre etiquetas</li>
+                            <li><strong>Consistencia:</strong> Mismo patrón que otros inputs (value + onChange)</li>
+                            <li><strong>Autosize:</strong> Fácil implementación de textarea que crece automáticamente</li>
+                            <li><strong>Validación en tiempo real:</strong> Contador de caracteres, límites, etc.</li>
+                            <li><strong>Formato automático:</strong> Aplicar transformaciones al texto</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">TextareaExample</span>() {
+  <span class="code-keyword">const</span> [text, setText] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">return</span> (
+    &lt;textarea
+      value={text}
+      onChange={<span class="code-keyword">e</span> => <span class="code-function">setText</span>(e.target.value)}
+      placeholder=<span class="code-string">"Escribe aquí..."</span>
+    /&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Base State Value -->
+                <div id="base-state" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Valores Iniciales del Estado</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Estrategias de Inicialización:</h4>
+                        <ul>
+                            <li><strong>Valores por defecto:</strong> Evita errores y mejora UX</li>
+                            <li><strong>Tipos correctos:</strong> String para texto, number para números, etc.</li>
+                            <li><strong>Objetos para formularios complejos:</strong> Agrupa campos relacionados</li>
+                            <li><strong>Validación inicial:</strong> Estado válido desde el primer render</li>
+                            <li><strong>Persistencia:</strong> Recuperar valores desde localStorage o API</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">const</span> [formData, setFormData] = <span class="code-function">useState</span>({
+  name: <span class="code-string">''</span>,
+  email: <span class="code-string">''</span>,
+  category: <span class="code-string">'general'</span>
+});
+
+<span class="code-keyword">const</span> [age, setAge] = <span class="code-function">useState</span>(18);</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Populating Parent Component Data -->
+                <div id="parent-data" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Comunicación Hijo → Padre</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Patrón de Comunicación:</h4>
+                        <ul>
+                            <li><strong>Callback Props:</strong> El padre pasa funciones como props al hijo</li>
+                            <li><strong>Lifting State Up:</strong> Elevar el estado al componente padre común</li>
+                            <li><strong>Event Bubbling:</strong> Los eventos se propagan hacia arriba</li>
+                            <li><strong>Data Flow:</strong> Flujo unidireccional de datos</li>
+                            <li><strong>Composición:</strong> Mejor que herencia para compartir lógica</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Padre</span>
+<span class="code-keyword">function</span> <span class="code-function">Parent</span>() {
+  <span class="code-keyword">const</span> [data, setData] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-keyword">return</span> &lt;Child onData={setData} /&gt;;
+}
+
+<span class="code-comment">// Hijo</span>
+<span class="code-keyword">function</span> <span class="code-function">Child</span>({ onData }) {
+  <span class="code-keyword">const</span> <span class="code-function">sendData</span> = () => <span class="code-function">onData</span>(<span class="code-string">'datos del hijo'</span>);
+  
+  <span class="code-keyword">return</span> &lt;button onClick={sendData}&gt;Enviar&lt;/button&gt;;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dropzone Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-cloud-upload-alt mr-3 text-secondary-500"></i>
+                        Manejo de Archivos con Dropzone
+                    </h2>
+                    <p class="text-gray-400">
+                        Implementa funcionalidad de arrastrar y soltar archivos de forma elegante y funcional
+                    </p>
+                </div>
+                
+                <!-- React Dropzone -->
+                <div id="dropzone-install" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Instalación y Configuración</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Características Principales:</h4>
+                        <ul>
+                            <li><strong>Drag & Drop:</strong> Interfaz intuitiva para subir archivos</li>
+                            <li><strong>Validación automática:</strong> Tipo de archivo, tamaño, cantidad</li>
+                            <li><strong>Previsualización:</strong> Mostrar archivos antes de subir</li>
+                            <li><strong>Estados visuales:</strong> Feedback durante drag, drop y upload</li>
+                            <li><strong>Accesibilidad:</strong> Compatible con lectores de pantalla</li>
+                            <li><strong>Personalización:</strong> Estilos y comportamiento completamente customizable</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// npm install react-dropzone</span>
+
+<span class="code-keyword">import</span> { useDropzone } <span class="code-keyword">from</span> <span class="code-string">'react-dropzone'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">FileUploader</span>() {
+  <span class="code-keyword">const</span> { getRootProps, getInputProps } = <span class="code-function">useDropzone</span>({
+    accept: { <span class="code-string">'image/*'</span>: [] },
+    onDrop: files => console.<span class="code-function">log</span>(files)
+  });
+
+  <span class="code-keyword">return</span> (
+    &lt;div {...getRootProps()}&gt;
+      &lt;input {...getInputProps()} /&gt;
+      &lt;p&gt;Arrastra archivos aquí&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Security Audit Fix -->
+                <div id="security-audit" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Auditoría de Seguridad</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Comandos Esenciales:</h4>
+                        <ul>
+                            <li><strong>npm audit:</strong> Detecta vulnerabilidades en dependencias</li>
+                            <li><strong>npm audit fix:</strong> Corrige automáticamente problemas menores</li>
+                            <li><strong>npm audit fix --force:</strong> Correcciones agresivas (usar con cuidado)</li>
+                            <li><strong>npm update:</strong> Actualiza paquetes a versiones compatibles</li>
+                            <li><strong>Revisión manual:</strong> Verificar cambios críticos antes de aplicar</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Verificar vulnerabilidades</span>
+npm audit
+
+<span class="code-comment">// Corregir automáticamente</span>
+npm audit fix</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Dropzone Integration -->
+                <div id="dropzone-integration" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Integración Avanzada</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Funcionalidades Avanzadas:</h4>
+                        <ul>
+                            <li><strong>Validación múltiple:</strong> Tipo, tamaño, cantidad de archivos</li>
+                            <li><strong>Manejo de errores:</strong> Feedback específico para cada tipo de error</li>
+                            <li><strong>Progress tracking:</strong> Barra de progreso durante upload</li>
+                            <li><strong>Cancelación:</strong> Permitir cancelar uploads en progreso</li>
+                            <li><strong>Retry logic:</strong> Reintentar uploads fallidos automáticamente</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">AdvancedDropzone</span>() {
+  <span class="code-keyword">const</span> [files, setFiles] = <span class="code-function">useState</span>([]);
+  
+  <span class="code-keyword">const</span> { getRootProps, getInputProps } = <span class="code-function">useDropzone</span>({
+    maxSize: 5242880, <span class="code-comment">// 5MB</span>
+    onDrop: (accepted, rejected) => {
+      <span class="code-function">setFiles</span>(accepted);
+      <span class="code-keyword">if</span> (rejected.length) {
+        <span class="code-function">alert</span>(<span class="code-string">'Algunos archivos fueron rechazados'</span>);
+      }
+    }
+  });
+
+  <span class="code-keyword">return</span> (
+    &lt;div {...getRootProps()}&gt;
+      &lt;input {...getInputProps()} /&gt;
+      &lt;p&gt;Máximo 5MB por archivo&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Upload -->
+                <div id="thumbnail-upload" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Upload de Miniaturas</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Optimización de Imágenes:</h4>
+                        <ul>
+                            <li><strong>Canvas API:</strong> Redimensionar imágenes en el cliente</li>
+                            <li><strong>Compresión:</strong> Reducir tamaño de archivo manteniendo calidad</li>
+                            <li><strong>Formatos múltiples:</strong> Generar WebP, JPEG, PNG según necesidad</li>
+                            <li><strong>Lazy loading:</strong> Cargar miniaturas solo cuando son visibles</li>
+                            <li><strong>Caching:</strong> Almacenar miniaturas para evitar regeneración</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">createThumbnail</span>(file) {
+  <span class="code-keyword">const</span> canvas = document.<span class="code-function">createElement</span>(<span class="code-string">'canvas'</span>);
+  <span class="code-keyword">const</span> ctx = canvas.<span class="code-function">getContext</span>(<span class="code-string">'2d'</span>);
+  <span class="code-keyword">const</span> img = <span class="code-keyword">new</span> <span class="code-function">Image</span>();
+  
+  img.<span class="code-function">onload</span> = () => {
+    canvas.width = 150;
+    canvas.height = 150;
+    ctx.<span class="code-function">drawImage</span>(img, 0, 0, 150, 150);
+  };
+  
+  img.src = URL.<span class="code-function">createObjectURL</span>(file);
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Banner & Logo -->
+                <div id="banner-logo" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Upload de Banner y Logo</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Validaciones Específicas:</h4>
+                        <ul>
+                            <li><strong>Dimensiones mínimas:</strong> Verificar resolución adecuada</li>
+                            <li><strong>Aspect ratio:</strong> Mantener proporciones correctas</li>
+                            <li><strong>Formatos específicos:</strong> PNG para logos, JPEG para banners</li>
+                            <li><strong>Calidad de imagen:</strong> Detectar imágenes pixeladas o borrosas</li>
+                            <li><strong>Metadatos:</strong> Extraer información EXIF si es necesario</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">validateImage</span>(file, minWidth, minHeight) {
+  <span class="code-keyword">const</span> img = <span class="code-keyword">new</span> <span class="code-function">Image</span>();
+  
+  img.<span class="code-function">onload</span> = () => {
+    <span class="code-keyword">if</span> (img.width < minWidth || img.height < minHeight) {
+      <span class="code-function">alert</span>(<span class="code-string">`Imagen muy pequeña. Mínimo: ${minWidth}x${minHeight}`</span>);
+    }
+  };
+  
+  img.src = URL.<span class="code-function">createObjectURL</span>(file);
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Refs y Estilos Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-code mr-3 text-secondary-500"></i>
+                        Refs y Estilos Avanzados
+                    </h2>
+                    <p class="text-gray-400">
+                        Domina las referencias directas a elementos DOM y técnicas avanzadas de estilizado
+                    </p>
+                </div>
+                
+                <!-- React Refs -->
+                <div id="react-refs" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">React Refs - Acceso Directo al DOM</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Casos de Uso Principales:</h4>
+                        <ul>
+                            <li><strong>Focus management:</strong> Enfocar inputs automáticamente</li>
+                            <li><strong>Medición de elementos:</strong> Obtener dimensiones y posición</li>
+                            <li><strong>Integración con librerías:</strong> Conectar con bibliotecas externas</li>
+                            <li><strong>Animaciones imperativas:</strong> Control directo de animaciones</li>
+                            <li><strong>Scroll control:</strong> Manejar scroll programáticamente</li>
+                            <li><strong>Media playback:</strong> Controlar video/audio elements</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">FocusInput</span>() {
+  <span class="code-keyword">const</span> inputRef = <span class="code-function">useRef</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-function">useEffect</span>(() => {
+    inputRef.current.<span class="code-function">focus</span>();
+  }, []);
+  
+  <span class="code-keyword">return</span> &lt;input ref={inputRef} /&gt;;
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Form Input Mixin -->
+                <div id="form-mixin" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Hook Personalizado para Formularios</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Ventajas del Custom Hook:</h4>
+                        <ul>
+                            <li><strong>Reutilización:</strong> Lógica compartida entre componentes</li>
+                            <li><strong>Separación de responsabilidades:</strong> Lógica separada de UI</li>
+                            <li><strong>Testing:</strong> Fácil de testear de forma aislada</li>
+                            <li><strong>Composición:</strong> Combinar múltiples hooks personalizados</li>
+                            <li><strong>Abstracción:</strong> Ocultar complejidad de implementación</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">useFormInput</span>(initialValue) {
+  <span class="code-keyword">const</span> [value, setValue] = <span class="code-function">useState</span>(initialValue);
+  
+  <span class="code-keyword">return</span> {
+    value,
+    onChange: <span class="code-keyword">e</span> => <span class="code-function">setValue</span>(e.target.value),
+    reset: () => <span class="code-function">setValue</span>(initialValue)
+  };
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Custom Styles -->
+                <div id="custom-styles" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Estrategias de Estilizado</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Métodos de Estilizado:</h4>
+                        <ul>
+                            <li><strong>Inline Styles:</strong> Estilos dinámicos basados en props/estado</li>
+                            <li><strong>CSS Modules:</strong> Estilos con scope local automático</li>
+                            <li><strong>Styled Components:</strong> CSS-in-JS con template literals</li>
+                            <li><strong>Emotion:</strong> Librería CSS-in-JS performante</li>
+                            <li><strong>Tailwind CSS:</strong> Utility-first CSS framework</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">DynamicButton</span>({ variant }) {
+  <span class="code-keyword">const</span> styles = {
+    primary: { backgroundColor: <span class="code-string">'blue'</span>, color: <span class="code-string">'white'</span> },
+    secondary: { backgroundColor: <span class="code-string">'gray'</span>, color: <span class="code-string">'black'</span> }
+  };
+  
+  <span class="code-keyword">return</span> &lt;button style={styles[variant]}&gt;Click&lt;/button&gt;;
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- CSS Grid -->
+                <div id="css-grid" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">CSS Grid en React</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Características de CSS Grid:</h4>
+                        <ul>
+                            <li><strong>Layout bidimensional:</strong> Control total sobre filas y columnas</li>
+                            <li><strong>Grid areas:</strong> Definir áreas nombradas para layouts complejos</li>
+                            <li><strong>Responsive design:</strong> Adaptación automática a diferentes pantallas</li>
+                            <li><strong>Alignment control:</strong> Alineación precisa de elementos</li>
+                            <li><strong>Dynamic grids:</strong> Grids que se adaptan al contenido</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">GridLayout</span>() {
+  <span class="code-keyword">const</span> gridStyle = {
+    display: <span class="code-string">'grid'</span>,
+    gridTemplateColumns: <span class="code-string">'repeat(auto-fit, minmax(200px, 1fr))'</span>,
+    gap: <span class="code-string">'16px'</span>
+  };
+  
+  <span class="code-keyword">return</span> &lt;div style={gridStyle}&gt;{items}&lt;/div&gt;;
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Dropzone Labels -->
+                <div id="dropzone-labels" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Etiquetas Personalizadas</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Mejoras de UX:</h4>
+                        <ul>
+                            <li><strong>Estados visuales:</strong> Diferentes apariencias según el estado</li>
+                            <li><strong>Feedback inmediato:</strong> Respuesta visual a las acciones del usuario</li>
+                            <li><strong>Iconografía clara:</strong> Iconos que comunican la funcionalidad</li>
+                            <li><strong>Mensajes contextuales:</strong> Texto que guía al usuario</li>
+                            <li><strong>Animaciones sutiles:</strong> Transiciones suaves entre estados</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">CustomDropzone</span>() {
+  <span class="code-keyword">const</span> { isDragActive } = <span class="code-function">useDropzone</span>({});
+  
+  <span class="code-keyword">return</span> (
+    &lt;div className={isDragActive ? <span class="code-string">'drag-active'</span> : <span class="code-string">'drag-inactive'</span>}&gt;
+      {isDragActive ? <span class="code-string">'Suelta aquí'</span> : <span class="code-string">'Arrastra archivos'</span>}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+
+            
+            <!-- CRUD Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-database mr-3 text-secondary-500"></i>
+                        Operaciones CRUD
+                    </h2>
+                    <p class="text-gray-400">
+                        Implementa operaciones completas de Crear, Leer, Actualizar y Eliminar datos
+                    </p>
+                </div>
+                
+                <!-- Delete Handler -->
+                <div id="delete-handler" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Manejador de Eliminación</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Principios de Eliminación Segura:</h4>
+                        <ul>
+                            <li><strong>Confirmación obligatoria:</strong> Siempre pedir confirmación antes de eliminar</li>
+                            <li><strong>Feedback visual:</strong> Mostrar estados de carga y resultado</li>
+                            <li><strong>Rollback capability:</strong> Posibilidad de deshacer eliminaciones</li>
+                            <li><strong>Error handling:</strong> Manejo robusto de errores de red/servidor</li>
+                            <li><strong>Optimistic updates:</strong> Actualizar UI inmediatamente</li>
+                            <li><strong>Batch operations:</strong> Eliminar múltiples elementos a la vez</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">DeleteButton</span>({ id, onDelete }) {
+  <span class="code-keyword">const</span> [isDeleting, setIsDeleting] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleDelete</span> = <span class="code-keyword">async</span> () => {
+    <span class="code-keyword">if</span> (!<span class="code-function">confirm</span>(<span class="code-string">'¿Eliminar elemento?'</span>)) <span class="code-keyword">return</span>;
+    
+    <span class="code-function">setIsDeleting</span>(<span class="code-keyword">true</span>);
+    <span class="code-keyword">try</span> {
+      <span class="code-keyword">await</span> <span class="code-function">onDelete</span>(id);
+    } <span class="code-keyword">finally</span> {
+      <span class="code-function">setIsDeleting</span>(<span class="code-keyword">false</span>);
+    }
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;button onClick={handleDelete} disabled={isDeleting}&gt;
+      {isDeleting ? <span class="code-string">'Eliminando...'</span> : <span class="code-string">'Eliminar'</span>}
+    &lt;/button&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Delete API Data -->
+                <div id="delete-api" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Eliminación con API</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Estrategias de Sincronización:</h4>
+                        <ul>
+                            <li><strong>Optimistic updates:</strong> Actualizar UI antes de confirmar con servidor</li>
+                            <li><strong>Pessimistic updates:</strong> Esperar confirmación del servidor</li>
+                            <li><strong>Error recovery:</strong> Revertir cambios si la operación falla</li>
+                            <li><strong>Retry logic:</strong> Reintentar operaciones fallidas automáticamente</li>
+                            <li><strong>Offline support:</strong> Queue de operaciones para cuando no hay conexión</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">async function</span> <span class="code-function">deleteItem</span>(id) {
+  <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> <span class="code-function">fetch</span>(<span class="code-string">`/api/items/${id}`</span>, {
+    method: <span class="code-string">'DELETE'</span>
+  });
+  
+  <span class="code-keyword">if</span> (!response.ok) {
+    <span class="code-keyword">throw new</span> <span class="code-function">Error</span>(<span class="code-string">'Error al eliminar'</span>);
+  }
+  
+  <span class="code-keyword">return</span> response.<span class="code-function">json</span>();
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Font Awesome -->
+                <div id="font-awesome" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Integración de Font Awesome</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Beneficios de Font Awesome:</h4>
+                        <ul>
+                            <li><strong>Iconos vectoriales:</strong> Escalables sin pérdida de calidad</li>
+                            <li><strong>Consistencia visual:</strong> Estilo uniforme en toda la aplicación</li>
+                            <li><strong>Performance:</strong> Carga eficiente con tree-shaking</li>
+                            <li><strong>Accesibilidad:</strong> Soporte para lectores de pantalla</li>
+                            <li><strong>Personalización:</strong> Colores, tamaños y animaciones</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// npm install @fortawesome/react-fontawesome</span>
+
+<span class="code-keyword">import</span> { FontAwesomeIcon } <span class="code-keyword">from</span> <span class="code-string">'@fortawesome/react-fontawesome'</span>;
+<span class="code-keyword">import</span> { faTrash } <span class="code-keyword">from</span> <span class="code-string">'@fortawesome/free-solid-svg-icons'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">DeleteIcon</span>() {
+  <span class="code-keyword">return</span> &lt;FontAwesomeIcon icon={faTrash} /&gt;;
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Edit Handler -->
+                <div id="edit-handler" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Manejador de Edición</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Patrones de Edición:</h4>
+                        <ul>
+                            <li><strong>Inline editing:</strong> Edición directa en la misma vista</li>
+                            <li><strong>Modal editing:</strong> Formulario en ventana modal</li>
+                            <li><strong>Page navigation:</strong> Navegación a página dedicada de edición</li>
+                            <li><strong>Auto-save:</strong> Guardado automático mientras se escribe</li>
+                            <li><strong>Validation feedback:</strong> Validación en tiempo real</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">EditableItem</span>({ item, onSave }) {
+  <span class="code-keyword">const</span> [isEditing, setIsEditing] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  <span class="code-keyword">const</span> [value, setValue] = <span class="code-function">useState</span>(item.name);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleSave</span> = () => {
+    <span class="code-function">onSave</span>({ ...item, name: value });
+    <span class="code-function">setIsEditing</span>(<span class="code-keyword">false</span>);
+  };
+  
+  <span class="code-keyword">return</span> isEditing ? (
+    &lt;input value={value} onChange={<span class="code-keyword">e</span> => <span class="code-function">setValue</span>(e.target.value)} /&gt;
+  ) : (
+    &lt;span onClick={() => <span class="code-function">setIsEditing</span>(<span class="code-keyword">true</span>)}&gt;{item.name}&lt;/span&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Edit Form -->
+                <div id="edit-form" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Formulario de Edición</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Características del Formulario:</h4>
+                        <ul>
+                            <li><strong>Pre-población:</strong> Cargar datos existentes automáticamente</li>
+                            <li><strong>Validación client-side:</strong> Verificar datos antes de enviar</li>
+                            <li><strong>Dirty state tracking:</strong> Detectar cambios no guardados</li>
+                            <li><strong>Cancel functionality:</strong> Descartar cambios y volver al estado original</li>
+                            <li><strong>Loading states:</strong> Indicadores visuales durante el guardado</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">EditForm</span>({ item, onSave, onCancel }) {
+  <span class="code-keyword">const</span> [formData, setFormData] = <span class="code-function">useState</span>(item);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleSubmit</span> = (e) => {
+    e.<span class="code-function">preventDefault</span>();
+    <span class="code-function">onSave</span>(formData);
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input 
+        value={formData.name}
+        onChange={<span class="code-keyword">e</span> => <span class="code-function">setFormData</span>({...formData, name: e.target.value})}
+      /&gt;
+      &lt;button type=<span class="code-string">"submit"</span>&gt;Guardar&lt;/button&gt;
+      &lt;button type=<span class="code-string">"button"</span> onClick={onCancel}&gt;Cancelar&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Dynamic API Queries -->
+                <div id="dynamic-api" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Consultas Dinámicas a API</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Técnicas de Optimización:</h4>
+                        <ul>
+                            <li><strong>Debouncing:</strong> Retrasar consultas hasta que el usuario deje de escribir</li>
+                            <li><strong>Caching:</strong> Almacenar resultados para evitar consultas repetidas</li>
+                            <li><strong>Pagination:</strong> Cargar datos en páginas para mejorar performance</li>
+                            <li><strong>Infinite scroll:</strong> Carga progresiva de contenido</li>
+                            <li><strong>Query invalidation:</strong> Invalidar cache cuando los datos cambian</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">useApiQuery</span>(url, params) {
+  <span class="code-keyword">const</span> [data, setData] = <span class="code-function">useState</span>([]);
+  <span class="code-keyword">const</span> [loading, setLoading] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-function">setLoading</span>(<span class="code-keyword">true</span>);
+    <span class="code-function">fetch</span>(<span class="code-string">`${url}?${new URLSearchParams(params)}`</span>)
+      .<span class="code-function">then</span>(res => res.<span class="code-function">json</span>())
+      .<span class="code-function">then</span>(setData)
+      .<span class="code-function">finally</span>(() => <span class="code-function">setLoading</span>(<span class="code-keyword">false</span>));
+  }, [url, params]);
+  
+  <span class="code-keyword">return</span> { data, loading };
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Avanzado Section -->
+            <div class="mb-12">
+                <div class="section-header">
+                    <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-rocket mr-3 text-secondary-500"></i>
+                        Técnicas Avanzadas
+                    </h2>
+                    <p class="text-gray-400">
+                        Patrones avanzados y técnicas especializadas para aplicaciones React complejas
+                    </p>
+                </div>
+                
+                <!-- Multi Line Ternary -->
+                <div id="ternary" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Operadores Ternarios Multilínea</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Ventajas del Renderizado Condicional:</h4>
+                        <ul>
+                            <li><strong>Legibilidad:</strong> Código más claro que múltiples if/else</li>
+                            <li><strong>Performance:</strong> Solo renderiza el componente necesario</li>
+                            <li><strong>Mantenibilidad:</strong> Fácil agregar nuevas condiciones</li>
+                            <li><strong>Type safety:</strong> TypeScript puede inferir tipos correctamente</li>
+                            <li><strong>Debugging:</strong> Más fácil identificar qué rama se ejecuta</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">StatusDisplay</span>({ status, loading, error }) {
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      {loading ? (
+        &lt;p&gt;Cargando...&lt;/p&gt;
+      ) : error ? (
+        &lt;p&gt;Error: {error}&lt;/p&gt;
+      ) : status === <span class="code-string">'success'</span> ? (
+        &lt;p&gt;✅ Operación exitosa&lt;/p&gt;
+      ) : (
+        &lt;p&gt;Estado desconocido&lt;/p&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Conditionals -->
+                <div id="thumbnail-conditionals" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Renderizado Condicional de Miniaturas</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Estados de Imagen:</h4>
+                        <ul>
+                            <li><strong>Loading state:</strong> Placeholder mientras carga la imagen</li>
+                            <li><strong>Error state:</strong> Imagen por defecto si falla la carga</li>
+                            <li><strong>Success state:</strong> Imagen cargada correctamente</li>
+                            <li><strong>Empty state:</strong> Cuando no hay imagen disponible</li>
+                            <li><strong>Progressive loading:</strong> Carga de baja a alta resolución</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">SmartImage</span>({ src, alt }) {
+  <span class="code-keyword">const</span> [status, setStatus] = <span class="code-function">useState</span>(<span class="code-string">'loading'</span>);
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      {status === <span class="code-string">'loading'</span> && &lt;div&gt;⏳ Cargando...&lt;/div&gt;}
+      {status === <span class="code-string">'error'</span> && &lt;div&gt;❌ Error al cargar&lt;/div&gt;}
+      &lt;img 
+        src={src} 
+        alt={alt}
+        onLoad={() => <span class="code-function">setStatus</span>(<span class="code-string">'loaded'</span>)}
+        onError={() => <span class="code-function">setStatus</span>(<span class="code-string">'error'</span>)}
+        style={{ display: status === <span class="code-string">'loaded'</span> ? <span class="code-string">'block'</span> : <span class="code-string">'none'</span> }}
+      /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Delete Image Links -->
+                <div id="delete-image" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Enlaces de Eliminación de Imágenes</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Interacciones de Usuario:</h4>
+                        <ul>
+                            <li><strong>Hover effects:</strong> Mostrar controles solo al pasar el mouse</li>
+                            <li><strong>Confirmation dialogs:</strong> Prevenir eliminaciones accidentales</li>
+                            <li><strong>Visual feedback:</strong> Animaciones durante la eliminación</li>
+                            <li><strong>Undo functionality:</strong> Permitir deshacer eliminaciones</li>
+                            <li><strong>Batch operations:</strong> Eliminar múltiples imágenes a la vez</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">DeletableImage</span>({ src, onDelete }) {
+  <span class="code-keyword">const</span> [showControls, setShowControls] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-keyword">return</span> (
+    &lt;div 
+      onMouseEnter={() => <span class="code-function">setShowControls</span>(<span class="code-keyword">true</span>)}
+      onMouseLeave={() => <span class="code-function">setShowControls</span>(<span class="code-keyword">false</span>)}
+    &gt;
+      &lt;img src={src} /&gt;
+      {showControls && (
+        &lt;button onClick={onDelete}&gt;🗑️&lt;/button&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Image Edit Bug Fix -->
+                <div id="image-bug" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Corrección de Bugs en Edición</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Problemas Comunes:</h4>
+                        <ul>
+                            <li><strong>Memory leaks:</strong> No limpiar URLs de objeto creadas</li>
+                            <li><strong>State inconsistency:</strong> Desincronización entre cliente y servidor</li>
+                            <li><strong>Race conditions:</strong> Múltiples operaciones simultáneas</li>
+                            <li><strong>Error boundaries:</strong> Manejar errores sin romper la aplicación</li>
+                            <li><strong>Stale closures:</strong> Referencias obsoletas en callbacks</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">ImageEditor</span>() {
+  <span class="code-keyword">const</span> [images, setImages] = <span class="code-function">useState</span>([]);
+  
+  <span class="code-comment">// Limpiar URLs al desmontar</span>
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-keyword">return</span> () => {
+      images.<span class="code-function">forEach</span>(img => {
+        <span class="code-keyword">if</span> (img.url.<span class="code-function">startsWith</span>(<span class="code-string">'blob:'</span>)) {
+          URL.<span class="code-function">revokeObjectURL</span>(img.url);
+        }
+      });
+    };
+  }, [images]);
+  
+  <span class="code-keyword">return</span> &lt;div&gt;{<span class="code-comment">/* UI */</span>}&lt;/div&gt;;
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Final Image Delete -->
+                <div id="final-delete" class="content-card animate-slide-in">
+                    <h3 class="text-xl font-semibold mb-4">Eliminación Final de Imágenes</h3>
+                    
+                    <div class="description-list">
+                        <h4 class="text-accent-400 font-semibold mb-3">Implementación Robusta:</h4>
+                        <ul>
+                            <li><strong>Optimistic updates:</strong> Actualizar UI inmediatamente</li>
+                            <li><strong>Rollback mechanism:</strong> Revertir cambios si falla la operación</li>
+                            <li><strong>Error recovery:</strong> Manejo inteligente de errores de red</li>
+                            <li><strong>Progress tracking:</strong> Mostrar progreso de operaciones largas</li>
+                            <li><strong>Batch processing:</strong> Procesar múltiples eliminaciones eficientemente</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">useImageDeletion</span>() {
+  <span class="code-keyword">const</span> [deleting, setDeleting] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">deleteImage</span> = <span class="code-keyword">async</span> (id, optimisticUpdate) => {
+    <span class="code-function">setDeleting</span>(<span class="code-keyword">true</span>);
+    <span class="code-keyword">const</span> rollback = <span class="code-function">optimisticUpdate</span>(id);
+    
+    <span class="code-keyword">try</span> {
+      <span class="code-keyword">await</span> <span class="code-function">fetch</span>(<span class="code-string">`/api/images/${id}`</span>, { method: <span class="code-string">'DELETE'</span> });
+    } <span class="code-keyword">catch</span> (error) {
+      <span class="code-function">rollback</span>();
+      <span class="code-keyword">throw</span> error;
+    } <span class="code-keyword">finally</span> {
+      <span class="code-function">setDeleting</span>(<span class="code-keyword">false</span>);
+    }
+  };
+  
+  <span class="code-keyword">return</span> { deleteImage, deleting };
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Navegación suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Actualizar elemento activo
+                    document.querySelectorAll('.topic-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+        
+        // Animaciones al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observar elementos animados
+        document.querySelectorAll('.animate-slide-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
+
