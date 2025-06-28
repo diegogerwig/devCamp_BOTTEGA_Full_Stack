@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de React</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#121212',
+                            700: '#1a1a1a',
+                            600: '#242424',
+                            500: '#2d2d2d',
+                        },
+                        accent: {
+                            500: '#64ffda',
+                            600: '#50e3c2',
+                        },
+                        secondary: {
+                            500: '#bb86fc',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .code-block {
+            background-color: #1e1e1e;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 1rem 0;
+        }
+        
+        .code-block code {
+            color: #d4d4d4;
+        }
+        
+        .code-keyword {
+            color: #c586c0;
+        }
+        
+        .code-function {
+            color: #dcdcaa;
+        }
+        
+        .code-string {
+            color: #ce9178;
+        }
+        
+        .code-comment {
+            color: #6a9955;
+        }
+        
+        .topic-item {
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .topic-item:hover, .topic-item.active {
+            background-color: rgba(30, 30, 30, 0.5);
+            border-left-color: #64ffda;
+        }
+        
+        .topic-item.active {
+            font-weight: 600;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #2d2d2d;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3d3d3d;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-300 min-h-screen flex">
+    <!-- Sidebar -->
+    <div class="w-64 bg-dark-800 h-screen sticky top-0 overflow-y-auto flex-shrink-0 hidden md:block">
+        <div class="p-5 border-b border-dark-600">
+            <h1 class="text-xl font-bold text-accent-500 flex items-center">
+                <i class="fab fa-react mr-2"></i> Guía React
+            </h1>
+            <p class="text-sm mt-1 text-gray-500">Conceptos avanzados y mejores prácticas</p>
+        </div>
+        
+        <div class="p-4">
+            <ul class="space-y-1">
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2">Formularios</li>
+                <li><a href="#select-dropdowns" class="topic-item block px-3 py-2 rounded active">Select Dropdowns</a></li>
+                <li><a href="#textarea" class="topic-item block px-3 py-2 rounded">Textarea Tag</a></li>
+                <li><a href="#base-state" class="topic-item block px-3 py-2 rounded">Base State Value</a></li>
+                <li><a href="#parent-data" class="topic-item block px-3 py-2 rounded">Populating Parent Data</a></li>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">Dropzone</li>
+                <li><a href="#dropzone-install" class="topic-item block px-3 py-2 rounded">React Dropzone</a></li>
+                <li><a href="#security-audit" class="topic-item block px-3 py-2 rounded">Security Audit Fix</a></li>
+                <li><a href="#dropzone-integration" class="topic-item block px-3 py-2 rounded">Integration</a></li>
+                <li><a href="#thumbnail-upload" class="topic-item block px-3 py-2 rounded">Thumbnail Upload</a></li>
+                <li><a href="#banner-logo" class="topic-item block px-3 py-2 rounded">Banner & Logo</a></li>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">Refs y Estilos</li>
+                <li><a href="#react-refs" class="topic-item block px-3 py-2 rounded">React Refs</a></li>
+                <li><a href="#form-mixin" class="topic-item block px-3 py-2 rounded">Form Input Mixin</a></li>
+                <li><a href="#custom-styles" class="topic-item block px-3 py-2 rounded">Custom Styles</a></li>
+                <li><a href="#css-grid" class="topic-item block px-3 py-2 rounded">CSS Grid</a></li>
+                <li><a href="#dropzone-labels" class="topic-item block px-3 py-2 rounded">Dropzone Labels</a></li>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">CRUD</li>
+                <li><a href="#delete-handler" class="topic-item block px-3 py-2 rounded">Delete Handler</a></li>
+                <li><a href="#delete-api" class="topic-item block px-3 py-2 rounded">Delete API Data</a></li>
+                <li><a href="#font-awesome" class="topic-item block px-3 py-2 rounded">Font Awesome</a></li>
+                <li><a href="#edit-handler" class="topic-item block px-3 py-2 rounded">Edit Handler</a></li>
+                <li><a href="#edit-form" class="topic-item block px-3 py-2 rounded">Edit Form</a></li>
+                <li><a href="#dynamic-api" class="topic-item block px-3 py-2 rounded">Dynamic API Queries</a></li>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">Avanzado</li>
+                <li><a href="#ternary" class="topic-item block px-3 py-2 rounded">Multi Line Ternary</a></li>
+                <li><a href="#thumbnail-conditionals" class="topic-item block px-3 py-2 rounded">Thumbnail Conditionals</a></li>
+                <li><a href="#delete-image" class="topic-item block px-3 py-2 rounded">Delete Image Links</a></li>
+                <li><a href="#image-bug" class="topic-item block px-3 py-2 rounded">Image Edit Bug Fix</a></li>
+                <li><a href="#final-delete" class="topic-item block px-3 py-2 rounded">Final Image Delete</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Mobile header -->
+    <div class="md:hidden bg-dark-800 w-full p-4 fixed top-0 z-10">
+        <div class="flex justify-between items-center">
+            <h1 class="text-lg font-bold text-accent-500 flex items-center">
+                <i class="fab fa-react mr-2"></i> Guía React
+            </h1>
+            <button id="mobile-menu" class="text-gray-400">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="flex-1 p-4 md:p-8 pt-16 md:pt-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-3">Guía Completa de React</h1>
+                <p class="text-gray-500 max-w-2xl mx-auto">Conceptos avanzados, mejores prácticas y ejemplos prácticos para dominar React</p>
+            </div>
+            
+            <!-- Formularios Section -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-6 pb-2 border-b border-dark-600 flex items-center">
+                    <i class="fas fa-file-alt mr-3 text-secondary-500"></i>
+                    Formularios en React
+                </h2>
+                
+                <!-- Select Dropdowns -->
+                <div id="select-dropdowns" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Guide to Select Dropdowns in React</h3>
+                    <p class="mb-4">Los dropdowns en React se manejan con el estado para controlar el valor seleccionado.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">SelectExample</span>() {
+  <span class="code-keyword">const</span> [selected, setSelected] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">return</span> (
+    &lt;select 
+      value={selected} 
+      onChange={<span class="code-keyword">e</span> => <span class="code-function">setSelected</span>(e.target.value)}
+      className=<span class="code-string">"bg-dark-700 text-white p-2 rounded w-full"</span>
+    &gt;
+      &lt;option value=<span class="code-string">""</span>&gt;Selecciona una opción&lt;/option&gt;
+      &lt;option value=<span class="code-string">"1"</span>&gt;Opción 1&lt;/option&gt;
+      &lt;option value=<span class="code-string">"2"</span>&gt;Opción 2&lt;/option&gt;
+    &lt;/select&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Textarea Tag -->
+                <div id="textarea" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Guide to the Textarea Tag in React</h3>
+                    <p class="mb-4">El textarea en React se maneja similar a otros inputs, controlando su valor mediante estado.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">function</span> <span class="code-function">TextareaExample</span>() {
+  <span class="code-keyword">const</span> [text, setText] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">return</span> (
+    &lt;textarea
+      value={text}
+      onChange={<span class="code-keyword">e</span> => <span class="code-function">setText</span>(e.target.value)}
+      className=<span class="code-string">"bg-dark-700 text-white p-2 rounded w-full h-32"</span>
+      placeholder=<span class="code-string">"Escribe aquí..."</span>
+    /&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Base State Value -->
+                <div id="base-state" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Implementing a Base State Value</h3>
+                    <p class="mb-4">Inicializar el estado con un valor predeterminado para formularios.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">const</span> [formData, setFormData] = <span class="code-function">useState</span>({
+  name: <span class="code-string">''</span>,
+  email: <span class="code-string">''</span>,
+  <span class="code-comment">// Valores iniciales</span>
+});
+
+<span class="code-comment">// Para selects:</span>
+<span class="code-keyword">const</span> [category, setCategory] = <span class="code-function">useState</span>(<span class="code-string">'default'</span>);</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Populating Parent Component Data -->
+                <div id="parent-data" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Populating Parent Component Data</h3>
+                    <p class="mb-4">Pasar datos de componentes hijos a padres usando funciones callback.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Componente Padre</span>
+<span class="code-keyword">function</span> <span class="code-function">Parent</span>() {
+  <span class="code-keyword">const</span> [childData, setChildData] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleChildData</span> = (data) => {
+    <span class="code-function">setChildData</span>(data);
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;Child onData={handleChildData} /&gt;
+  );
+}
+
+<span class="code-comment">// Componente Hijo</span>
+<span class="code-keyword">function</span> <span class="code-function">Child</span>({ onData }) {
+  <span class="code-keyword">const</span> [data, setData] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">sendToParent</span> = () => {
+    <span class="code-function">onData</span>(data);
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;input value={data} onChange={<span class="code-keyword">e</span> => <span class="code-function">setData</span>(e.target.value)} /&gt;
+      &lt;button onClick={sendToParent}&gt;Enviar&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dropzone Section -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-6 pb-2 border-b border-dark-600 flex items-center">
+                    <i class="fas fa-cloud-upload-alt mr-3 text-secondary-500"></i>
+                    Manejo de Imágenes
+                </h2>
+                
+                <!-- React Dropzone -->
+                <div id="dropzone-install" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Installing React Dropzone Component</h3>
+                    <p class="mb-4">Instalación y configuración básica de React Dropzone para uploads de imágenes.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Instalación</span>
+npm install react-dropzone
+
+<span class="code-comment">// Uso básico</span>
+<span class="code-keyword">import</span> { useDropzone } <span class="code-keyword">from</span> <span class="code-string">'react-dropzone'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">DropzoneBasic</span>() {
+  <span class="code-keyword">const</span> { getRootProps, getInputProps } = <span class="code-function">useDropzone</span>({
+    accept: {
+      <span class="code-string">'image/*'</span>: []
+    },
+    onDrop: <span class="code-keyword">acceptedFiles</span> => {
+      console.<span class="code-function">log</span>(acceptedFiles);
+    }
+  });
+
+  <span class="code-keyword">return</span> (
+    &lt;div {...getRootProps()} className=<span class="code-string">"border-2 border-dashed border-gray-600 p-8 text-center cursor-pointer"</span>&gt;
+      &lt;input {...getInputProps()} /&gt;
+      &lt;p&gt;Arrastra imágenes aquí o haz clic&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Security Audit Fix -->
+                <div id="security-audit" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Performing a Security Audit Fix</h3>
+                    <p class="mb-4">Solucionar vulnerabilidades comunes en paquetes NPM.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Verificar vulnerabilidades</span>
+npm audit
+
+<span class="code-comment">// Solucionar vulnerabilidades automáticamente</span>
+npm audit fix
+
+<span class="code-comment">// Forzar soluciones si es necesario</span>
+npm audit fix --force
+
+<span class="code-comment">// Actualizar paquetes manualmente</span>
+npm update nombre-del-paquete</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Upload -->
+                <div id="thumbnail-upload" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Uploading Thumbnail Images to the API</h3>
+                    <p class="mb-4">Subir imágenes miniatura a una API usando Axios.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">const</span> <span class="code-function">uploadImage</span> = <span class="code-keyword">async</span> (file) => {
+  <span class="code-keyword">const</span> formData = <span class="code-keyword">new</span> FormData();
+  formData.<span class="code-function">append</span>(<span class="code-string">'thumbnail'</span>, file);
+  
+  <span class="code-keyword">try</span> {
+    <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> axios.<span class="code-function">post</span>(<span class="code-string">'/api/upload'</span>, formData, {
+      headers: {
+        <span class="code-string">'Content-Type'</span>: <span class="code-string">'multipart/form-data'</span>
+      }
+    });
+    <span class="code-keyword">return</span> response.data;
+  } <span class="code-keyword">catch</span> (error) {
+    console.<span class="code-function">error</span>(<span class="code-string">'Upload error:'</span>, error);
+  }
+};</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Refs y Estilos Section -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-6 pb-2 border-b border-dark-600 flex items-center">
+                    <i class="fas fa-paint-brush mr-3 text-secondary-500"></i>
+                    Refs y Estilos
+                </h2>
+                
+                <!-- React Refs -->
+                <div id="react-refs" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Overview of React Refs to Clear Form</h3>
+                    <p class="mb-4">Usar refs para acceder a elementos DOM y limpiar formularios.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">import</span> { useRef } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">FormWithRef</span>() {
+  <span class="code-keyword">const</span> formRef = <span class="code-function">useRef</span>(<span class="code-keyword">null</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleClear</span> = () => {
+    <span class="code-keyword">if</span> (formRef.current) {
+      formRef.current.<span class="code-function">reset</span>();
+    }
+  };
+  
+  <span class="code-keyword">return</span> (
+    &lt;form ref={formRef}&gt;
+      <span class="code-comment">&lt;!-- campos del formulario --&gt;</span>
+      &lt;button type=<span class="code-string">"button"</span> onClick={handleClear}&gt;
+        Limpiar
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Custom Styles -->
+                <div id="custom-styles" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Custom Select and Textarea Styles</h3>
+                    <p class="mb-4">Personalizar la apariencia de selects y textareas con CSS.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">/* Estilos para select personalizado */</span>
+.custom-select {
+  @apply bg-dark-700 text-white p-2 rounded w-full appearance-none;
+  background-image: url(<span class="code-string">"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"</span>);
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5em;
+}
+
+<span class="code-comment">/* Estilos para textarea personalizado */</span>
+.custom-textarea {
+  @apply bg-dark-700 text-white p-2 rounded w-full;
+  min-height: 100px;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CRUD Section -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-6 pb-2 border-b border-dark-600 flex items-center">
+                    <i class="fas fa-database mr-3 text-secondary-500"></i>
+                    Operaciones CRUD
+                </h2>
+                
+                <!-- Delete Handler -->
+                <div id="delete-handler" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Building a Delete Click Handler</h3>
+                    <p class="mb-4">Implementar un manejador de eliminación con confirmación.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">const</span> <span class="code-function">handleDelete</span> = (id) => {
+  <span class="code-keyword">if</span> (<span class="code-function">window</span>.confirm(<span class="code-string">'¿Estás seguro de eliminar este elemento?'</span>)) {
+    <span class="code-comment">// Llamar a la API para eliminar</span>
+    axios.<span class="code-function">delete</span>(<span class="code-string">`/api/items/</span>${id}<span class="code-string">`</span>)
+      .<span class="code-function">then</span>(() => {
+        <span class="code-comment">// Actualizar estado</span>
+        <span class="code-function">setItems</span>(prevItems => prevItems.<span class="code-function">filter</span>(item => item.id !== id));
+      })
+      .<span class="code-function">catch</span>(error => {
+        console.<span class="code-function">error</span>(<span class="code-string">'Delete error:'</span>, error);
+      });
+  }
+};</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Font Awesome -->
+                <div id="font-awesome" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Installing and Configuring Font Awesome</h3>
+                    <p class="mb-4">Configurar Font Awesome en un proyecto React.</p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-comment">// Instalación</span>
+npm install @fortawesome/fontawesome-svg-core
+npm install @fortawesome/free-solid-svg-icons
+npm install @fortawesome/react-fontawesome
+
+<span class="code-comment">// Configuración</span>
+<span class="code-keyword">import</span> { FontAwesomeIcon } <span class="code-keyword">from</span> <span class="code-string">'@fortawesome/react-fontawesome'</span>;
+<span class="code-keyword">import</span> { faTrash, faEdit } <span class="code-keyword">from</span> <span class="code-string">'@fortawesome/free-solid-svg-icons'</span>;
+
+<span class="code-comment">// Uso</span>
+&lt;button onClick={() => <span class="code-function">handleDelete</span>(item.id)}&gt;
+  &lt;FontAwesomeIcon icon={faTrash} className=<span class="code-string">"mr-2"</span> /&gt;
+  Eliminar
+&lt;/button&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Avanzado Section -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-6 pb-2 border-b border-dark-600 flex items-center">
+                    <i class="fas fa-cogs mr-3 text-secondary-500"></i>
+                    Técnicas Avanzadas
+                </h2>
+                
+                <!-- Multi Line Ternary -->
+                <div id="ternary" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Multi Line Ternary Operators</h3>
+                    <p class="mb-4">Usar operadores ternarios de múltiples líneas para mostrar/ocultar componentes.</p>
+                    
+                    <div class="code-block">
+                        <pre><code>{isEditing ? (
+  &lt;div className=<span class="code-string">"bg-dark-700 p-4 rounded"</span>&gt;
+    &lt;h3&gt;Editando elemento&lt;/h3&gt;
+    &lt;form&gt;
+      <span class="code-comment">&lt;!-- campos del formulario --&gt;</span>
+    &lt;/form&gt;
+  &lt;/div&gt;
+) : (
+  &lt;div className=<span class="code-string">"bg-dark-800 p-4 rounded"</span>&gt;
+    &lt;h3&gt;Visualización&lt;/h3&gt;
+    &lt;p&gt;Contenido del elemento&lt;/p&gt;
+  &lt;/div&gt;
+)}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Conditionals -->
+                <div id="thumbnail-conditionals" class="mb-10">
+                    <h3 class="text-xl font-semibold text-white mb-3">Image Thumbnail Conditionals and Styles</h3>
+                    <p class="mb-4">Mostrar miniaturas condicionalmente y aplicar estilos.</p>
+                    
+                    <div class="code-block">
+                        <pre><code>{images.<span class="code-function">map</span>((image) => (
+  &lt;div key={image.id} className=<span class="code-string">"relative"</span>&gt;
+    {isDeleting === image.id ? (
+      &lt;div className=<span class="code-string">"absolute inset-0 bg-dark-900 bg-opacity-80 flex items-center justify-center"</span>&gt;
+        &lt;div className=<span class="code-string">"spinner"</span>&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    ) : <span class="code-keyword">null</span>}
+    &lt;img 
+      src={image.url} 
+      alt=<span class="code-string">"Thumbnail"</span> 
+      className=<span class="code-string">"w-24 h-24 object-cover rounded"</span> 
+    /&gt;
+  &lt;/div&gt;
+))}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sidebar overlay -->
+    <div id="mobile-sidebar" class="fixed inset-0 bg-black bg-opacity-80 z-20 hidden">
+        <div class="w-64 bg-dark-800 h-full p-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-accent-500">Guía React</h2>
+                <button id="close-mobile-menu" class="text-gray-400">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <ul class="space-y-1">
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2">Formularios</li>
+                <li><a href="#select-dropdowns" class="topic-item block px-3 py-2 rounded">Select Dropdowns</a></li>
+                <li><a href="#textarea" class="topic-item block px-3 py-2 rounded">Textarea Tag</a></li>
+                <li><a href="#base-state" class="topic-item block px-3 py-2 rounded">Base State Value</a></li>
+                <li><a href="#parent-data" class="topic-item block px-3 py-2 rounded">Populating Parent Data</a></li>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">Dropzone</li>
+                <li><a href="#dropzone-install" class="topic-item block px-3 py-2 rounded">React Dropzone</a></li>
+                <li><a href="#security-audit" class="topic-item block px-3 py-2 rounded">Security Audit Fix</a></li>
+                <li><a href="#dropzone-integration" class="topic-item block px-3 py-2 rounded">Integration</a></li>
+                <li><a href="#thumbnail-upload" class="topic-item block px-3 py-2 rounded">Thumbnail Upload</a></li>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">Refs y Estilos</li>
+                <li><a href="#react-refs" class="topic-item block px-3 py-2 rounded">React Refs</a></li>
+                <li><a href="#form-mixin" class="topic-item block px-3 py-2 rounded">Form Input Mixin</a></li>
+                <li><a href="#custom-styles" class="topic-item block px-3 py-2 rounded">Custom Styles</a></li>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">CRUD</li>
+                <li><a href="#delete-handler" class="topic-item block px-3 py-2 rounded">Delete Handler</a></li>
+                <li><a href="#font-awesome" class="topic-item block px-3 py-2 rounded">Font Awesome</a></li>
+                
+                <li class="text-xs uppercase tracking-wider text-gray-500 px-3 py-2 mt-4">Avanzado</li>
+                <li><a href="#ternary" class="topic-item block px-3 py-2 rounded">Multi Line Ternary</a></li>
+                <li><a href="#thumbnail-conditionals" class="topic-item block px-3 py-2 rounded">Thumbnail Conditionals</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu').addEventListener('click', function() {
+            document.getElementById('mobile-sidebar').classList.remove('hidden');
+        });
+        
+        document.getElementById('close-mobile-menu').addEventListener('click', function() {
+            document.getElementById('mobile-sidebar').classList.add('hidden');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.getElementById('mobile-sidebar').classList.add('hidden');
+                    
+                    // Update active state
+                    document.querySelectorAll('.topic-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
